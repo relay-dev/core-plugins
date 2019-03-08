@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Relay.Core.Plugins.AutoMapper.Data</PackageId>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
+    <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
+    <Copyright>Copyright ©2019</Copyright>
+    <Description>Plugins available for the Core framework</Description>
+    <Product>Core Plugins</Product>
+    <Company>Relay Technologies</Company>
+    <Authors>Scott Ferguson</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="Relay.Core" Version="1.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Plugins\Core.Plugins.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Core">
+      <HintPath>..\..\..\core\src\Core\bin\Release\netcoreapp2.2\Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

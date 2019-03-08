@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Relay.Core.Plugins</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Scott Ferguson</Authors>
+    <Company>Relay Technologies</Company>
+    <Product>Core Plugins</Product>
+    <Description>Plugins available for the Core framework</Description>
+    <Copyright>Copyright ©2019</Copyright>
+    <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Relay.Core" Version="1.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

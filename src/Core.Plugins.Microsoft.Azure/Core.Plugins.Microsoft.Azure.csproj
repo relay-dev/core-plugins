@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Relay.Core.Plugins.Microsoft.Azure</PackageId>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
+    <Copyright>Copyright ©2019</Copyright>
+    <Description>Plugins available for the Core framework</Description>
+    <Product>Core Plugins</Product>
+    <Company>Relay Technologies</Company>
+    <Authors>Scott Ferguson</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
+    <PackageReference Include="Relay.Core" Version="1.0.36" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Plugins\Core.Plugins.csproj" />
+  </ItemGroup>
+
+</Project>
