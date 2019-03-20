@@ -25,7 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft.Azur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.MongoDb", "src\Core.Plugins.MongoDb\Core.Plugins.MongoDb.csproj", "{1BAA782C-BC1C-4243-B437-EB895DEC510F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.SQLServer", "src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj", "{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.SQLServer", "src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj", "{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{B4E4D708-C431-49A0-9AFF-8338E66ABFD7}"
+	ProjectSection(SolutionItems) = preProject
+		core-ddl-100-pre-process.sql = core-ddl-100-pre-process.sql
+		sql\core-ddl-200-process.sql = sql\core-ddl-200-process.sql
+		sql\core-ddl-300-post-process.sql = sql\core-ddl-300-post-process.sql
+		sql\core-dml-100-pre-process.sql = sql\core-dml-100-pre-process.sql
+		sql\core-dml-200-process.sql = sql\core-dml-200-process.sql
+		sql\core-dml-300-post-process.sql = sql\core-dml-300-post-process.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
