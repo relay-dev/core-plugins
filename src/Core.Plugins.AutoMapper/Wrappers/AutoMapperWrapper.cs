@@ -5,7 +5,7 @@ namespace Core.Plugins.AutoMapper.Wrappers
 {
     public class AutoMapperWrapper : IMapper
     {
-        public TDestination MapToNew<TDestination>(object source)
+        public TDestination MapTo<TDestination>(object source)
         {
             return Mapper.Map<TDestination>(source);
         }

@@ -17,12 +17,12 @@ namespace Core.Validation
             _errors = new List<string>();
         }
 
-        public void Not<T>(ExpressionType expressionType, Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IValidatorInline Not<T>(ExpressionType expressionType, Expression<Func<T>> argExpression, T value) where T : IComparable
         {
-            Not(Expression.Lambda<Func<bool>>(Expression.MakeBinary(expressionType, argExpression.Body, Expression.Constant(value))));
+            return Not(Expression.Lambda<Func<bool>>(Expression.MakeBinary(expressionType, argExpression.Body, Expression.Constant(value))));
         }
 
-        public void Not(Expression<Func<bool>> expression)
+        public IValidatorInline Not(Expression<Func<bool>> expression)
         {
             if (expression.Compile()())
             {
@@ -64,9 +64,11 @@ namespace Core.Validation
 
                 _errors.Add(argumentMessage);
             }
+
+            return this;
         }
 
-        public void NotNull(Expression<Func<object>> argExpression)
+        public IValidatorInline NotNull(Expression<Func<object>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -75,9 +77,11 @@ namespace Core.Validation
                 string argumentName = GetNameFromExpression(argExpression.Body);
                 _errors.Add($"{argumentName} cannot be null");
             }
+
+            return this;
         }
 
-        public void NotNullOrEmpty(Expression<Func<string>> argExpression)
+        public IValidatorInline NotNullOrEmpty(Expression<Func<string>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -87,9 +91,11 @@ namespace Core.Validation
 
                 _errors.Add($"{argumentName} cannot be null or empty");
             }
+
+            return this;
         }
 
-        public void NotNullOrEmptyCollection<T>(Expression<Func<ICollection<T>>> argExpression)
+        public IValidatorInline NotNullOrEmptyCollection<T>(Expression<Func<ICollection<T>>> argExpression)
         {
             var value = argExpression.Compile()();
             string argumentName = GetNameFromExpression(argExpression.Body);
@@ -102,9 +108,11 @@ namespace Core.Validation
             {
                 _errors.Add($"{argumentName} cannot be empty");
             }
+
+            return this;
         }
 
-        public void NotDefault<T>(Expression<Func<T>> argExpression)
+        public IValidatorInline NotDefault<T>(Expression<Func<T>> argExpression)
         {
             var value = argExpression.Compile()();
             string argumentName = GetNameFromExpression(argExpression.Body);
@@ -122,29 +130,11 @@ namespace Core.Validation
 
                 _errors.Add($"{argumentName} cannot be {compare}");
             }
+
+            return this;
         }
 
-        public void NotGreaterThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
-        {
-            Not(ExpressionType.GreaterThan, argExpression, value);
-        }
-
-        public void NotGreaterThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
-        {
-            Not(ExpressionType.GreaterThanOrEqual, argExpression, value);
-        }
-
-        public void NotLessThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
-        {
-            Not(ExpressionType.LessThan, argExpression, value);
-        }
-
-        public void NotLessThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
-        {
-            Not(ExpressionType.LessThanOrEqual, argExpression, value);
-        }
-
-        public void NotInvalidID(Expression<Func<long>> argExpression)
+        public IValidatorInline NotInvalidID(Expression<Func<long>> argExpression)
         {
             if (argExpression.Compile().Invoke() < 1)
             {
@@ -152,9 +142,11 @@ namespace Core.Validation
 
                 _errors.Add($"{argumentName} must be greater than 0");
             }
+
+            return this;
         }
 
-        public void NotEnumUndefined(Expression<Func<Enum>> argExpression)
+        public IValidatorInline NotEnumUndefined(Expression<Func<Enum>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -164,6 +156,28 @@ namespace Core.Validation
 
                 _errors.Add($"{argumentName} cannot be set to Undefined");
             }
+
+            return this;
+        }
+
+        public IValidatorInline NotGreaterThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        {
+            return Not(ExpressionType.GreaterThan, argExpression, value);
+        }
+
+        public IValidatorInline NotGreaterThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        {
+            return Not(ExpressionType.GreaterThanOrEqual, argExpression, value);
+        }
+
+        public IValidatorInline NotLessThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        {
+            return Not(ExpressionType.LessThan, argExpression, value);
+        }
+
+        public IValidatorInline NotLessThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        {
+            return Not(ExpressionType.LessThanOrEqual, argExpression, value);
         }
 
         public void Validate()

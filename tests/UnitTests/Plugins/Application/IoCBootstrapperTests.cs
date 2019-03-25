@@ -1,14 +1,11 @@
 using Core.Application;
-using Core.Framework;
 using Core.IoC;
 using Core.Plugins;
-using Core.Plugins.Data;
 using Core.Plugins.Application;
 using Core.Plugins.Castle.Windsor.Wrappers;
 using Core.Plugins.Utilities;
 using Core.Providers;
 using System.Collections.Generic;
-using System.Linq;
 using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;
