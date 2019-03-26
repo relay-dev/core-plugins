@@ -27,7 +27,9 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
         public override string Resolve(object source, object destination, LookupDataByKey<T> sourceMember, string destMember, ResolutionContext context)
         {
             if (sourceMember == null || EqualityComparer<T>.Default.Equals(sourceMember.Key, default(T)))
+            {
                 return null;
+            }
 
             string cacheKey = GetCacheKey(sourceMember.TableName);
 
@@ -62,7 +64,9 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
                 .SingleOrDefault(kvp => Convert.ToInt64(kvp.Key) == Convert.ToInt64(lookupDataByKey.Key));
 
             if (keyValuePair.Equals(default(KeyValuePair<T, string>)))
+            {
                 return null;
+            }
 
             return keyValuePair.Value;
         }

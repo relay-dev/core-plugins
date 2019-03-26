@@ -13,7 +13,7 @@ namespace UnitTests.Utilities
         public RetryComponentTests(ITestOutputHelper output) : base(output) { }
 
         [Fact]
-        public void RetryActionShouldRetryTheAmountOfTimesAsSpecified()
+        public void RetryAction_ShouldRetryTheAmountOfTimesAsSpecified_WhenRetryCountIsGreaterThanZero()
         {
             const int timesToTry = 5;
             Action action = () => { throw new Exception("Boom!"); };
@@ -25,7 +25,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void RetryActionShouldReturnAllExceptionsThrown()
+        public void RetryAction_ShouldReturnAllExceptionsThrown_WhenAnyExceptionIsThrown()
         {
             const int timesToTry = 5;
             Action action = () => { throw new Exception("Boom!"); };
@@ -38,7 +38,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void RetryActionShouldReturnTheCorrectExceptionsThrown()
+        public void RetryAction_ShouldReturnTheCorrectExceptionsThrown_WhenAnyExceptionIsThrown()
         {
             const int timesToTry = 5;
             Action action = () => { throw new Exception("Boom!"); };
@@ -51,7 +51,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void RetryActionShouldOnlyExecuteOnceIfNoExceptionsAreThrown()
+        public void RetryAction_ShouldOnlyExecuteOnceIfNoExceptionsAreThrown_WhenAnyExceptionIsThrown()
         {
             const int timesToTry = 5;
             Action action = () => { };
@@ -63,7 +63,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void RetryFuncSholdReturnTheExpectedValue()
+        public void RetryAction_ShouldReturnTheExpectedValue_WhenAnyExceptionIsThrown()
         {
             const int timesToTry = 5;
             Func<int> func = () => { return 100; };

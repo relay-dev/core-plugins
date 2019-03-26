@@ -11,7 +11,7 @@ namespace UnitTests.Utilities
         public GlobalHelperTests(ITestOutputHelper output) : base(output) { }
 
         [Fact]
-        public void IsAnyStringPopulatedShouldReturnFalseIfAllStringsAreNullOrEmpty()
+        public void IsAnyStringPopulated_ShouldReturnFalse_WhenAllStringsAreEmpty()
         {
             bool result = GlobalHelper.IsAnyStringPopulated(null, String.Empty, "");
 
@@ -19,7 +19,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void IsAnyStringPopulatedShouldReturnTrueIfAllStringsAreNotNullOrEmpty()
+        public void IsAnyStringPopulated_ShouldReturnTrue_WhenAllStringsAreNotEmpty()
         {
             bool result = GlobalHelper.IsAnyStringPopulated("A", "B", "ABC");
 
@@ -27,7 +27,7 @@ namespace UnitTests.Utilities
         }
 
         [Fact]
-        public void IsAnyStringPopulatedShouldReturnTrueIfSomeStringsAreNotNullButOthersAreNull()
+        public void IsAnyStringPopulated_ShouldReturnTrue_WhenAtLeastOneStringIsNotEmpty()
         {
             bool result = GlobalHelper.IsAnyStringPopulated(null, String.Empty, "Populated!");
 

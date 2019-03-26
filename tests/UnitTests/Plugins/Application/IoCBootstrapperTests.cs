@@ -17,7 +17,7 @@ namespace UnitTests.Plugins.Application
         public IoCBootstrapperTests(ITestOutputHelper output) : base(output) { }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldReturnIoCContainer()
+        public void Startup_ShouldReturnNonNullIoCContainer_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 
@@ -29,7 +29,7 @@ namespace UnitTests.Plugins.Application
         }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldReturnIoCContainerFromComposition()
+        public void Startup_ShouldReturnIoCContainerAsConfiguredByAppComposition_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 
@@ -42,7 +42,7 @@ namespace UnitTests.Plugins.Application
         }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldInstallPluginsFromComposition()
+        public void Startup_ShouldInstallPluginsAsConfiguredByAppComposition_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 
@@ -55,7 +55,7 @@ namespace UnitTests.Plugins.Application
         }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldInstallRepositoriesFromComposition()
+        public void Startup_ShouldInstallRepositoriesFromAppComposition_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 
@@ -68,7 +68,7 @@ namespace UnitTests.Plugins.Application
         }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldInstallUnitOfWorkFromComposition()
+        public void Startup_ShouldInstallUnitOfWorkFromAppComposition_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 
@@ -81,7 +81,7 @@ namespace UnitTests.Plugins.Application
         }
 
         [Fact]
-        public void IoCBootstrapper_Startup_ShouldInstallDbContextFromComposition()
+        public void Startup_ShouldInstallDbContextFromAppComposition_WhenAppCompositionIsValid()
         {
             var input = ValidApplicationComposition;
 

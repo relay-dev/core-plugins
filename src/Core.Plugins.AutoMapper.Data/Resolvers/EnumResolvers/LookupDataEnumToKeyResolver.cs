@@ -9,7 +9,7 @@ using Core.Exceptions;
 using Core.Plugins.AutoMapper.Data.Attributes;
 using Core.Plugins.Extensions;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
+namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
 {
     public class LookupDataEnumToKeyResolver<T> : IMemberValueResolver<object, object, Enum, T>
     {
@@ -29,16 +29,19 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
         public T Resolve(object source, object destination, Enum sourceMember, T destMember, ResolutionContext context)
         {
             if (sourceMember.ToString().ToLower() == "undefined")
+            {
                 return default(T);
+            }
 
-            LookupDataEnumAttribute lookupDataEnumAttribute =
-                sourceMember.GetType()
-                    .GetCustomAttributes(typeof(LookupDataEnumAttribute), true)
-                    .Cast<LookupDataEnumAttribute>()
-                    .FirstOrDefault();
+            LookupDataEnumAttribute lookupDataEnumAttribute = sourceMember.GetType()
+                .GetCustomAttributes(typeof(LookupDataEnumAttribute), true)
+                .Cast<LookupDataEnumAttribute>()
+                .FirstOrDefault();
 
             if (lookupDataEnumAttribute == null)
+            {
                 throw new CoreException($"An attempt was made to Convert the Enum {sourceMember.GetType().Name} to a Primary Key without the [LookupDataEnum] attribute. Please add this attribute to the Enum, and also note that you can specify the Table Name to reference, as well as the Column Name of the Primary Key and the Column Name that contains the field to lookup. You do not have to provide these fields if your Enum follows standard conventions.");
+            }
 
             string tableName = lookupDataEnumAttribute.TableName ?? $"tbl{sourceMember.GetType().Name}";
             string cacheKey = _cache.FormatKey(CacheKeyPrefix, tableName);
@@ -85,7 +88,9 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
                 .FirstOrDefault(dr => dr[columnNameOfFieldName] != DBNull.Value && dr[columnNameOfFieldName].ToString().Remove(" ").ToLower() == source.ToString().ToLower());
 
             if (dataRow == null)
+            {
                 return default(T);
+            }
 
             return (T)dataRow[columnNameOfPrimaryKey];
         }

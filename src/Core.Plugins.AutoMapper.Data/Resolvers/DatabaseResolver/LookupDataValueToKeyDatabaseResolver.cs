@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
+namespace Core.Plugins.AutoMapper.Data.Resolvers.DatabaseResolver
 {
     public class LookupDataValueToKeyDatabaseResolver<T> : LookupDataResolverValueToKeyBase<T>
     {

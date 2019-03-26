@@ -10,7 +10,7 @@ using Core.Plugins.AutoMapper.Data.Attributes;
 using Core.Plugins.Extensions;
 using Core.Plugins.Utilities;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
+namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
 {
     public class LookupDataKeyToEnumResolver<TInput, TOutput> : IMemberValueResolver<object, object, TInput, TOutput>
     {
@@ -30,16 +30,19 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
         public TOutput Resolve(object source, object destination, TInput sourceMember, TOutput destMember, ResolutionContext context)
         {
             if (typeof(TInput) == typeof(string))
+            {
                 return GlobalHelper.ParseEnum<TOutput>(sourceMember as string);
+            }
 
-            LookupDataEnumAttribute lookupDataEnumAttribute =
-                sourceMember.GetType()
-                    .GetCustomAttributes(typeof(LookupDataEnumAttribute), true)
-                    .Cast<LookupDataEnumAttribute>()
-                    .FirstOrDefault();
+            LookupDataEnumAttribute lookupDataEnumAttribute = sourceMember.GetType()
+                .GetCustomAttributes(typeof(LookupDataEnumAttribute), true)
+                .Cast<LookupDataEnumAttribute>()
+                .FirstOrDefault();
 
             if (lookupDataEnumAttribute == null)
+            {
                 throw new CoreException($"An attempt was made to Convert the value of {sourceMember} to Enum of type {typeof(TOutput).Name} without the [LookupDataEnum] attribute on the Enum. Please add this attribute to the Enum, and also note that you can specify the Table Name to reference, as well as the Column Name of the Primary Key and the Column Name that contains the field to lookup. You do not have to provide these fields if your Enum follows standard conventions.");
+            }
 
             string tableName = lookupDataEnumAttribute.TableName ?? $"tbl{typeof(TOutput).Name}";
             string cacheKey = _cache.FormatKey(CacheKeyPrefix, tableName);
@@ -86,7 +89,9 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
                 .FirstOrDefault(dr => dr[columnNameOfPrimaryKey] != DBNull.Value && Convert.ToInt32(dr[columnNameOfPrimaryKey].ToString()) == Convert.ToInt32(source));
 
             if (dataRow == null)
+            {
                 return default(TOutput);
+            }
 
             return GlobalHelper.ParseEnum<TOutput>(dataRow[columnNameOfFieldName] as string);
         }
