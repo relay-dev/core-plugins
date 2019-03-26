@@ -1,4 +1,5 @@
-﻿using Core.Data;
+﻿using System.Threading.Tasks;
+using Core.Data;
 using Core.Framework.Attributes;
 using Core.Plugins.EntityFramework.DbContext;
 using Core.Providers;
@@ -17,6 +18,11 @@ namespace Core.Plugins.EntityFramework.Wrappers
         }
 
         public IPageable<TEntity> Page()
+        {
+            return _pageProvider.Get();
+        }
+
+        public async Task<IPageable<TEntity>> PageAsync()
         {
             return _pageProvider.Get();
         }

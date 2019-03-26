@@ -113,7 +113,7 @@ namespace UnitTests.Plugins.Application
                 {
                     IoCContainer = new IoCContainer
                     {
-                        Type = IoCContainerType.CastleWindsor,
+                        Type = IoCContainerType.CastleWindsor.ToString(),
                         Plugins = new List<IoCContainerPlugin>
                         {
                             new IoCContainerPlugin

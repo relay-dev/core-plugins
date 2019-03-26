@@ -6,6 +6,7 @@ using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 
 namespace Core.Plugins.Data
@@ -60,6 +61,11 @@ namespace Core.Plugins.Data
             }
             
             return Tracker.Count;
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return SaveChanges();
         }
 
         public ICollection<TEntity> Set<TEntity>() where TEntity : class

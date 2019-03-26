@@ -1,4 +1,5 @@
-﻿using Core.Data;
+﻿using System.Threading.Tasks;
+using Core.Data;
 using Core.Framework.Attributes;
 
 namespace Core.Plugins.Data
@@ -16,6 +17,11 @@ namespace Core.Plugins.Data
         public virtual int Commit()
         {
             return _dbContext.SaveChanges();
+        }
+
+        public virtual async Task<int> CommitAsync()
+        {
+            return await _dbContext.SaveChangesAsync();
         }
 
         public virtual void Dispose() { }

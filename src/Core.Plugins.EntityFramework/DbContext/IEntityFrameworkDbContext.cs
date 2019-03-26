@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Threading.Tasks;
 
 namespace Core.Plugins.EntityFramework.DbContext
 {
@@ -10,5 +11,6 @@ namespace Core.Plugins.EntityFramework.DbContext
         DbChangeTracker ChangeTracker { get; }
         Database Database { get; }
         int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }

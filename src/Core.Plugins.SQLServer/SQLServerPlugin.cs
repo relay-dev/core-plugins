@@ -3,6 +3,7 @@ using Core.Data;
 using Core.IoC;
 using Core.IoC.Plugins;
 using Core.Plugins.SQLServer.Wrappers;
+using Core.Plugins.Utilities;
 using static Core.Plugins.Constants.Infrastructure;
 
 namespace Core.Plugins.SQLServer
@@ -17,7 +18,7 @@ namespace Core.Plugins.SQLServer
                 {
                     foreach (Database database in context.ApplicationComposition.DataAccess.Databases)
                     {
-                        switch (database.DatabaseType)
+                        switch (GlobalHelper.ParseEnum<DatabaseType>(database.Type))
                         {
                             case DatabaseType.SQLServer:
                                 iocContainer.Register<IDatabase, SQLServerDatabase>(

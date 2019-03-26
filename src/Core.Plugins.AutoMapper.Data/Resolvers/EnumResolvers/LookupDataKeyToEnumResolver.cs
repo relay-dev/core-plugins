@@ -8,6 +8,7 @@ using Core.Caching;
 using Core.Exceptions;
 using Core.Plugins.AutoMapper.Data.Attributes;
 using Core.Plugins.Extensions;
+using Core.Plugins.Utilities;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
 {
@@ -29,7 +30,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
         public TOutput Resolve(object source, object destination, TInput sourceMember, TOutput destMember, ResolutionContext context)
         {
             if (typeof(TInput) == typeof(string))
-                return ParseEnum<TOutput>(sourceMember as string);
+                return GlobalHelper.ParseEnum<TOutput>(sourceMember as string);
 
             LookupDataEnumAttribute lookupDataEnumAttribute =
                 sourceMember.GetType()
@@ -87,22 +88,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Impl
             if (dataRow == null)
                 return default(TOutput);
 
-            return ParseEnum<TOutput>(dataRow[columnNameOfFieldName] as string);
-        }
-
-        public static TReturn ParseEnum<TReturn>(string value)
-        {
-            if (String.IsNullOrEmpty(value))
-                value = "Undefined";
-
-            try
-            {
-                return (TReturn)Enum.Parse(typeof(TReturn), value.Remove(" ").Remove("-"), true);
-            }
-            catch
-            {
-                return default(TReturn);
-            }
+            return GlobalHelper.ParseEnum<TOutput>(dataRow[columnNameOfFieldName] as string);
         }
 
         #endregion
