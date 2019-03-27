@@ -6,7 +6,7 @@ using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace UnitTests.Utilities
+namespace UnitTests.Plugins.Utilities
 {
     public class RetryComponentTests : xUnitTestBase
     {
