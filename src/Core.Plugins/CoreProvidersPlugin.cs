@@ -14,10 +14,6 @@ namespace Core.Plugins
                 .OnInstall(iocContainer =>
                 {
                     iocContainer.Register<IDateTimeProvider, DateTimeUtcProvider>();
-                    iocContainer.Register<IRandomGuidProvider, RandomGuidProvider>();
-                    iocContainer.Register<IRandomLongProvider, RandomLongProvider>();
-                    iocContainer.Register<IResourceProvider, ResourceProvider>();
-                    iocContainer.Register<IUsernameProvider, UsernameProvider>();
                 });
         }
     }

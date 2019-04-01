@@ -5,6 +5,7 @@ using System.Threading;
 namespace Core.Plugins.Providers
 {
     [Component]
+    [Injectable]
     public class CancellationTokenProvider : ICancellationTokenProvider
     {
         public CancellationToken Get()

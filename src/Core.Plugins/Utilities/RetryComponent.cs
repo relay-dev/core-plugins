@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace Core.Plugins.Utilities
 {
+    [Component]
     [Injectable]
     public class RetryComponent : IRetryComponent
     {

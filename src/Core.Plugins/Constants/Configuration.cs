@@ -26,6 +26,11 @@
                 public const string ApplicationName = "ApplicationName";
 
                 /// <summary>
+                /// The CacheExpirationInHours
+                /// </summary>
+                public const string CacheExpirationInHours = "CacheExpirationInHours";
+
+                /// <summary>
                 /// The Environment Code of the Application (please note, this should always be a string reprentation of a value that can be found on the EnvironmentCode enum
                 /// </summary>
                 public const string EnvironmentCode = "EnvironmentCode";

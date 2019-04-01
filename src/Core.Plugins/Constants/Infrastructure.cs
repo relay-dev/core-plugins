@@ -37,6 +37,11 @@
                 public const string AutoMapperData = "AutoMapperData";
 
                 /// <summary>
+                /// Memory Cache is a caching plugin that supports reading reading and writing to a cache by way of the ICache interface
+                /// </summary>
+                public const string MemoryCache = "MemoryCache";
+
+                /// <summary>
                 /// Azure Configuration is a plugin that supports reading Azure application configuration files by way of the IConfiguration interface
                 /// </summary>
                 public const string AzureConfiguration = "AzureConfiguration";
@@ -91,6 +96,11 @@
                 /// A Plugin that maps types and accesses a database directly within the mapper
                 /// </summary>
                 public const string MapperData = "MapperData";
+
+                /// <summary>
+                /// A Plugin that handles application caching
+                /// </summary>
+                public const string Caching = "Caching";
 
                 /// <summary>
                 /// A Plugin that handles application configuration

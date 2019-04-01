@@ -9,6 +9,7 @@ using System.Resources;
 namespace Core.Plugins.Providers
 {
     [Component]
+    [Injectable]
     public class ResourceProvider : IResourceProvider
     {
         private IDictionary<string, IDictionary<string, string>> _resourceStrings;

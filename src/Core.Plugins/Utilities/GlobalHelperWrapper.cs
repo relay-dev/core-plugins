@@ -5,6 +5,7 @@ using System.Data;
 
 namespace Core.Plugins.Utilities
 {
+    [Component]
     [Injectable]
     public class GlobalHelperWrapper : IGlobalHelper
     {

@@ -5,6 +5,7 @@ using Core.Providers;
 namespace Core.Plugins.Providers
 {
     [Component]
+    [Injectable]
     public class PageProvider<TEntity> : IPageProvider<TEntity>
     {
         private readonly IPageable<TEntity> _pageable;
