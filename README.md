@@ -2,16 +2,16 @@
 
 # Core.Plugins
 
-[![Build status](https://ci.appveyor.com/api/projects/status/uy3l50i1p1gxu1pe/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/core/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/uy3l50i1p1gxu1pe/branch/master?svg=true)](https://ci.appveyor.com/project/sfergusonATX/core-plugins/branch/master)
 [![NuGet Release](https://img.shields.io/nuget/v/relay.core.plugins.svg)](https://www.nuget.org/packages/Relay.Core.Plugins/)
 [![MyGet Release](https://img.shields.io/myget/relay-dev/v/Relay.Core.Plugins.svg)](https://www.myget.org/feed/relay-dev/package/nuget/Relay.Core.Plugins)
 [![License](https://img.shields.io/github/license/relay-dev/core-plugins.svg)](https://github.com/relay-dev/core-plugins/blob/master/LICENSE)
 
-Plugin implementations available for the Core framework, located here (github: [core-plugins](https://github.com/relay-dev/core-plugins) // nuget: [Relay.Core.Plugins](https://www.nuget.org/packages/Relay.Core.Plugins/))
+Plugin implementations available for the Core framework, located here (github: [core](https://github.com/relay-dev/core) // nuget: [Relay.Core](https://www.nuget.org/packages/Relay.Core.Plugins/))
 
 > <sup>Core.Plugins.* is a set of base class libraries written on .NET Core 2.2. The [Core.Plugins](https://github.com/relay-dev/core) can be considered it's base; the NuGet package consist of implementations of [Core](https://github.com/relay-dev/core) abstractions.</sup>
 >
-> <sup>Core.Plugins implement Core, are delivered to consuming applications by way of the main public NuGet feed (see section [Installation](#installation)). Implementations of the Core stubs are manifested in the form of Core "Plugins". Core can be found here (github: [core](https://github.com/relay-dev/core) // nuget: [Relay.Core](https://www.nuget.org/packages/Relay.Core/))</sup>
+> <sup>Core.Plugins implement the Core library and are delivered to consuming applications by way of the main public NuGet feed (see section [Installation](#installation)). Implementations of the Core stubs are manifested in the form of Core "Plugins". Core can be found which can be found here (github: [core-plugins](https://github.com/relay-dev/core-plugins) // nuget: [Relay.Core.Plugins](https://www.nuget.org/packages/Relay.Core.Plugins/))</sup>
 > 
 > <sup>The full NuGet library of all Products I've produced is [here](https://www.nuget.org/profiles/Relay).
 >
