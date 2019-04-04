@@ -44,7 +44,7 @@ namespace Core.Plugins.Application
         {
             applicationComposition.IoCContainer.ThrowIfNull("applicationComposition.IoCContainer");
 
-            List<Type> iocContainers = _assemblyScanner.GetCoreTypesWithAttribute<IoCContainerAttribute>(
+            List<Type> iocContainers = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerAttribute>(
                 iocContainer => String.Equals(applicationComposition.IoCContainer.Type.ToString(), iocContainer.Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (!iocContainers.Any())
@@ -58,7 +58,7 @@ namespace Core.Plugins.Application
 
         private IIoCContainerPlugin GetIoCContainerPlugin(ApplicationComposition applicationComposition, string pluginName)
         {
-            List<Type> iocContainerPlugins = _assemblyScanner.GetCoreTypesWithAttribute<IoCContainerPluginAttribute>(
+            List<Type> iocContainerPlugins = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerPluginAttribute>(
                 iocContainerPlugin => String.Equals(pluginName, iocContainerPlugin.Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (!iocContainerPlugins.Any())
@@ -116,7 +116,7 @@ namespace Core.Plugins.Application
 
         private void RegisterInjectableTypes(IIoCContainer iocContainer)
         {
-            List<Type> injectableTypes = _assemblyScanner.GetCoreTypesWithAttribute<InjectableAttribute>(injectable => injectable.AutoWiring != Opt.Out);
+            List<Type> injectableTypes = _assemblyScanner.GetApplicationTypesWithAttribute<InjectableAttribute>(injectable => injectable.AutoWiring != Opt.Out);
 
             foreach (Type injectableType in injectableTypes)
             {

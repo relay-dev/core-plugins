@@ -16,7 +16,6 @@ namespace Core.Plugins.Utilities
         public List<Assembly> GetApplicationAssemblies()
         {
             List<Assembly> loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.StartsWith("Core"))
                 .OrderBy(a => a.FullName)
                 .ToList();
 
@@ -27,31 +26,17 @@ namespace Core.Plugins.Utilities
             return loadedAssemblies.Distinct().ToList();
         }
 
-        public List<Assembly> GetCoreAssemblies()
+        public List<Type> GetApplicationTypesWithAttribute<TAttribute>() where TAttribute : Attribute
         {
-            List<Assembly> loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.StartsWith("Core"))
-                .OrderBy(a => a.FullName)
-                .ToList();
-
-            string[] referencedPaths = Directory.GetFiles(path: AppDomain.CurrentDomain.BaseDirectory, searchPattern: "Core*.dll");
-
-            referencedPaths.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
-
-            return loadedAssemblies.Distinct().ToList();
-        }
-
-        public List<Type> GetCoreTypesWithAttribute<TAttribute>() where TAttribute : Attribute
-        {
-            return GetCoreAssemblies()
+            return GetApplicationAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any())
                 .ToList();
         }
 
-        public List<Type> GetCoreTypesWithAttribute<TAttribute>(Func<TAttribute, bool> predicate) where TAttribute : Attribute
+        public List<Type> GetApplicationTypesWithAttribute<TAttribute>(Func<TAttribute, bool> predicate) where TAttribute : Attribute
         {
-            return GetCoreAssemblies()
+            return GetApplicationAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any(a => predicate.Invoke((TAttribute)a)))
                 .ToList();
