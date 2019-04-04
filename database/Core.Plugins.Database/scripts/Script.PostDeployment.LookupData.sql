@@ -36,12 +36,11 @@ END
  *    INSERT - Admin Organization
  *  ###########################################################
  */
---kakka
---event hub
+
 IF NOT EXISTS (SELECT 1 FROM [dbo].[OrganizationAPI] WHERE [OrganizationID] = (SELECT ID FROM [dbo].[Organization] WHERE [Name] = 'Admin'))
 BEGIN
     INSERT INTO [dbo].[OrganizationAPI] ([OrganizationID], [APIKeyEncrypted], [CreatedBy], [CreatedDate])
-    VALUES ((SELECT ID FROM [dbo].[Organization] WHERE [Name] = 'Admin'), '{{DA15F200-BA23-4B70-8231-091BBF3132DE}}', @createdBy, @createdDate)
+    VALUES ((SELECT ID FROM [dbo].[Organization] WHERE [Name] = 'Admin'), 'FL92sV6g3Haw7ZMRlTvwx5AjZZMTFtuOC+Ai4U718vFTIQjoaJxwENjoHCXYKicu:iQssosDf4l4=', @createdBy, @createdDate)
 END
 
 END
