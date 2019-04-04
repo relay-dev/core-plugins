@@ -78,9 +78,13 @@
     <Build Include="dbo\Stored Procedures\spDropTable.sql" />
     <Build Include="Server Objects\AlwaysOn_health.sql" />
     <Build Include="Server Objects\telemetry_xevents.sql" />
+    <Build Include="dbo\Tables\OrganizationAPI.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scripts\Script.PostDeployment.LookupData.sql" />
     <None Include="scripts\core.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Core.Plugins.Database.refactorlog" />
   </ItemGroup>
 </Project>

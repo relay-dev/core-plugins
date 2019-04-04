@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Castle.Windsor" Version="5.0.0" />
-    <PackageReference Include="Relay.Core" Version="1.0.54" />
+    <PackageReference Include="Relay.Core" Version="1.0.56" />
   </ItemGroup>
 
   <ItemGroup>

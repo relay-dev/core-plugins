@@ -31,16 +31,16 @@ Here's how you can install the Relay.Core.Plugins application [NuGet Package](ht
 
 <br />
 
-> #### *Package Manager Console*
-> 
-> ```
-> Install-Package Relay.Core.Plugins
-> ```
-> 
 > #### *.NET Core CLI*
 > 
 > ```
 > dotnet add package Relay.Core.Plugins
+> ```
+>
+> #### *Package Manager Console*
+> 
+> ```
+> Install-Package Relay.Core.Plugins
 > ```
 
 <br />

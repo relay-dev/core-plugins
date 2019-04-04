@@ -11,20 +11,20 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
 {
     public class MemoryCacheWrapper : ICache
     {
+        private readonly ObjectCache _objectCache;
         private readonly Lazy<IConfiguration> _configuration;
         private readonly Lazy<IApplicationContextProvider> _applicationContext;
 
         public MemoryCacheWrapper(Lazy<IConfiguration> configuration, Lazy<IApplicationContextProvider> applicationContext)
         {
+            _objectCache = MemoryCache.Default;
             _configuration = configuration;
             _applicationContext = applicationContext;
         }
 
-        public string Contents => this.ToString();
-
         public bool ContainsKey(string key)
         {
-            key = GetApplicationSpecificKey(key);
+            key = GetKeyForApplication(key);
 
             return _objectCache.Contains(key);
         }
@@ -48,7 +48,7 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
         public TReturn GetOrAdd<TReturn>(string key, Func<TReturn> valueFactory, int expirationInHours = 2)
         {
             TReturn value;
-            key = GetApplicationSpecificKey(key);
+            key = GetKeyForApplication(key);
 
             value = (TReturn)_objectCache.Get(key);
 
@@ -79,7 +79,7 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
 
         public object Remove(string key)
         {
-            key = GetApplicationSpecificKey(key);
+            key = GetKeyForApplication(key);
 
             return _objectCache.Remove(key);
         }
@@ -109,21 +109,14 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
 
         #region Private
 
-        private string GetApplicationSpecificKey(string key)
+        private string GetKeyForApplication(string key)
         {
-            string applicationName = _applicationContext.Value.Get().ApplicationName ?? _configuration.Value.GetAppSetting<string>(Constants.Configuration.AppSettings.ApplicationName);
-
-            if (String.IsNullOrEmpty(applicationName))
+            if (String.IsNullOrEmpty(ApplicationName))
             {
                 throw new Exception("You cannot use Caching without an ApplicationName key in the appSettings section of your config file. The cache pool is shared, so you need to specify your application to distinguish it from other applications.");
             }
 
-            if (applicationName != null && !key.Contains($"Application: {applicationName}"))
-            {
-                key = $"{applicationName}{_delimeter}{key}";
-            }
-
-            return key;
+            return $"{ApplicationName}{_delimeter}{key}";
         }
 
         private Func<CacheEntry<T>> GetValueFactoryBoxed<T>(Func<T> valueFactory)
@@ -138,11 +131,18 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
             return valueFactoryBoxed;
         }
 
+        private string ApplicationName
+        {
+            get
+            {
+                return _applicationContext.Value.Get().ApplicationName ?? _configuration.Value.GetAppSetting<string>(Constants.Configuration.AppSettings.ApplicationName);
+            }
+        }
+
         #endregion
 
         #region Static
-
-        private static readonly ObjectCache _objectCache = MemoryCache.Default;
+        
         private static readonly Object __lockObject = new Object();
         private static readonly int _defaultTimeoutInHours = 2;
         private static readonly string _delimeter = "::";

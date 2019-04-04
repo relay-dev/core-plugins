@@ -21,7 +21,7 @@ BEGIN
 
 /*
  *  ###########################################################
- *    INSERT - CustomerStatus
+ *    INSERT - Admin Organization
  *  ###########################################################
  */
 
@@ -29,6 +29,19 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[Organization] WHERE [Name] = 'Admin')
 BEGIN
     INSERT INTO [dbo].[Organization] ([Name], [Description], [Code], [DisplayName], [DisplayOrder], [IsActive], [CreatedBy], [CreatedDate])
     VALUES ('Admin', 'Administration account', 'ADMN', 'Admin', 1, 1, @createdBy, @createdDate)
+END
+
+/*
+ *  ###########################################################
+ *    INSERT - Admin Organization
+ *  ###########################################################
+ */
+--kakka
+--event hub
+IF NOT EXISTS (SELECT 1 FROM [dbo].[OrganizationAPI] WHERE [OrganizationID] = (SELECT ID FROM [dbo].[Organization] WHERE [Name] = 'Admin'))
+BEGIN
+    INSERT INTO [dbo].[OrganizationAPI] ([OrganizationID], [APIKeyEncrypted], [CreatedBy], [CreatedDate])
+    VALUES ((SELECT ID FROM [dbo].[Organization] WHERE [Name] = 'Admin'), '{{DA15F200-BA23-4B70-8231-091BBF3132DE}}', @createdBy, @createdDate)
 END
 
 END
