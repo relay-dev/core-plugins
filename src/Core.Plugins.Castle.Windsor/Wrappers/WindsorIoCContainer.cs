@@ -1,5 +1,6 @@
 ﻿using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers;
 using Castle.Windsor;
@@ -7,7 +8,6 @@ using Core.Exceptions;
 using Core.IoC;
 using Core.Plugins.Castle.Windsor.Extensions;
 using Core.Plugins.IoC;
-using Core.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +21,12 @@ namespace Core.Plugins.Castle.Windsor.Wrappers
 
         public WindsorIoCContainer()
         {
-            _windsorContainer = new WindsorContainer();
-
             Init();
+        }
+
+        public IDisposable BeginScope()
+        {
+            return _windsorContainer.BeginScope();
         }
 
         public override IIoCContainer Register<TService, TImplementation>(IoCContainerSettings ioCContainerSettings = null)

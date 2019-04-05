@@ -1,7 +1,5 @@
 ﻿using Core.Exceptions;
-using Core.Framework;
 using Core.IoC;
-using Core.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,6 +148,11 @@ namespace Core.Plugins.IoC
         public virtual List<IoCContainerRegistration> Registrations
         {
             get { return _registrations; }
+        }
+
+        public IDisposable BeginScope()
+        {
+            return null;
         }
 
         #region Private
