@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Relay.Core" Version="1.0.60" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

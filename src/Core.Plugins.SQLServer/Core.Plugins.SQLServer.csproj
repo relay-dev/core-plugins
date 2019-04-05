@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Relay.Core" Version="1.0.60" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.7.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
