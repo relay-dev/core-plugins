@@ -23,11 +23,17 @@ Plugin implementations available for the Core framework
 
 <br />
 
+### Production Deployment
+
+https://www.nuget.org/packages/Relay.Core.Plugins
+
+<br />
+
 <div id="installation"></div>
 
 ### Installation
 
-Here's how you can install the Relay.Core.Plugins application [NuGet Package](https://www.nuget.org/packages/Relay.Core.Plugins):
+Here's how you can install the Relay.Core.Plugins application NuGet Package:
 
 <br />
 
