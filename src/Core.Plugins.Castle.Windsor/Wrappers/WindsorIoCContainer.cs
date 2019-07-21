@@ -21,6 +21,8 @@ namespace Core.Plugins.Castle.Windsor.Wrappers
 
         public WindsorIoCContainer()
         {
+            _windsorContainer = new WindsorContainer();
+
             Init();
         }
 
