@@ -1,21 +1,13 @@
 ﻿using Core.Exceptions;
 using Core.Providers;
-using Microsoft.Extensions.Configuration;
 
 namespace Core.Plugins.Microsoft.Azure.Wrappers
 {
-    public class AzureConnectionStringProvider : IConnectionStringProvider
+    public abstract class AzureConnectionStringProviderBase : IConnectionStringProvider
     {
-        private readonly IConfiguration _configuration;
-
-        public AzureConnectionStringProvider(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string Get(string connectionName)
         {
-            string connectionString = _configuration.GetConnectionString(connectionName);
+            string connectionString = GetConnectionString(connectionName);
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -29,5 +21,7 @@ namespace Core.Plugins.Microsoft.Azure.Wrappers
         {
             return Get("DefaultConnection");
         }
+
+        protected abstract string GetConnectionString(string connectionName);
     }
 }
