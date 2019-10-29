@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Core.Plugins.Providers;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Plugins.Microsoft.Azure.Wrappers
 {
-    public class AzureConnectionStringByConfigurationProvider : AzureConnectionStringProviderBase
+    public class AzureConnectionStringByConfigurationProvider : ConnectionStringProviderBase
     {
         private readonly IConfiguration _configuration;
 

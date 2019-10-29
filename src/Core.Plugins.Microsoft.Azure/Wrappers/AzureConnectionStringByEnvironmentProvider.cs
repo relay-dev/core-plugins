@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Core.Plugins.Providers;
+using System;
 
 namespace Core.Plugins.Microsoft.Azure.Wrappers
 {
-    public class AzureConnectionStringByEnvironmentProvider : AzureConnectionStringProviderBase
+    public class AzureConnectionStringByEnvironmentProvider : ConnectionStringProviderBase
     {
         protected override string GetConnectionString(string connectionName)
         {

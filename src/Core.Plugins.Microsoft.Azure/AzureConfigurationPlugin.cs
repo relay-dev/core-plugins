@@ -1,6 +1,6 @@
-﻿using Core.Configuration;
-using Core.IoC.Plugins;
+﻿using Core.IoC.Plugins;
 using Core.Plugins.Microsoft.Azure.Wrappers;
+using Core.Providers;
 using static Core.Plugins.Constants.Infrastructure;
 
 namespace Core.Plugins.Microsoft.Azure
@@ -11,7 +11,7 @@ namespace Core.Plugins.Microsoft.Azure
         public IoCContainerPluginBuilder Load(IoCContainerPluginContext context)
         {
             return new IoCContainerPluginBuilder()
-                .OnInstall(iocContainer => iocContainer.Register<IConfiguration, AzureConfigurationWrapper>());
+                .OnInstall(iocContainer => iocContainer.Register<IConnectionStringProvider, AzureConnectionStringByConfigurationProvider>());
         }
     }
 }

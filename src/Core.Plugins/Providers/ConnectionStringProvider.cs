@@ -1,9 +1,24 @@
 ﻿using Core.Exceptions;
 using Core.Providers;
 
-namespace Core.Plugins.Microsoft.Azure.Wrappers
+namespace Core.Plugins.Providers
 {
-    public abstract class AzureConnectionStringProviderBase : IConnectionStringProvider
+    public class ConnectionStringProvider : ConnectionStringProviderBase
+    {
+        private readonly string _connectionString;
+
+        public ConnectionStringProvider(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        protected override string GetConnectionString(string connectionName)
+        {
+            return _connectionString;
+        }
+    }
+
+    public abstract class ConnectionStringProviderBase : IConnectionStringProvider
     {
         public string Get(string connectionName)
         {

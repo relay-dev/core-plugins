@@ -1,7 +1,6 @@
 ﻿using Core.Data;
 using Core.Exceptions;
 using Core.Providers;
-using Core.Validation;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,10 +15,19 @@ namespace Core.Plugins.SQLServer.Wrappers
     {
         private readonly string _connectionString;
 
+        #region ctor
+
         public SQLServerDatabase(IConnectionStringProvider connectionStringProvider)
         {
             _connectionString = connectionStringProvider.Get();
         }
+
+        public SQLServerDatabase(IConnectionStringProvider connectionStringProvider, string connectionName)
+        {
+            _connectionString = connectionStringProvider.Get(connectionName);
+        }
+
+        #endregion
 
         public DataTable Execute(string sql, List<DatabaseCommandParameter> databaseParameters = null)
         {
