@@ -2,11 +2,11 @@
 
 namespace Core.Plugins.Microsoft.Azure.Wrappers
 {
-    public class AzureConnectionStringProvider : AzureConnectionStringProviderBase
+    public class AzureConnectionStringByConfigurationProvider : AzureConnectionStringProviderBase
     {
         private readonly IConfiguration _configuration;
 
-        public AzureConnectionStringProvider(IConfiguration configuration)
+        public AzureConnectionStringByConfigurationProvider(IConfiguration configuration)
         {
             _configuration = configuration;
         }
