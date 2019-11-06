@@ -2,9 +2,6 @@
 using Core.Framework.Attributes;
 using Core.Framework.Enums;
 using Core.Plugins.Extensions;
-using Core.Plugins.Microsoft.Azure.Wrappers;
-using Core.Plugins.SQLServer.Wrappers;
-using Core.Providers;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -52,9 +49,6 @@ namespace Core.Plugins.Microservices.Application.Bootstrap
                 .Where(type => !type.GetCustomAttributes(typeof(InjectableAttribute), true).Any() ||
                                 type.GetCustomAttributes(typeof(InjectableAttribute), true).Select(ia => ((InjectableAttribute)ia).AutoWiring != Opt.Out).FirstOrDefault())
                 .AsPublicImplementedInterfaces();
-
-            services.AddTransient<IDatabaseFactory, SQLServerDatabaseFactory>();
-            services.AddTransient<IConnectionStringProvider, AzureConnectionStringByConfigurationProvider>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
