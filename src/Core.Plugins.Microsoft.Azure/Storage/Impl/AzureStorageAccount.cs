@@ -14,30 +14,38 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             _connectionString = connectionString;
         }
 
-        public async Task<CloudBlockBlob> CreateFileAsync(string containerName, string filename)
+        public async Task<CloudBlockBlob> CreateFileAsync(string containerName, string fileName)
         {
-            return GetBlobReference(containerName, filename);
+            return GetBlobReference(containerName, fileName);
         }
 
-        public CloudBlockBlob GetBlobReference(string containerName, string filename)
+        public CloudBlockBlob GetBlobReference(string blobPath)
+        {
+            string containerName = Path.GetDirectoryName(blobPath);
+            string fileName = Path.GetFileName(blobPath);
+
+            return GetBlobReference(containerName, fileName);
+        }
+
+        public CloudBlockBlob GetBlobReference(string containerName, string fileName)
         {
             CloudBlobContainer cloudBlobContainer = GetStorageAccountContainer(containerName);
 
-            return cloudBlobContainer.GetBlockBlobReference(filename);
+            return cloudBlobContainer.GetBlockBlobReference(fileName);
         }
 
-        public async Task<long> GetFileSizeAsync(string containerName, string filename)
+        public async Task<long> GetFileSizeAsync(string containerName, string fileName)
         {
-            CloudBlockBlob cloudBlockBlob = GetBlobReference(containerName, filename);
+            CloudBlockBlob cloudBlockBlob = GetBlobReference(containerName, fileName);
 
             await cloudBlockBlob.FetchAttributesAsync();
 
             return cloudBlockBlob.Properties.Length;
         }
 
-        public async Task ReadToStreamAsync(string containerName, string filename, Stream stream)
+        public async Task ReadToStreamAsync(string containerName, string fileName, Stream stream)
         {
-            CloudBlockBlob cloudBlockBlob = GetBlobReference(containerName, filename);
+            CloudBlockBlob cloudBlockBlob = GetBlobReference(containerName, fileName);
 
             await cloudBlockBlob.DownloadToStreamAsync(stream);
         }
