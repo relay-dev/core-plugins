@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Core.Plugins.Extensions;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
 
         public CloudBlockBlob GetBlobReference(string blobPath)
         {
-            string containerName = Path.GetDirectoryName(blobPath);
+            string containerName = Path.GetDirectoryName(blobPath).Remove("\\");
             string fileName = Path.GetFileName(blobPath);
 
             return GetBlobReference(containerName, fileName);
