@@ -12,6 +12,8 @@ namespace Core.Plugins.Microsoft.Azure.Storage
 
         CloudBlockBlob GetBlobReference(string containerName, string filename);
 
+        CloudBlockBlob GetBlobReference(string blobPath);
+
         Task ReadToStreamAsync(string containerName, string filename, Stream stream);
     }
 }
