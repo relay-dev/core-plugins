@@ -168,12 +168,19 @@ namespace Core.Plugins.SQLServer.Wrappers
 
         private SqlParameter ToSqlParameter(DatabaseCommandParameter databaseCommandParameter)
         {
-            return new SqlParameter
+            var sqlParameter = new SqlParameter
             {
                 ParameterName = databaseCommandParameter.Name,
                 Value = databaseCommandParameter.Value,
                 Direction = databaseCommandParameter.Direction
             };
+
+            if (!string.IsNullOrEmpty(databaseCommandParameter.TypeName))
+            {
+                sqlParameter.TypeName = databaseCommandParameter.TypeName;
+            }
+
+            return sqlParameter;
         }
 
         private void HandleBulkCopyException(Exception e, SqlBulkCopy sqlBulkCopy)

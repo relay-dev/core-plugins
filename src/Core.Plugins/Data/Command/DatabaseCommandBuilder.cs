@@ -54,12 +54,13 @@ namespace Core.Plugins.Data.Command
             return this;
         }
 
-        public DatabaseCommandBuilder AddOutputParameter(string parameterName)
+        public DatabaseCommandBuilder AddOutputParameter(string parameterName, string typeName)
         {
             var databaseParameter = new DatabaseCommandParameter
             {
                 Name = parameterName,
-                Direction = ParameterDirection.Output
+                Direction = ParameterDirection.Output,
+                TypeName = typeName
             };
 
             _parameters.Add(databaseParameter);
