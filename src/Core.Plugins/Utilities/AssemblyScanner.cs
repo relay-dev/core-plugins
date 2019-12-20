@@ -19,7 +19,7 @@ namespace Core.Plugins.Utilities
                 .OrderBy(a => a.FullName)
                 .ToList();
 
-            string[] referencedPaths = Directory.GetFiles(path: AppDomain.CurrentDomain.BaseDirectory, searchPattern: "Core*.dll");
+            string[] referencedPaths = Directory.GetFiles(path: AppDomain.CurrentDomain.BaseDirectory, searchPattern: "*.dll");
 
             referencedPaths.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
 
