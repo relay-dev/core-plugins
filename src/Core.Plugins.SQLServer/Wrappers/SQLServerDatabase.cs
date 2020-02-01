@@ -1,5 +1,6 @@
 ﻿using Core.Data;
 using Core.Exceptions;
+using Core.Plugins.Data.Command;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -96,6 +97,7 @@ namespace Core.Plugins.SQLServer.Wrappers
         public DataTable ExecuteStoredProcedure(string storedProcedureName, List<DatabaseCommandParameter> databaseParameters = null)
         {
             var dataTable = new DataTable();
+            SqlParameter[] sqlParameters = ToSqlParameters(databaseParameters);
 
             using (var conn = new SqlConnection(_connectionString))
             {
@@ -106,13 +108,44 @@ namespace Core.Plugins.SQLServer.Wrappers
 
                     if (databaseParameters != null)
                     {
-                        cmd.Parameters.AddRange(ToSqlParameters(databaseParameters));
+                        cmd.Parameters.AddRange(sqlParameters);
                     }
 
                     conn.Open();
                     new SqlDataAdapter(cmd).Fill(dataTable);
                     conn.Close();
                 }
+            }
+
+            return dataTable;
+        }
+
+        public DataTable ExecuteStoredProcedure(string storedProcedureName, ref List<DatabaseCommandParameter> databaseParameters)
+        {
+            var dataTable = new DataTable();
+            SqlParameter[] sqlParameters = ToSqlParameters(databaseParameters);
+
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                using (var cmd = new SqlCommand(storedProcedureName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = CommandTimeoutInSeconds;
+
+                    if (databaseParameters != null)
+                    {
+                        cmd.Parameters.AddRange(sqlParameters);
+                    }
+
+                    conn.Open();
+                    new SqlDataAdapter(cmd).Fill(dataTable);
+                    conn.Close();
+                }
+            }
+
+            foreach (DatabaseCommandParameter databaseCommandParameter in databaseParameters.Where(dp => dp.Direction == ParameterDirection.Output))
+            {
+                databaseCommandParameter.Value = sqlParameters.Single(sp => sp.ParameterName == databaseCommandParameter.Name).Value;
             }
 
             return dataTable;
@@ -177,10 +210,39 @@ namespace Core.Plugins.SQLServer.Wrappers
 
             if (!string.IsNullOrEmpty(databaseCommandParameter.TypeName))
             {
-                sqlParameter.TypeName = databaseCommandParameter.TypeName;
+                sqlParameter.DbType = ToSqlDbType(databaseCommandParameter.TypeName);
             }
 
             return sqlParameter;
+        }
+
+        private DbType ToSqlDbType(string typeName)
+        {
+            switch (typeName.ToUpper())
+            {
+                case "BOOL":
+                case "BOOLEAN":
+                    return DbType.Boolean;
+                case "DATE":
+                    return DbType.Date;
+                case "DATETIME":
+                    return DbType.DateTime;
+                case "DECIMAL":
+                    return DbType.Decimal;
+                case "DOUBLE":
+                    return DbType.Double;
+                case "GUID":
+                    return DbType.Guid;
+                case "SMALLINT":
+                    return DbType.Int16;
+                case "INT":
+                case "INTEGER":
+                    return DbType.Int32;
+                case "LONG":
+                    return DbType.Int64;
+                default:
+                    return DbType.String;
+            }
         }
 
         private void HandleBulkCopyException(Exception e, SqlBulkCopy sqlBulkCopy)

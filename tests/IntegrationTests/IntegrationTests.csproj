@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-    <PackageReference Include="Relay.Core" Version="1.0.64" />
+    <PackageReference Include="Relay.Core" Version="1.0.66" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -22,7 +22,9 @@
     <ProjectReference Include="..\..\src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.EntityFramework\Core.Plugins.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj" />
+    <ProjectReference Include="..\..\src\Core.Plugins.Microservices\Core.Plugins.Microservices.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.Microsoft.Azure\Core.Plugins.Microsoft.Azure.csproj" />
+    <ProjectReference Include="..\..\src\Core.Plugins.Microsoft.Caching\Core.Plugins.Microsoft.Caching.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.MongoDb\Core.Plugins.MongoDb.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins\Core.Plugins.csproj" />

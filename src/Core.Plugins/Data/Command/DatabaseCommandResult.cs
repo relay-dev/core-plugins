@@ -11,6 +11,12 @@ namespace Core.Plugins.Data.Command
 
         public DatabaseCommandResult() { }
 
+        public DatabaseCommandResult(DatabaseCommand databaseCommand, DataTable dataTable = null)
+        {
+            _databaseCommand = databaseCommand;
+            DataTable = dataTable;
+        }
+
         public DatabaseCommandResult(DatabaseCommand databaseCommand, int rowCountAffected, DataTable dataTable = null)
         {
             _databaseCommand = databaseCommand;

@@ -11,9 +11,11 @@ namespace Core.Plugins.Data.Command
 
         public override DatabaseCommandResult Execute()
         {
-            DataTable dataTable = Database.ExecuteStoredProcedure(Target, Parameters);
+            List<DatabaseCommandParameter> p = Parameters;
 
-            return new DatabaseCommandResult(this, dataTable.Rows.Count, dataTable);
+            DataTable dataTable = Database.ExecuteStoredProcedure(Target, ref p);
+
+            return new DatabaseCommandResult(this, dataTable);
         }
     }
 }

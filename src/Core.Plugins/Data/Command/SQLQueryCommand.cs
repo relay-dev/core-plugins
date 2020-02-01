@@ -13,7 +13,7 @@ namespace Core.Plugins.Data.Command
         {
             DataTable dataTable = Database.Execute(Target, Parameters);
 
-            return new DatabaseCommandResult(this, dataTable.Rows.Count, dataTable);
+            return new DatabaseCommandResult(this, dataTable);
         }
     }
 }
