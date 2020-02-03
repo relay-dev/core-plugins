@@ -3,7 +3,7 @@ using Core.Data.Pager;
 
 namespace Core.Plugins.Data.Pager
 {
-    public class PagerFactory
+    public class PagerFactory : IPagerFactory
     {
         private readonly IDatabaseFactory _databaseFactory;
 
