@@ -6,7 +6,7 @@ namespace Core.Plugins.Microsoft.Azure.Storage
 {
     public interface IStorageAccount
     {
-        Task<CloudBlockBlob> CreateFileAsync(string containerName, string filename);
+        CloudBlockBlob CreateFile(string containerName, string filename);
 
         Task<long> GetFileSizeAsync(string containerName, string filename);
 
@@ -15,5 +15,7 @@ namespace Core.Plugins.Microsoft.Azure.Storage
         CloudBlockBlob GetBlobReference(string blobPath);
 
         Task ReadToStreamAsync(string containerName, string filename, Stream stream);
+
+        CloudBlobClient GetStorageAccountClient();
     }
 }

@@ -15,7 +15,7 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             _connectionString = connectionString;
         }
 
-        public async Task<CloudBlockBlob> CreateFileAsync(string containerName, string fileName)
+        public CloudBlockBlob CreateFile(string containerName, string fileName)
         {
             return GetBlobReference(containerName, fileName);
         }
@@ -51,13 +51,20 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             await cloudBlockBlob.DownloadToStreamAsync(stream);
         }
 
+        public CloudBlobClient GetStorageAccountClient()
+        {
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(_connectionString);
+
+            return cloudStorageAccount.CreateCloudBlobClient();
+        }
+
         #region Private
 
         private CloudBlobContainer GetStorageAccountContainer(string containerName)
         {
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(_connectionString);
             CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-
+            
             return cloudBlobClient.GetContainerReference(containerName);
         }
 
