@@ -17,6 +17,7 @@ namespace Core.Plugins.Data.Pager
         public PagerResult Page(PagerCommand pagerCommand)
         {
             DatabaseCommandResult databaseCommandResult = _database.BuildCommand()
+                .ForStoredProcedure("[dbo].[GetPageForView]")
                 .AddInputParameter("ViewName", pagerCommand.ViewName)
                 .AddInputParameter("PageNum", pagerCommand.PageNumber)
                 .AddInputParameter("PageSize", pagerCommand.PageSize)
@@ -24,7 +25,6 @@ namespace Core.Plugins.Data.Pager
                 .AddInputParameter("ConditionList", pagerCommand.WhereClause)
                 .AddInputParameter("OrderByList", pagerCommand.OrderBy ?? "1")
                 .AddOutputParameter("RecordCount", "INT")
-                .ForStoredProcedure("dbo.GetPageForView")
                 .Execute();
 
             return databaseCommandResult.ToPagerResult();

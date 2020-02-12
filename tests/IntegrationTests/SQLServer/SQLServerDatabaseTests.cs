@@ -20,6 +20,7 @@ namespace IntegrationTests.SQLServer
             int expectedRecordCount = CUT.ExecuteScalar<int>($"SELECT COUNT(1) FROM {viewName}");
 
             DatabaseCommandResult result = CUT.BuildCommand()
+                .ForStoredProcedure("[dbo].[GetPageForView]")
                 .AddInputParameter("ViewName", viewName)
                 .AddInputParameter("PageNum", 1)
                 .AddInputParameter("PageSize", pageSize)
@@ -27,7 +28,6 @@ namespace IntegrationTests.SQLServer
                 .AddInputParameter("ConditionList", string.Empty)
                 .AddInputParameter("OrderByList", "1")
                 .AddOutputParameter("RecordCount", "INT")
-                .ForStoredProcedure("dbo.GetPageForView")
                 .Execute();
 
             Assert.NotNull(result);

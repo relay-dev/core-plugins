@@ -6,8 +6,8 @@ namespace Core.Plugins.Data.Command
 {
     public class StoredProcedureCommand : DatabaseCommand
     {
-        public StoredProcedureCommand(IDatabase database, string storedProcedureName, List<DatabaseCommandParameter> parameters)
-            : base(database, storedProcedureName, parameters) { }
+        public StoredProcedureCommand(IDatabase database, string storedProcedureName)
+            : base(database, storedProcedureName) { }
 
         public override DatabaseCommandResult Execute()
         {
