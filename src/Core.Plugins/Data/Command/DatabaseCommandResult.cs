@@ -32,12 +32,12 @@ namespace Core.Plugins.Data.Command
         {
             get
             {
-                if (_databaseCommand.Parameters == null)
+                if (_databaseCommand.GetParameters() == null)
                 {
                     return new Dictionary<string, DatabaseCommandParameter>();
                 }
 
-                return _databaseCommand.Parameters.Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.InputOutput).ToDictionary(kvp => kvp.Name, kvp => kvp);
+                return _databaseCommand.GetParameters().Where(p => p.Direction == ParameterDirection.Output || p.Direction == ParameterDirection.InputOutput).ToDictionary(kvp => kvp.Name, kvp => kvp);
             }
         }
 
@@ -45,12 +45,12 @@ namespace Core.Plugins.Data.Command
         {
             get
             {
-                if (_databaseCommand.Parameters == null)
+                if (_databaseCommand.GetParameters() == null)
                 {
                     return new Dictionary<string, DatabaseCommandParameter>();
                 }
 
-                return _databaseCommand.Parameters.Where(p => p.Direction == ParameterDirection.ReturnValue).ToDictionary(kvp => kvp.Name, kvp => kvp);
+                return _databaseCommand.GetParameters().Where(p => p.Direction == ParameterDirection.ReturnValue).ToDictionary(kvp => kvp.Name, kvp => kvp);
             }
         }
     }

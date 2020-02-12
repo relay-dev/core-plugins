@@ -9,8 +9,8 @@ namespace Core.Plugins.Data.Command
     public abstract class DatabaseCommand : ICommand<DatabaseCommandResult>
     {
         protected readonly IDatabase Database;
-        public string Target { get; set; }
-        public List<DatabaseCommandParameter> Parameters { get; set; }
+        protected readonly string Target;
+        protected readonly List<DatabaseCommandParameter> Parameters;
 
         public DatabaseCommand(IDatabase database)
         {
@@ -88,6 +88,11 @@ namespace Core.Plugins.Data.Command
             Parameters.Add(databaseParameter);
 
             return this;
+        }
+
+        public List<DatabaseCommandParameter> GetParameters()
+        {
+            return Parameters;
         }
 
         public abstract DatabaseCommandResult Execute();
