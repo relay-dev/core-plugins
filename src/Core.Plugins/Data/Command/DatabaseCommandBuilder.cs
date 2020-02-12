@@ -95,5 +95,10 @@ namespace Core.Plugins.Data.Command
         {
             return new SQLNonQueryCommand(_database, sql, _parameters);
         }
+
+        public BulkInsertCommand ForBulkInsert(string tableName)
+        {
+            return new BulkInsertCommand(_database, tableName);
+        }
     }
 }

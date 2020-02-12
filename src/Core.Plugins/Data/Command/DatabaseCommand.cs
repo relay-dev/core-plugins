@@ -14,12 +14,20 @@ namespace Core.Plugins.Data.Command
             Parameters = new List<DatabaseCommandParameter>();
         }
 
+        public DatabaseCommand(IDatabase database, string target)
+        {
+            Database = database;
+
+            Target = target;
+            Parameters = new List<DatabaseCommandParameter>();
+        }
+
         public DatabaseCommand(IDatabase database, string target, List<DatabaseCommandParameter> parameters)
         {
             Database = database;
 
-            this.Target = target;
-            this.Parameters = parameters;
+            Target = target;
+            Parameters = parameters;
         }   
 
         public string Target { get; set; }
