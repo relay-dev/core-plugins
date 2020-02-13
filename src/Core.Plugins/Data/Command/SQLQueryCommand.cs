@@ -3,7 +3,7 @@ using System.Data;
 
 namespace Core.Plugins.Data.Command
 {
-    public class SQLQueryCommand : DatabaseCommand
+    public class SQLQueryCommand : DatabaseCommandWithParameters
     {
         public SQLQueryCommand(IDatabase database, string sql)
             : base(database, sql) { }

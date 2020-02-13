@@ -2,7 +2,7 @@
 
 namespace Core.Plugins.Data.Command
 {
-    public class SQLNonQueryCommand : DatabaseCommand
+    public class SQLNonQueryCommand : DatabaseCommandWithParameters
     {
         public SQLNonQueryCommand(IDatabase database, string sql)
             : base(database, sql) { }

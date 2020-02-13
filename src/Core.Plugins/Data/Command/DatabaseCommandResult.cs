@@ -7,17 +7,17 @@ namespace Core.Plugins.Data.Command
 {
     public class DatabaseCommandResult
     {
-        private readonly DatabaseCommand _databaseCommand;
+        private readonly DatabaseCommandWithParameters _databaseCommand;
 
         public DatabaseCommandResult() { }
 
-        public DatabaseCommandResult(DatabaseCommand databaseCommand, DataTable dataTable = null)
+        public DatabaseCommandResult(DatabaseCommandWithParameters databaseCommand, DataTable dataTable = null)
         {
             _databaseCommand = databaseCommand;
             DataTable = dataTable;
         }
 
-        public DatabaseCommandResult(DatabaseCommand databaseCommand, int rowCountAffected, DataTable dataTable = null)
+        public DatabaseCommandResult(DatabaseCommandWithParameters databaseCommand, int rowCountAffected, DataTable dataTable = null)
         {
             _databaseCommand = databaseCommand;
             RowCountAffected = rowCountAffected;

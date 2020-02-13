@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Core.Plugins.Data.Command
 {
-    public class StoredProcedureCommand : DatabaseCommand
+    public class StoredProcedureCommand : DatabaseCommandWithParameters
     {
         public StoredProcedureCommand(IDatabase database, string storedProcedureName)
             : base(database, storedProcedureName) { }

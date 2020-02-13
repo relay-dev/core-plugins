@@ -52,7 +52,7 @@ namespace Core.Plugins.Data.Command
 
             Database.BulkInsert(Target, _dataTable, _columnMappings);
 
-            return new DatabaseCommandResult(this);
+            return new DatabaseCommandResult();
         }
 
         #region Private

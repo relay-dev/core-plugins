@@ -1,6 +1,5 @@
 ﻿using Core.Data;
 using Core.Exceptions;
-using Core.Plugins.Data.Command;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -160,6 +159,7 @@ namespace Core.Plugins.SQLServer.Wrappers
                 using (var sqlBulkCopy = new SqlBulkCopy(conn))
                 {
                     sqlBulkCopy.DestinationTableName = tableName;
+                    sqlBulkCopy.BulkCopyTimeout = CommandTimeoutInSeconds;
 
                     if (columnMappings != null)
                     {
