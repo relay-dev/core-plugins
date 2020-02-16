@@ -11,10 +11,10 @@ namespace Core.Plugins.Data
     internal class AuditableDbContextUnitOfWork : DbContextUnitOfWork
     {
         private readonly IDbContext _dbContext;
-        private readonly Lazy<IUsernameProvider> _usernameProvider;
-        private readonly Lazy<IDateTimeProvider> _dateTimeProvider;
+        private readonly IUsernameProvider _usernameProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public AuditableDbContextUnitOfWork(IDbContext dbContext, Lazy<IUsernameProvider> usernameProvider, Lazy<IDateTimeProvider> dateTimeProvider)
+        public AuditableDbContextUnitOfWork(IDbContext dbContext, IUsernameProvider usernameProvider, IDateTimeProvider dateTimeProvider)
             : base(dbContext)
         {
             _dbContext = dbContext;
@@ -28,8 +28,8 @@ namespace Core.Plugins.Data
             {
                 if (entry is IHaveAnID entryWithId)
                 {
-                    string username = _usernameProvider.Value.Get().ThrowIfNullOrEmpty("IUsernameProvider");
-                    DateTime serverDateTime = _dateTimeProvider.Value.Get().ThrowIfNullOrEmpty("IDateTimeProvider");
+                    string username = _usernameProvider.Get().ThrowIfNullOrEmpty("IUsernameProvider");
+                    DateTime serverDateTime = _dateTimeProvider.Get().ThrowIfNullOrEmpty("IDateTimeProvider");
 
                     if (entryWithId.ID < 1)
                     {
