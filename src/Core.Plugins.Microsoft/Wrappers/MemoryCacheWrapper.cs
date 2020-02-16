@@ -1,25 +1,27 @@
 ﻿using Core.Caching;
 using Core.Configuration;
-using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 
-namespace Core.Plugins.Microsoft.Caching.Wrappers
+namespace Core.Plugins.Microsoft.Wrappers
 {
     public class MemoryCacheWrapper : ICache
     {
         private readonly ObjectCache _objectCache;
-        private readonly Lazy<IConfiguration> _configuration;
-        private readonly Lazy<IApplicationContextProvider> _applicationContext;
+        private readonly IConfiguration _configuration;
 
-        public MemoryCacheWrapper(Lazy<IConfiguration> configuration, Lazy<IApplicationContextProvider> applicationContext)
+        public MemoryCacheWrapper()
+        {
+            _objectCache = MemoryCache.Default;
+        }
+
+        public MemoryCacheWrapper(IConfiguration configuration)
         {
             _objectCache = MemoryCache.Default;
             _configuration = configuration;
-            _applicationContext = applicationContext;
         }
 
         public bool ContainsKey(string key)
@@ -36,13 +38,7 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
 
         public TReturn GetOrAdd<TReturn>(string key, Func<TReturn> valueFactory)
         {
-            string cacheAppSeting = _configuration.Value.GetAppSetting<string>(Constants.Configuration.AppSettings.CacheExpirationInHours);
-
-            int cacheExpirationInHours = String.IsNullOrEmpty(cacheAppSeting)
-                ? _defaultTimeoutInHours
-                : Convert.ToInt32(cacheAppSeting);
-
-            return GetOrAdd(key, valueFactory, cacheExpirationInHours);
+            return GetOrAdd(key, valueFactory, TimeoutInHours);
         }
 
         public TReturn GetOrAdd<TReturn>(string key, Func<TReturn> valueFactory, int expirationInHours = 2)
@@ -111,11 +107,11 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
 
         private string GetKeyForApplication(string key)
         {
-            if (String.IsNullOrEmpty(ApplicationName))
+            if (ApplicationName == string.Empty)
             {
-                throw new Exception("You cannot use Caching without an ApplicationName key in the appSettings section of your config file. The cache pool is shared, so you need to specify your application to distinguish it from other applications.");
+                return key;
             }
-
+            
             return $"{ApplicationName}{_delimeter}{key}";
         }
 
@@ -135,14 +131,36 @@ namespace Core.Plugins.Microsoft.Caching.Wrappers
         {
             get
             {
-                return _applicationContext.Value.Get().ApplicationName ?? _configuration.Value.GetAppSetting<string>(Constants.Configuration.AppSettings.ApplicationName);
+                if (_configuration == null)
+                {
+                    return string.Empty;
+                }
+
+                return _configuration.GetAppSetting<string>(Constants.Configuration.AppSettings.ApplicationName);
+            }
+        }
+
+        private int TimeoutInHours
+        {
+            get
+            {
+                if (_configuration == null)
+                {
+                    return _defaultTimeoutInHours;
+                }
+
+                string appSetting = _configuration.GetAppSetting<string>(Constants.Configuration.AppSettings.CacheExpirationInHours);
+
+                return string.IsNullOrEmpty(appSetting)
+                    ? _defaultTimeoutInHours
+                    : Convert.ToInt32(appSetting);
             }
         }
 
         #endregion
 
         #region Static
-        
+
         private static readonly Object __lockObject = new Object();
         private static readonly int _defaultTimeoutInHours = 2;
         private static readonly string _delimeter = "::";

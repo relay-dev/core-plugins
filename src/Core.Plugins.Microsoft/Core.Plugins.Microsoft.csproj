@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Relay.Core.Plugins.Microsoft</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Scott Ferguson</Authors>
+    <Company>Relay Technologies</Company>
+    <Product>Core Plugins</Product>
+    <Description>Plugins available for the Core framework</Description>
+    <Copyright>Copyright ©2019</Copyright>
+    <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
+    <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Relay.Core" Version="1.0.68" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Plugins\Core.Plugins.csproj" />
+  </ItemGroup>
+
+</Project>

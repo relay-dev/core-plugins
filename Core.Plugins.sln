@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.SQLServer", "s
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Core.Plugins.Database", "database\Core.Plugins.Database\Core.Plugins.Database.sqlproj", "{73183B12-028B-4645-8CAC-0E19C82A8117}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft.Caching", "src\Core.Plugins.Microsoft.Caching\Core.Plugins.Microsoft.Caching.csproj", "{CB341BCC-2463-4761-8ACF-42DD57F4EF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft", "src\Core.Plugins.Microsoft\Core.Plugins.Microsoft.csproj", "{CB341BCC-2463-4761-8ACF-42DD57F4EF44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microservices", "src\Core.Plugins.Microservices\Core.Plugins.Microservices.csproj", "{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}"
 EndProject
