@@ -27,13 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.MongoDb", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.SQLServer", "src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj", "{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Core.Plugins.Database", "database\Core.Plugins.Database\Core.Plugins.Database.sqlproj", "{73183B12-028B-4645-8CAC-0E19C82A8117}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft", "src\Core.Plugins.Microsoft\Core.Plugins.Microsoft.csproj", "{CB341BCC-2463-4761-8ACF-42DD57F4EF44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microservices", "src\Core.Plugins.Microservices\Core.Plugins.Microservices.csproj", "{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.Utilities.FileHandling", "src\Core.Plugins.Utilities.FileHandling\Core.Plugins.Utilities.FileHandling.csproj", "{43DB9786-BE27-45BD-A613-0EFFE3D14758}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Utilities.FileHandling", "src\Core.Plugins.Utilities.FileHandling\Core.Plugins.Utilities.FileHandling.csproj", "{43DB9786-BE27-45BD-A613-0EFFE3D14758}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,12 +83,6 @@ Global
 		{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73183B12-028B-4645-8CAC-0E19C82A8117}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
