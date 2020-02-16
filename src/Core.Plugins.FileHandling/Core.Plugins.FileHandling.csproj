@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <PackageId>Relay.Core.Plugins.Utilities.FileHandling</PackageId>
+    <PackageId>Relay.Core.Plugins.FileHandling</PackageId>
     <Version>1.0.1</Version>
     <Authors>Scott Ferguson</Authors>
     <Company>Relay Technologies</Company>
