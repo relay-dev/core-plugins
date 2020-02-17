@@ -92,7 +92,7 @@ namespace Core.Plugins.FileHandling.FTP
 
         private FtpWebRequest CreateFtpRequest(string filePath, string method)
         {
-            FtpWebRequest ftpWebRequest = (FtpWebRequest)FtpWebRequest.Create($"{FtpClientSettings.Host}/{filePath}");
+            FtpWebRequest ftpWebRequest = (FtpWebRequest)FtpWebRequest.Create($"ftp://{FtpClientSettings.Host}/{filePath}");
 
             ftpWebRequest.Credentials = new NetworkCredential(FtpClientSettings.Username, FtpClientSettings.Password);
 
