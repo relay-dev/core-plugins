@@ -20,7 +20,8 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.94.2" />
     <PackageReference Include="GenericParsing" Version="1.2.1" />
-    <PackageReference Include="Relay.Core" Version="1.0.69" />
+    <PackageReference Include="Relay.Core" Version="1.0.70" />
+    <PackageReference Include="SSH.NET" Version="2016.1.0" />
   </ItemGroup>
 
 </Project>
