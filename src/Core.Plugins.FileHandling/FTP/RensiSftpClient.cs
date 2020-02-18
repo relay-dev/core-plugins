@@ -13,11 +13,23 @@ namespace Core.Plugins.FileHandling.FTP
         public RensiSftpClient(string connectionString)
             : base(connectionString) { }
 
+        public void DeleteFile(string filePath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                sftpClient.DeleteFile(filePath);
+
+                sftpClient.Disconnect();
+            }
+        }
+
         public Stream DownloadFile(string filePath)
         {
             Stream stream = null;
 
-            using (SftpClient sftpClient = GetSftpClient())
+            using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
 
@@ -29,11 +41,39 @@ namespace Core.Plugins.FileHandling.FTP
             return stream;
         }
 
+        public string GetDateTimestamp(string filePath)
+        {
+            string lastWriteTime = null;
+
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                lastWriteTime = sftpClient.GetAttributes(filePath).LastWriteTime.ToString();
+            }
+
+            return lastWriteTime;
+        }
+
+        public string GetFileSize(string filePath)
+        {
+            string length = null;
+
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                length = sftpClient.GetAttributes(filePath).Size.ToString();
+            }
+
+            return length;
+        }
+
         public List<string> ListDirectory(string directoryPath)
         {
             var fileNames = new List<string>();
-            
-            using (SftpClient sftpClient = GetSftpClient())
+
+            using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
 
@@ -48,27 +88,70 @@ namespace Core.Plugins.FileHandling.FTP
             return fileNames;
         }
 
-        public void UploadFile(FileStream fileStream, string filePath)
+        public List<string> ListDirectoryDetails(string directoryPath)
         {
-            using (SftpClient sftpClient = GetSftpClient())
+            var fileNames = new List<string>();
+
+            using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
 
-                string uniqueFilePath = GetUniqueSftpFilePath(filePath, sftpClient);
+                fileNames = sftpClient.ListDirectory(directoryPath)
+                    .Where(file => !file.IsDirectory)
+                    .Select(file => $"{file.Name}: {{ Length: {file.Length}; LastWriteTimeUtc: {file.LastWriteTimeUtc}; LastAccessTimeUtc: {file.LastAccessTimeUtc};}}")
+                    .ToList();
 
-                sftpClient.UploadFile(fileStream, uniqueFilePath);
+                sftpClient.Disconnect();
+            }
+
+            return fileNames;
+        }
+
+        public void MakeDirectory(string directoryPath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                sftpClient.CreateDirectory(directoryPath);
 
                 sftpClient.Disconnect();
             }
         }
 
-        public void MoveFile(string sourcePath, string destinationPath)
+        public void RemoveDirectory(string directoryPath)
         {
-            using (SftpClient sftpClient = GetSftpClient())
+            using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
 
-                sftpClient.Get(sourcePath).MoveTo(destinationPath);
+                sftpClient.DeleteDirectory(directoryPath);
+
+                sftpClient.Disconnect();
+            }
+        }
+
+        public void Rename(string currentFilePath, string newFilePath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                sftpClient.RenameFile(currentFilePath, newFilePath);
+
+                sftpClient.Disconnect();
+            }
+        }
+
+        public void UploadFile(Stream stream, string filePath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                string uniqueFilePath = GetUniqueSftpFilePath(filePath, sftpClient);
+
+                sftpClient.UploadFile(stream, uniqueFilePath);
 
                 sftpClient.Disconnect();
             }
@@ -88,57 +171,29 @@ namespace Core.Plugins.FileHandling.FTP
             MoveFile(currentLocation, archiveLocation);
         }
 
+        public void MoveFile(string sourcePath, string destinationPath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                sftpClient.Connect();
+
+                sftpClient.Get(sourcePath).MoveTo(destinationPath);
+
+                sftpClient.Disconnect();
+            }
+        }
+
         public bool IsFileExists(string filePath)
         {
-            using (SftpClient sftpClient = GetSftpClient())
+            using (SftpClient sftpClient = CreateSftpClient())
             {
                 return IsFileExistsUsingClient(filePath, sftpClient);
             }
         }
 
-        public void DeleteFile(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetDateTimestamp(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetFileSize(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> ListDirectoryDetails(string directoryPath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MakeDirectory(string directoryPath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveDirectory(string directoryPath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Rename(string currentFilePath, string newFileName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UploadFile(Stream stream, string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
         #region Private Methods
 
-        private SftpClient GetSftpClient()
+        private SftpClient CreateSftpClient()
         {
             ConnectionInfo connectionInfo = new PasswordConnectionInfo(FtpClientSettings.Host, FtpClientSettings.Username, FtpClientSettings.Password);
 
@@ -160,7 +215,7 @@ namespace Core.Plugins.FileHandling.FTP
                         i++;
 
                         newfileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + "-" + i + Path.GetExtension(filePath);
-                        
+
                         if (IsFileExists(newfileName))
                         {
                             continue;
