@@ -1,4 +1,4 @@
-﻿using Core.Files;
+﻿using Core.FileHandling;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,17 +67,19 @@ namespace Core.Plugins.FileHandling.FTP
             SendRequest(ftpWebRequest);
         }
 
-        public void Rename(string currentFilePath, string newFileName)
+        public void Rename(string currentFilePath, string newFilePath)
         {
             FtpWebRequest ftpWebRequest = CreateFtpRequest(currentFilePath, WebRequestMethods.Ftp.Rename);
 
-            ftpWebRequest.RenameTo = newFileName;
+            ftpWebRequest.RenameTo = newFilePath;
 
             SendRequest(ftpWebRequest);
         }
 
         public void UploadFile(Stream stream, string filePath)
         {
+            stream.Position = 0;
+
             FtpWebRequest ftpWebRequest = CreateFtpRequest(filePath, WebRequestMethods.Ftp.UploadFile);
 
             using (Stream ftpStream = ftpWebRequest.GetRequestStream())

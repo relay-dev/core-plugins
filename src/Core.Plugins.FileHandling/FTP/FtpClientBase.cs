@@ -1,4 +1,4 @@
-﻿using Core.Files;
+﻿using Core.FileHandling;
 using System.Data.SqlClient;
 
 namespace Core.Plugins.FileHandling.FTP

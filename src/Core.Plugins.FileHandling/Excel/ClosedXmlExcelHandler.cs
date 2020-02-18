@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data;
 using ClosedXML.Excel;
-using Core.Files;
+using Core.FileHandling;
 using System.IO;
 using System.Collections.Generic;
 
 namespace Core.Plugins.Utilities.FileHandling.Excel
 {
-    public class ClosedXmlExcelHandler : IExcelHandler
+    public class ClosedXmlExcelHandler : IExcelFileHandler
     {
         public DataTable GetWorksheetAsDataTable(string filePath, int sheetPosition = 1)
         {
