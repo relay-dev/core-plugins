@@ -1,5 +1,4 @@
 ﻿using Core.Exceptions;
-using Core.Validation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -130,6 +129,18 @@ namespace Core.Plugins.Extensions
             }
 
             return dataTable;
+        }
+
+        public static void AddAuditFields(this DataTable dataTable, string createdBy, DateTime createdDate)
+        {
+            dataTable.Columns.Add("CreatedBy", typeof(string));
+            dataTable.Columns.Add("CreatedDate", typeof(DateTime));
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                dataRow["CreatedBy"] = createdBy;
+                dataRow["CreatedDate"] = createdDate;
+            };
         }
 
         public static DataTable ThrowIfNullOrEmpty(this DataTable dataTable, string errorMessageIfNull = "DataTable was null", string errorMessageIfEmpty = "DataTable was empty")
