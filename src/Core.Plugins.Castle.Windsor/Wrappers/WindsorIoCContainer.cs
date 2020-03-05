@@ -26,7 +26,7 @@ namespace Core.Plugins.Castle.Windsor.Wrappers
             Init();
         }
 
-        public IDisposable BeginScope()
+        public override IDisposable BeginScope()
         {
             return _windsorContainer.BeginScope();
         }

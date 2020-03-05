@@ -150,7 +150,7 @@ namespace Core.Plugins.IoC
             get { return _registrations; }
         }
 
-        public IDisposable BeginScope()
+        public virtual IDisposable BeginScope()
         {
             return null;
         }
