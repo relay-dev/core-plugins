@@ -13,7 +13,7 @@ namespace Core.Plugins.Communication.Smtp
         public void Send(MailMessage mailMessage)
         {
             if (String.IsNullOrEmpty(SmtpClientSettings.Host) || String.IsNullOrEmpty(SmtpClientSettings.Port))
-                throw new CoreException(Exceptions.ErrorCode.INVA, "Host and Port must be set to use SystemSmtpClient");
+                throw new CoreException(ErrorCode.INVA, "Host and Port must be set to use SystemSmtpClient");
 
             new SmtpClient(SmtpClientSettings.Host, Convert.ToInt32(SmtpClientSettings.Port)).Send(mailMessage);
         }
