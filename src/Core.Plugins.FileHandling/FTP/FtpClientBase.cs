@@ -1,23 +1,23 @@
 ﻿using Core.FileHandling;
-using System.Data.SqlClient;
 
 namespace Core.Plugins.FileHandling.FTP
 {
     public class FtpClientBase
     {
-        protected readonly FtpClientSettings FtpClientSettings;
+        private readonly string _connectionString;
 
         public FtpClientBase(string connectionString)
         {
-            var builder = new SqlConnectionStringBuilder(connectionString);
+            _connectionString = connectionString;
+        }
 
-            FtpClientSettings = new FtpClientSettings
+        private FtpClientSettings _ftpClientSettings;
+        protected FtpClientSettings FtpClientSettings
+        {
+            get
             {
-                Host = builder.DataSource,
-                Username = builder.UserID,
-                Password = builder.Password,
-                IsSftp = builder.DataSource != null && builder.DataSource.ToLower().StartsWith("sftp")
-            };
+                return _ftpClientSettings ?? (_ftpClientSettings = new FtpClientSettings(_connectionString));
+            }
         }
     }
 }

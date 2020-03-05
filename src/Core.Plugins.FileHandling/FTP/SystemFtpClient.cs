@@ -6,9 +6,9 @@ using System.Net;
 
 namespace Core.Plugins.FileHandling.FTP
 {
-    public class FtpClient : FtpClientBase, IFtpClient
+    public class SystemFtpClient : FtpClientBase, IFtpClient
     {
-        public FtpClient(string connectionString)
+        public SystemFtpClient(string connectionString)
             : base(connectionString) { }
 
         public void DeleteFile(string filePath)

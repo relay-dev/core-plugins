@@ -1,4 +1,4 @@
-﻿using Core.Plugins.FileHandling.FTP;
+﻿using Core.FileHandling;
 using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;
@@ -12,9 +12,27 @@ namespace UnitTests.Core.Plugins.FileHandling
         [Fact]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
         {
-            string input = "Address=ftp.totalims.com;User ID=GAP;Password=ran798;";
+            string input = "Host=sftp.testing.com;Username=ABC;Password=123456;IsSftp=true";
 
-            var ftpClient = new FtpClient(input);
+            var ftpClientSettings = new FtpClientSettings(input);
+
+            Assert.NotNull(ftpClientSettings.Host);
+            Assert.NotNull(ftpClientSettings.Username);
+            Assert.NotNull(ftpClientSettings.Password);
+            Assert.True(ftpClientSettings.IsSftp);
+        }
+
+        [Fact]
+        public void Constructor_ShouldDefaultIsSftp_WhenConnectionStringOmmitsTheProperty()
+        {
+            string input = "Host=ftp.totalims.com;Username=GAP;Password=ran798;";
+
+            var ftpClientSettings = new FtpClientSettings(input);
+
+            Assert.NotNull(ftpClientSettings.Host);
+            Assert.NotNull(ftpClientSettings.Username);
+            Assert.NotNull(ftpClientSettings.Password);
+            Assert.False(ftpClientSettings.IsSftp);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Core.Plugins.FileHandling.FTP
 
             return isSftp
                 ? (IFtpClient)new RensiSftpClient(_connectionStringProvider.Get(connectionName))
-                : (IFtpClient)new FtpClient(_connectionStringProvider.Get(connectionName));
+                : (IFtpClient)new SystemFtpClient(_connectionStringProvider.Get(connectionName));
         }
     }
 }
