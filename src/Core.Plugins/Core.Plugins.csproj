@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Relay.Core.Plugins</PackageId>
     <Version>1.0.1</Version>
@@ -16,6 +16,10 @@
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Relay.Core" Version="1.0.79" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Messages.Designer.cs">
