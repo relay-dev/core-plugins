@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Relay.Core.Plugins.EntityFramework</PackageId>
     <Version>1.0.1</Version>
@@ -18,13 +18,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
+    <Folder Include="CodeFirst\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CodeFirst\" />
-    <Folder Include="Extensions\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Relay.Core" Version="1.0.79" />
   </ItemGroup>
 
   <ItemGroup>
