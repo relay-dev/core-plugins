@@ -10,14 +10,6 @@ namespace Core.Plugins.Extensions
 {
     public static class DataTableExtensions
     {
-        public static IEnumerable<DataRow> AsEnumerable(this DataTable table)
-        {
-            for (int i = 0; i < table.Rows.Count; i++)
-            {
-                yield return table.Rows[i];
-            }
-        }
-
         public static string ToToDelimitedString(this DataTable dataTable, string delimiter = ",", char textQualifier = '"', bool isSuppressHeader = false)
         {
             var stringBuilder = new StringBuilder();

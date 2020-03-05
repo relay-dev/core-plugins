@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper.Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Castle.Windsor", "src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj", "{BF583D10-306B-4F4F-A0AB-54139D1A0555}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.EntityFramework", "src\Core.Plugins.EntityFramework\Core.Plugins.EntityFramework.csproj", "{C2BB264A-71E7-427B-B3D0-7FDA7BC0C253}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.FluentValidation", "src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj", "{EDE5EDCC-3367-47AF-BBD1-0903F2DAFE1A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft.Azure", "src\Core.Plugins.Microsoft.Azure\Core.Plugins.Microsoft.Azure.csproj", "{969B9331-FAB3-4D21-AC80-D95F8E42524C}"
@@ -28,8 +26,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.SQLServer", "src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj", "{7CD934F9-6AFD-4E6B-B40E-3FAE06077FB5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microsoft", "src\Core.Plugins.Microsoft\Core.Plugins.Microsoft.csproj", "{CB341BCC-2463-4761-8ACF-42DD57F4EF44}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Microservices", "src\Core.Plugins.Microservices\Core.Plugins.Microservices.csproj", "{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.FileHandling", "src\Core.Plugins.FileHandling\Core.Plugins.FileHandling.csproj", "{43DB9786-BE27-45BD-A613-0EFFE3D14758}"
 EndProject
@@ -63,10 +59,6 @@ Global
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2BB264A-71E7-427B-B3D0-7FDA7BC0C253}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2BB264A-71E7-427B-B3D0-7FDA7BC0C253}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2BB264A-71E7-427B-B3D0-7FDA7BC0C253}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2BB264A-71E7-427B-B3D0-7FDA7BC0C253}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDE5EDCC-3367-47AF-BBD1-0903F2DAFE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDE5EDCC-3367-47AF-BBD1-0903F2DAFE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDE5EDCC-3367-47AF-BBD1-0903F2DAFE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,10 +79,6 @@ Global
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB341BCC-2463-4761-8ACF-42DD57F4EF44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39A9B090-E124-4EC8-9A25-4F3B94A5D0E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43DB9786-BE27-45BD-A613-0EFFE3D14758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43DB9786-BE27-45BD-A613-0EFFE3D14758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43DB9786-BE27-45BD-A613-0EFFE3D14758}.Release|Any CPU.ActiveCfg = Release|Any CPU

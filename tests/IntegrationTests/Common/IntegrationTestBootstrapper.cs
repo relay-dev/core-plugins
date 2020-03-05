@@ -9,16 +9,16 @@ namespace IntegrationTests.Common
     {
         public void Boostrap()
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(BasePath)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
+            //var config = new ConfigurationBuilder()
+            //    .SetBasePath(BasePath)
+            //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
 
-            foreach (KeyValuePair<string, string> kvp in config.AsEnumerable())
-            {
-                Environment.SetEnvironmentVariable(kvp.Key, kvp.Value);
-            }
+            //foreach (KeyValuePair<string, string> kvp in config.AsEnumerable())
+            //{
+            //    Environment.SetEnvironmentVariable(kvp.Key, kvp.Value);
+            //}
         }
 
         private string BasePath
