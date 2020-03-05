@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Relay.Core.Plugins.FileHandling</PackageId>
     <Version>1.0.1</Version>
     <Authors>Scott Ferguson</Authors>
@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.94.2" />
     <PackageReference Include="GenericParsing" Version="1.2.1" />
+    <PackageReference Include="Relay.Core" Version="1.0.79" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
   </ItemGroup>
 
