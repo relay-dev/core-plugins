@@ -14,9 +14,9 @@ namespace Core.Plugins.FileHandling.FTP
 
         public IFtpClient Create(string connectionName)
         {
-            bool isSftp = connectionName != null && connectionName.ToLower().StartsWith("sftp");
+            var ftpClientSettings = new FtpClientSettings(connectionName);
 
-            return isSftp
+            return ftpClientSettings.IsSftp
                 ? (IFtpClient)new RensiSftpClient(_connectionStringProvider.Get(connectionName))
                 : (IFtpClient)new SystemFtpClient(_connectionStringProvider.Get(connectionName));
         }
