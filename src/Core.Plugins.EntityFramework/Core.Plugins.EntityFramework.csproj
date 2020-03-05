@@ -20,7 +20,6 @@
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
-    <PackageReference Include="Relay.Core" Version="1.0.73" />
   </ItemGroup>
 
   <ItemGroup>
