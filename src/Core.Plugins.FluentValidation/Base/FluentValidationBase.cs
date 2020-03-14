@@ -7,8 +7,15 @@ using FluentValidation.Results;
 
 namespace Core.Plugins.FluentValidation.Base
 {
-    public class FluentValidationBase<TToValidate> : AbstractValidator<TToValidate>, Validation.IValidator<TToValidate>
+    public abstract class FluentValidationBase<TToValidate> : AbstractValidator<TToValidate>, Validation.IValidator<TToValidate>
     {
+        public FluentValidationBase()
+        {
+            Configure();
+        }
+
+        internal abstract void Configure();
+
         public ValidatorResult Run(TToValidate instance)
         {
             return Run(instance, null);
