@@ -14,7 +14,7 @@ namespace Core.Plugins.FluentValidation.Base
             Configure();
         }
 
-        internal abstract void Configure();
+        protected abstract void Configure();
 
         public ValidatorResult Run(TToValidate instance)
         {
