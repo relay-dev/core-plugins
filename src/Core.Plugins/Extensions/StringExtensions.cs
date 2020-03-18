@@ -178,7 +178,7 @@ namespace Core.Plugins.Extensions
                     msg = $". {message}";
                 }
 
-                throw new CoreException(ErrorCode.NULL, msg);
+                throw new CoreException(ErrorCode.INVA, msg);
             }
 
             return str;
