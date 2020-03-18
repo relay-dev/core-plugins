@@ -14,13 +14,13 @@ namespace Core.Plugins.Data
     [Component(Type = Constants.Infrastructure.ComponentType.DbContext, Name = Constants.Infrastructure.Component.InMemoryDbContext, PluginName = Constants.Infrastructure.Plugin.CoreDataAccess)]
     internal class InMemoryDbContext : IDbContext
     {
-        private readonly ICacheFactory _cacheFactory;
+        private readonly ICacheHelper _cacheHelper;
         private readonly Lazy<ISequenceProvider> _sequenceProvider;
         private readonly object __lockObject = new object();
 
-        public InMemoryDbContext(ICacheFactory cacheFactory, Lazy<ISequenceProvider> sequenceProvider)
+        public InMemoryDbContext(ICacheHelper cacheHelper, Lazy<ISequenceProvider> sequenceProvider)
         {
-            _cacheFactory = cacheFactory;
+            _cacheHelper = cacheHelper;
             _sequenceProvider = sequenceProvider;
             Tracker = new List<object>();
         }
@@ -39,18 +39,16 @@ namespace Core.Plugins.Data
                 }
             }
 
-            ICache cache = _cacheFactory.Create(GetType().Name);
-
             using (var tx = new TransactionScope())
             {
                 foreach (Type type in Tracker.Select(entity => entity.GetType()).Distinct())
                 {
-                    string cacheKey = cache.FormatKey(nameof(type));
+                    string cacheKey = _cacheHelper.FormatKey(nameof(type));
 
                     lock (__lockObject)
                     {
-                        cache.Remove(cacheKey);
-                        cache.GetOrAdd(cacheKey, () => 
+                        _cacheHelper.Remove(cacheKey);
+                        _cacheHelper.GetOrSet(cacheKey, () => 
                         {
                             return Tracker.Where(entity => entity.GetType() == type).ToList();
                         });
@@ -70,10 +68,9 @@ namespace Core.Plugins.Data
 
         public ICollection<TEntity> Set<TEntity>() where TEntity : class
         {
-            ICache cache = _cacheFactory.Create(GetType().Name);
-            string cacheKey = cache.FormatKey(nameof(TEntity));
+            string cacheKey = _cacheHelper.FormatKey(nameof(TEntity));
 
-            List<TEntity> entites = cache.GetOrAdd(cacheKey, () => new List<TEntity>()).ToList();
+            List<TEntity> entites = _cacheHelper.GetOrSet(cacheKey, () => new List<TEntity>()).ToList();
 
             Tracker.Add(entites);
 

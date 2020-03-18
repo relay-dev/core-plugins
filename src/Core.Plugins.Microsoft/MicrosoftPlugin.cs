@@ -1,6 +1,6 @@
 ﻿using Core.Caching;
 using Core.IoC.Plugins;
-using Core.Plugins.Microsoft.Wrappers;
+using Core.Plugins.Microsoft.Helpers;
 using static Core.Plugins.Constants.Infrastructure;
 
 namespace Core.Plugins.Microsoft
@@ -11,7 +11,7 @@ namespace Core.Plugins.Microsoft
         public IoCContainerPluginBuilder Load(IoCContainerPluginContext context)
         {
             return new IoCContainerPluginBuilder()
-                .OnInstall(iocContainer => iocContainer.Register<ICache, MemoryCacheWrapper>());
+                .OnInstall(iocContainer => iocContainer.Register<ICacheHelper, MemoryCacheHelper>());
         }
     }
 }

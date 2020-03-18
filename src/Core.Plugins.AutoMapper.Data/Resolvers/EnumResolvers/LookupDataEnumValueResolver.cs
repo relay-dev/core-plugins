@@ -1,28 +1,27 @@
-﻿using System;
+﻿using AutoMapper;
+using Core.Caching;
+using Core.Data;
+using Core.Exceptions;
+using Core.Plugins.AutoMapper.Data.Attributes;
+using Core.Plugins.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using AutoMapper;
-using Core.Data;
-using Core.Caching;
-using Core.Exceptions;
-using Core.Plugins.AutoMapper.Data.Attributes;
-using Core.Plugins.Extensions;
-using Core.Plugins.Utilities;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
 {
-    public class LookupDataKeyToEnumResolver<TInput, TOutput> : IMemberValueResolver<object, object, TInput, TOutput>
+    public class LookupDataEnumValueResolver<TInput, TOutput> : IMemberValueResolver<object, object, TInput, TOutput>
     {
         private readonly IDatabaseFactory _databaseFactory;
-        private readonly ICache _cache;
+        private readonly ICacheHelper _cacheHelper;
 
         public int DefaultTimeoutInHours { get; set; }
 
-        public LookupDataKeyToEnumResolver(IDatabaseFactory databaseFactory, ICacheFactory cacheFactory)
+        public LookupDataEnumValueResolver(IDatabaseFactory databaseFactory, ICacheHelper cacheHelper)
         {
             _databaseFactory = databaseFactory;
-            _cache = cacheFactory.Create();
+            _cacheHelper = cacheHelper;
 
             DefaultTimeoutInHours = 24;
         }
@@ -44,15 +43,15 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
                 throw new CoreException($"An attempt was made to Convert the value of {sourceMember} to Enum of type {typeof(TOutput).Name} without the [LookupDataEnum] attribute on the Enum. Please add this attribute to the Enum, and also note that you can specify the Table Name to reference, as well as the Column Name of the Primary Key and the Column Name that contains the field to lookup. You do not have to provide these fields if your Enum follows standard conventions.");
             }
 
-            string tableName = lookupDataEnumAttribute.TableName ?? $"tbl{typeof(TOutput).Name}";
-            string cacheKey = _cache.FormatKey(CacheKeyPrefix, tableName);
+            string tableName = lookupDataEnumAttribute.TableName ?? $"{typeof(TOutput).Name}";
+            string cacheKey = _cacheHelper.FormatKey(CacheKeyPrefix, tableName);
 
             TOutput result = GetEnumFromIntForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, lookupDataEnumAttribute.DataSource, tableName, cacheKey);
 
             // SF: This is a type of self-healing mechanism whereby if we can't find the value the first time, we'll clear the cache for that table only and make a fresh trip in case we are out of sync. If we miss twice, we won't try again
             if (EqualityComparer<TOutput>.Default.Equals(result, default(TOutput)))
             {
-                _cache.Remove(cacheKey);
+                _cacheHelper.Remove(cacheKey);
 
                 result = GetEnumFromIntForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, lookupDataEnumAttribute.DataSource, tableName, cacheKey);
             }
@@ -65,7 +64,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
         private TOutput GetEnumFromIntForLookupValueFromCache(TInput source, LookupDataEnumAttribute lookupDataEnumAttribute, string dataSource, string tableName, string cacheKey)
         {
             DataTable dataTable =
-                _cache.GetOrAdd(cacheKey, () =>
+                _cacheHelper.GetOrSet(cacheKey, () =>
                 {
                     try
                     {

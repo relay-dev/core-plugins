@@ -1,13 +1,17 @@
-﻿using Core.Plugins.AutoMapper.Data.Resolvers.Base;
-
-namespace Core.Plugins.AutoMapper.Data.LookupData
+﻿namespace Core.Plugins.AutoMapper.Data.LookupData
 {
-    public class LookupDataByKey<T> : LookupDataResolverBase
+    public class LookupDataByKey<T> : LookupDataBase
     {
         public T Key { get; private set; }
 
+        public LookupDataByKey(T key, string tableName)
+            : base(tableName)
+        {
+            Key = key;
+        }
+
         public LookupDataByKey(T key, string dataSource, string tableName)
-            : base(dataSource, tableName)
+            : base(dataSource: dataSource, tableName)
         {
             Key = key;
         }

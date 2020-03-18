@@ -11,17 +11,17 @@ using Core.Plugins.Extensions;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
 {
-    public class LookupDataEnumToKeyResolver<T> : IMemberValueResolver<object, object, Enum, T>
+    public class LookupDataEnumKeyResolver<T> : IMemberValueResolver<object, object, Enum, T>
     {
         private readonly IDatabaseFactory _databaseFactory;
-        private readonly ICache _cache;
+        private readonly ICacheHelper _cacheHelper;
 
         public int DefaultTimeoutInHours { get; set; }
 
-        public LookupDataEnumToKeyResolver(IDatabaseFactory databaseFactory, ICacheFactory cacheFactory)
+        public LookupDataEnumKeyResolver(IDatabaseFactory databaseFactory, ICacheHelper cacheHelper)
         {
             _databaseFactory = databaseFactory;
-            _cache = cacheFactory.Create();
+            _cacheHelper = cacheHelper;
 
             DefaultTimeoutInHours = 24;
         }
@@ -44,14 +44,14 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
             }
 
             string tableName = lookupDataEnumAttribute.TableName ?? $"tbl{sourceMember.GetType().Name}";
-            string cacheKey = _cache.FormatKey(CacheKeyPrefix, tableName);
+            string cacheKey = _cacheHelper.FormatKey(CacheKeyPrefix, tableName);
 
             T result = GetPrimaryKeyForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, tableName, cacheKey);
 
             // SF: This is a type of self-healing mechanism whereby if we can't find the value the first time, we'll clear the cache for that table only and make a fresh trip in case we are out of sync. If we miss twice, we won't try again
             if (EqualityComparer<T>.Default.Equals(result, default(T)))
             {
-                _cache.Remove(cacheKey);
+                _cacheHelper.Remove(cacheKey);
 
                 result = GetPrimaryKeyForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, tableName, cacheKey);
             }
@@ -64,7 +64,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolver
         private T GetPrimaryKeyForLookupValueFromCache(Enum source, LookupDataEnumAttribute lookupDataEnumAttribute, string tableName, string cacheKey)
         {
             DataTable dataTable =
-                _cache.GetOrAdd(cacheKey, () =>
+                _cacheHelper.GetOrSet(cacheKey, () =>
                 {
                     try
                     {

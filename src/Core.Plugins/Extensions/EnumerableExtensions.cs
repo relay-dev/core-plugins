@@ -6,6 +6,11 @@ namespace Core.Plugins.Extensions
 {
     public static class EnumerableExtensions
     {
+        public static string ToCsvString<T>(this IEnumerable<T> items)
+        {
+            return string.Format("'{0}'", string.Join("', '", items));
+        }
+
         public static DataTable ToDataTable<T>(this IEnumerable<T> items)
         {
             var dataTable = new DataTable(typeof(T).Name);

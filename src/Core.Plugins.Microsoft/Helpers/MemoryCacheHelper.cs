@@ -6,19 +6,19 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 
-namespace Core.Plugins.Microsoft.Wrappers
+namespace Core.Plugins.Microsoft.Helpers
 {
-    public class MemoryCacheWrapper : ICache
+    public class MemoryCacheHelper : ICacheHelper
     {
         private readonly ObjectCache _objectCache;
         private readonly IConfiguration _configuration;
 
-        public MemoryCacheWrapper()
+        public MemoryCacheHelper()
         {
             _objectCache = MemoryCache.Default;
         }
 
-        public MemoryCacheWrapper(IConfiguration configuration)
+        public MemoryCacheHelper(IConfiguration configuration)
         {
             _objectCache = MemoryCache.Default;
             _configuration = configuration;
@@ -36,12 +36,12 @@ namespace Core.Plugins.Microsoft.Wrappers
             return String.Join(_delimeter, args);
         }
 
-        public TReturn GetOrAdd<TReturn>(string key, Func<TReturn> valueFactory)
+        public TReturn GetOrSet<TReturn>(string key, Func<TReturn> valueFactory)
         {
-            return GetOrAdd(key, valueFactory, TimeoutInHours);
+            return GetOrSet(key, valueFactory, TimeoutInHours);
         }
 
-        public TReturn GetOrAdd<TReturn>(string key, Func<TReturn> valueFactory, int expirationInHours = 2)
+        public TReturn GetOrSet<TReturn>(string key, Func<TReturn> valueFactory, int expirationInHours = 2)
         {
             TReturn value;
             key = GetKeyForApplication(key);
@@ -115,13 +115,13 @@ namespace Core.Plugins.Microsoft.Wrappers
             return $"{ApplicationName}{_delimeter}{key}";
         }
 
-        private Func<CacheEntry<T>> GetValueFactoryBoxed<T>(Func<T> valueFactory)
+        private Func<CacheEntry<T>> GetValueFactoryBoxed<T>(string key, Func<T> valueFactory)
         {
             Func<CacheEntry<T>> valueFactoryBoxed = () =>
             {
                 T val = valueFactory.Invoke();
 
-                return new CacheEntry<T>(val);
+                return new CacheEntry<T>(key, val);
             };
 
             return valueFactoryBoxed;

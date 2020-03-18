@@ -7,13 +7,13 @@ using Core.Plugins.AutoMapper.Data.LookupData;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 {
-    public abstract class LookupDataResolverValueToKeyBase<T> : LookupDataResolverBase<LookupDataByValue, T>
+    public abstract class LookupDataKeyResolverBase<T> : LookupDataResolverBase<LookupDataByValue, T>
     {
-        private readonly ICache _cache;
+        private readonly ICacheHelper _cacheHelper;
 
-        protected LookupDataResolverValueToKeyBase(ICacheFactory cacheFactory)
+        protected LookupDataKeyResolverBase(ICacheHelper cacheHelper)
         {
-            _cache = cacheFactory.Create();
+            _cacheHelper = cacheHelper;
         }
 
         protected abstract Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue);
@@ -37,7 +37,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 
             if (EqualityComparer<T>.Default.Equals(result, default(T)))
             {
-                _cache.Remove(cacheKey);
+                _cacheHelper.Remove(cacheKey);
 
                 result = GetLookupValue(sourceMember, cacheKey);
             }
@@ -53,12 +53,10 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
             return Resolve(null, null, lookupDataByValue, default(T), null);
         }
 
-        #region Private
-
         private T GetLookupValue(LookupDataByValue lookupDataByValue, string cacheKey)
         {
             Dictionary<T, string> lookupValues =
-                _cache.GetOrAdd(cacheKey, () => GetDictionaryToCache(lookupDataByValue), GetCacheTimeoutInHours(lookupDataByValue));
+                _cacheHelper.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByValue), GetCacheTimeoutInHours(lookupDataByValue));
 
             KeyValuePair<T, string> keyValuePair = lookupValues
                 .SingleOrDefault(kvp => String.Equals(kvp.Value, lookupDataByValue.Value, StringComparison.OrdinalIgnoreCase));
@@ -70,7 +68,5 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 
             return keyValuePair.Key;
         }
-
-        #endregion
     }
 }

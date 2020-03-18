@@ -77,8 +77,13 @@ namespace Core.Plugins.Extensions
         /// <summary>
         /// Throws a <see cref="CoreException"/> if the given DateTime is set to the default (min) value
         /// </summary>
-        public static DateTime ThrowIfNullOrEmpty(this DateTime dateTime, string objectName, string errorCode = ErrorCode.INVA)
+        public static DateTime ThrowIfNullOrEmpty(this DateTime dateTime, string objectName, string errorCode = null)
         {
+            if (errorCode == null)
+            {
+                errorCode = ErrorCode.INVA;
+            }
+
             if (dateTime == DateTime.MinValue)
             {
                 throw new CoreException(errorCode, $"{objectName} was DateTime.MinValue");

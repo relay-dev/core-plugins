@@ -7,13 +7,13 @@ using Core.Plugins.AutoMapper.Data.LookupData;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 {
-    public abstract class LookupDataResolverKeyToValueBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
+    public abstract class LookupDataValueResolverBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
     {
-        private readonly ICache _cache;
+        private readonly ICacheHelper _cacheHelper;
 
-        protected LookupDataResolverKeyToValueBase(ICacheFactory cacheFactory)
+        protected LookupDataValueResolverBase(ICacheHelper cacheHelper)
         {
-            _cache = cacheFactory.Create();
+            _cacheHelper = cacheHelper;
         }
 
         protected abstract Dictionary<T, string> GetDictionaryToCache(LookupDataByKey<T> lookupDataByKey);
@@ -37,7 +37,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 
             if (result == null)
             {
-                _cache.Remove(cacheKey);
+                _cacheHelper.Remove(cacheKey);
 
                 result = GetLookupValue(sourceMember, cacheKey);
             }
@@ -58,7 +58,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
         private string GetLookupValue(LookupDataByKey<T> lookupDataByKey, string cacheKey)
         {
             Dictionary<T, string> lookupValues =
-                _cache.GetOrAdd(cacheKey, () => GetDictionaryToCache(lookupDataByKey), GetCacheTimeoutInHours(lookupDataByKey));
+                _cacheHelper.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByKey), GetCacheTimeoutInHours(lookupDataByKey));
 
             KeyValuePair<T, string> keyValuePair = lookupValues
                 .SingleOrDefault(kvp => Convert.ToInt64(kvp.Key) == Convert.ToInt64(lookupDataByKey.Key));
