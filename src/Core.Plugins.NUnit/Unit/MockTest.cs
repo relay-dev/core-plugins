@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Core.Plugins.NUnit.Unit
 {
-    public partial class MockTest<TCUT> : TestBase where TCUT : class
+    public class MockTest<TCUT> : TestBase where TCUT : class
     {
         public MockTest()
         {
@@ -31,7 +31,6 @@ namespace Core.Plugins.NUnit.Unit
 
             CurrentTestProperties.Set(CutKey, cut);
             CurrentTestProperties.Set(ContainerKey, autoMocker);
-            CurrentTestProperties.Set(RepositoryKey, new Dictionary<string, object>());
         }
 
         protected Mock<TMock> ResolveMock<TMock>() where TMock : class
@@ -49,8 +48,7 @@ namespace Core.Plugins.NUnit.Unit
             }
         }
 
-        protected const string CutKey = "_cut";
-        protected const string ContainerKey = "_container";
-        protected const string RepositoryKey = "_repository";
+        private const string CutKey = "_cut";
+        private const string ContainerKey = "_container";
     }
 }
