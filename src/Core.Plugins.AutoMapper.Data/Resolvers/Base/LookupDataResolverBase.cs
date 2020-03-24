@@ -6,7 +6,7 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
     public abstract class LookupDataResolverBase<TSource, TDestination> : IMemberValueResolver<object, object, TSource, TDestination>
     {
         private const int DefaultCacheTimeoutInHours = 24;
-        private const string CacheKeyPrefix = "Reserved::Core::LookupData::";
+        public const string CacheKeyPrefix = "Reserved::Core::LookupData::";
 
         protected int GetCacheTimeoutInHours(LookupDataBase lookupData)
         {
