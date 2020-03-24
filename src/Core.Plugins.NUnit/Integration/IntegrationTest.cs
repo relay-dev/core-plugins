@@ -21,13 +21,13 @@ namespace Common.Testing.Integration
         }
     }
 
-    public abstract class IntegrationTest<TToTest> : IntegrationTest
+    public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
-        protected TToTest SUT
+        protected TSUT SUT
         {
             get
             {
-                return (TToTest)Host.Services.GetRequiredService(typeof(TToTest));
+                return (TSUT)Host.Services.GetRequiredService(typeof(TSUT));
             }
         }
     }

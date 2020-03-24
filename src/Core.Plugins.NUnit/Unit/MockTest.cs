@@ -34,11 +34,11 @@ namespace Common.Testing.Unit
             CurrentTestProperties.Set(RepositoryKey, new Dictionary<string, object>());
         }
 
-        public Mock<TToMock> ResolveMock<TToMock>() where TToMock : class
+        public Mock<TMock> ResolveMock<TMock>() where TMock : class
         {
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
 
-            return autoMocker.GetMock<TToMock>();
+            return autoMocker.GetMock<TMock>();
         }
 
         private IPropertyBag CurrentTestProperties
