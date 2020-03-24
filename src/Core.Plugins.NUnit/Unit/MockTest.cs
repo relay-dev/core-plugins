@@ -5,7 +5,7 @@ using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System.Collections.Generic;
 
-namespace Common.Testing.Unit
+namespace Core.Plugins.NUnit.Unit
 {
     public partial class MockTest<TCUT> : TestBase where TCUT : class
     {

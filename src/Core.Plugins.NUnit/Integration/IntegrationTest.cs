@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 
-namespace Common.Testing.Integration
+namespace Core.Plugins.NUnit.Integration
 {
     public abstract class IntegrationTest : TestBase
     {

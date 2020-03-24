@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace Common.Testing
+namespace Core.Plugins.NUnit
 {
     public class TestBase
     {
