@@ -14,7 +14,7 @@ namespace Core.Plugins.NUnit.Unit
             TestUsername = "UnitTest";
         }
 
-        public TCUT CUT
+        protected TCUT CUT
         {
             get
             {
@@ -34,14 +34,14 @@ namespace Core.Plugins.NUnit.Unit
             CurrentTestProperties.Set(RepositoryKey, new Dictionary<string, object>());
         }
 
-        public Mock<TMock> ResolveMock<TMock>() where TMock : class
+        protected Mock<TMock> ResolveMock<TMock>() where TMock : class
         {
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
 
             return autoMocker.GetMock<TMock>();
         }
 
-        private IPropertyBag CurrentTestProperties
+        protected IPropertyBag CurrentTestProperties
         { 
             get
             {
@@ -49,8 +49,8 @@ namespace Core.Plugins.NUnit.Unit
             }
         }
 
-        private const string CutKey = "_cut";
-        private const string ContainerKey = "_container";
-        private const string RepositoryKey = "_repository";
+        protected const string CutKey = "_cut";
+        protected const string ContainerKey = "_container";
+        protected const string RepositoryKey = "_repository";
     }
 }
