@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Common.Testing.Unit
 {
-    public class MockTest<TCUT> : TestBase where TCUT : class
+    public partial class MockTest<TCUT> : TestBase where TCUT : class
     {
         public MockTest()
         {
