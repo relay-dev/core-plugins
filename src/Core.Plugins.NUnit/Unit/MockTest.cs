@@ -1,8 +1,6 @@
 ﻿using Moq;
 using Moq.AutoMock;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using NUnit.Framework.Internal;
 
 namespace Core.Plugins.NUnit.Unit
 {
@@ -37,14 +35,6 @@ namespace Core.Plugins.NUnit.Unit
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
 
             return autoMocker.GetMock<TMock>();
-        }
-
-        protected IPropertyBag CurrentTestProperties
-        { 
-            get
-            {
-                return TestExecutionContext.CurrentContext.CurrentTest.Properties;
-            }
         }
 
         private const string CutKey = "_cut";
