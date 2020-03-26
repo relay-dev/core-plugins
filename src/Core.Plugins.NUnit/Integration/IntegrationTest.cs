@@ -27,7 +27,10 @@ namespace Core.Plugins.NUnit.Integration
         {
             get
             {
-                return (TSUT)Host.Services.GetRequiredService(typeof(TSUT));
+                using (var scope = Host.Services.CreateScope())
+                {
+                    return (TSUT)scope.ServiceProvider.GetRequiredService(typeof(TSUT));
+                }
             }
         }
     }
