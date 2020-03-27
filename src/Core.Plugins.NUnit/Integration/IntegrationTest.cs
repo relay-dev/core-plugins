@@ -22,7 +22,7 @@ namespace Core.Plugins.NUnit.Integration
         }
     }
 
-    public abstract class IntegrationTest<TSUT> : IntegrationTest, IDisposable
+    public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
         protected TSUT SUT
         {
@@ -35,29 +35,14 @@ namespace Core.Plugins.NUnit.Integration
         [SetUp]
         protected virtual void Setup()
         {
-            IServiceScope serviceScope = Host.Services.CreateScope();
+            TSUT sut = Host.Services.CreateScope().ServiceProvider.GetRequiredService<TSUT>();
 
-            CurrentTestProperties.Set(ServiceScopeKey, serviceScope);
-        }
-
-        [TearDown]
-        protected virtual void TearDown()
-        {
-            IServiceScope serviceScope = (IServiceScope)CurrentTestProperties.Get(ServiceScopeKey);
-
-            serviceScope.Dispose();
+            CurrentTestProperties.Set(ServiceScopeKey, sut);
         }
 
         protected TService ResolveService<TService>()
         {
-            IServiceScope serviceScope = (IServiceScope)CurrentTestProperties.Get(ServiceScopeKey);
-
-            return (TService)serviceScope.ServiceProvider.GetRequiredService(typeof(TService));
-        }
-
-        public void Dispose()
-        {
-            TearDown();
+            return (TService)Host.Services.GetRequiredService(typeof(TService));
         }
 
         private const string ServiceScopeKey = "_scope";
