@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
-using System;
 
 namespace Core.Plugins.NUnit.Integration
 {
@@ -24,27 +23,18 @@ namespace Core.Plugins.NUnit.Integration
 
     public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
-        protected TSUT SUT
-        {
-            get
-            {
-                return ResolveService<TSUT>();
-            }
-        }
+        protected TSUT SUT { get; private set; }
 
-        [SetUp]
-        protected virtual void Setup()
+        public override void OneTimeSetUp()
         {
-            TSUT sut = Host.Services.CreateScope().ServiceProvider.GetRequiredService<TSUT>();
+            base.OneTimeSetUp();
 
-            CurrentTestProperties.Set(ServiceScopeKey, sut);
+            SUT = Host.Services.CreateScope().ServiceProvider.GetRequiredService<TSUT>();
         }
 
         protected TService ResolveService<TService>()
         {
             return (TService)Host.Services.GetRequiredService(typeof(TService));
         }
-
-        private const string ServiceScopeKey = "_scope";
     }
 }
