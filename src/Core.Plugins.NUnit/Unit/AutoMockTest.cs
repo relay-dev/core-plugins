@@ -4,11 +4,11 @@ using NUnit.Framework;
 
 namespace Core.Plugins.NUnit.Unit
 {
-    public class MockTest<TCUT> : TestBase where TCUT : class
+    public class AutoMockTest<TCUT> : TestBase where TCUT : class
     {
-        public MockTest()
+        public AutoMockTest()
         {
-            TestUsername = "UnitTest";
+            TestUsername = "AutoMockTest";
         }
 
         protected TCUT CUT

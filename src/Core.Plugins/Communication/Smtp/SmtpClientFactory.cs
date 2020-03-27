@@ -3,7 +3,7 @@ using Core.Providers;
 
 namespace Core.Plugins.Communication.Smtp
 {
-    public class SmtpClientFactory
+    public class SmtpClientFactory : ISmtpClientFactory
     {
         private readonly IConnectionStringProvider _connectionStringProvider;
 

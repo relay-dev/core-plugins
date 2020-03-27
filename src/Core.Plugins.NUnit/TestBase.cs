@@ -7,6 +7,11 @@ namespace Core.Plugins.NUnit
 {
     public class TestBase
     {
+        public TestBase()
+        {
+            TestUsername = "UnitTest";
+        }
+
         protected void WriteLine(string s)
         {
             Console.WriteLine(s);
@@ -25,6 +30,6 @@ namespace Core.Plugins.NUnit
             }
         }
 
-        protected string TestUsername = "UnitTest";
+        protected string TestUsername;
     }
 }
