@@ -12,8 +12,11 @@ namespace Core.Plugins.Communication.Smtp
             _connectionStringProvider = connectionStringProvider;
         }
 
-        public ISmtpClient Create(string connectionName)
+        public ISmtpClient Create(string connectionName = null)
         {
+            if (connectionName == null)
+                connectionName = "DefaultSmtpConnection";
+
             return new SystemSmtpClient(_connectionStringProvider.Get(connectionName));
         }
     }

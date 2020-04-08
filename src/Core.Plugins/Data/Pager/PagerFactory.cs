@@ -12,8 +12,11 @@ namespace Core.Plugins.Data.Pager
             _databaseFactory = databaseFactory;
         }
 
-        public IPager Create(string connectionName)
+        public IPager Create(string connectionName = null)
         {
+            if (connectionName == null)
+                connectionName = "DefaultConnection";
+
             return new Pager(_databaseFactory.Create(connectionName));
         }
     }

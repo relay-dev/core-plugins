@@ -2,6 +2,6 @@
 {
     public interface IStorageAccountFactory
     {
-        IStorageAccount Create(string connectionName);
+        IStorageAccount Create(string connectionName = null);
     }
 }

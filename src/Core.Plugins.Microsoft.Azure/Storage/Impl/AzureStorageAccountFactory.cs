@@ -11,8 +11,11 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             _connectionStringProvider = connectionStringProvider;
         }
 
-        public IStorageAccount Create(string connectionName)
+        public IStorageAccount Create(string connectionName = null)
         {
+            if (connectionName == null)
+                connectionName = "DefaultStorageConnection";
+
             return new AzureStorageAccount(_connectionStringProvider.Get(connectionName));
         }
     }

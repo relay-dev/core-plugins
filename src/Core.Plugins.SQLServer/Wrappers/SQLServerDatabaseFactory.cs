@@ -12,8 +12,11 @@ namespace Core.Plugins.SQLServer.Wrappers
             _connectionStringProvider = connectionStringProvider;
         }
 
-        public IDatabase Create(string connectionName)
+        public IDatabase Create(string connectionName = null)
         {
+            if (connectionName == null)
+                connectionName = "DefaultConnection";
+
             return new SQLServerDatabase(_connectionStringProvider.Get(connectionName));
         }
     }
