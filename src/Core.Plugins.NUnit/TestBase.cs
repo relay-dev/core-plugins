@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System;
@@ -22,12 +23,12 @@ namespace Core.Plugins.NUnit
             Console.WriteLine(JsonConvert.SerializeObject(o));
         }
 
-        protected dynamic ToObject(object o)
+        protected JObject ToJObject(object o)
         {
             if (o == null)
                 throw new ArgumentException("o cannot be null", "o");
 
-            return JsonConvert.DeserializeObject(o.ToString());
+            return JsonConvert.DeserializeObject<JObject>(o.ToString());
         }
 
         protected IPropertyBag CurrentTestProperties
