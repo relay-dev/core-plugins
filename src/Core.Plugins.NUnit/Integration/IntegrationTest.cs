@@ -21,7 +21,7 @@ namespace Core.Plugins.NUnit.Integration
         }
     }
 
-    public abstract class IntegrationTest<TSUT> : IntegrationTest
+    public abstract partial class IntegrationTest<TSUT> : IntegrationTest
     {
         protected TSUT SUT { get; private set; }
 
