@@ -145,6 +145,8 @@ namespace Core.Plugins.FileHandling.FTP
 
         public void UploadFile(Stream stream, string filePath)
         {
+            stream.Position = 0;
+
             using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
