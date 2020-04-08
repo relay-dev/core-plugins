@@ -17,11 +17,13 @@ namespace Core.Plugins.FileHandling.FTP
             if (connectionName == null)
                 connectionName = "DefaultFtpConnection";
 
-            var ftpClientSettings = new FtpClientSettings(connectionName);
+            string connectionString = _connectionStringProvider.Get(connectionName);
+
+            var ftpClientSettings = new FtpClientSettings(connectionString);
 
             return ftpClientSettings.IsSftp
-                ? (IFtpClient)new RensiSftpClient(_connectionStringProvider.Get(connectionName))
-                : (IFtpClient)new SystemFtpClient(_connectionStringProvider.Get(connectionName));
+                ? (IFtpClient)new RensiSftpClient(connectionString)
+                : (IFtpClient)new SystemFtpClient(connectionString);
         }
     }
 }
