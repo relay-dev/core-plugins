@@ -22,6 +22,14 @@ namespace Core.Plugins.NUnit
             Console.WriteLine(JsonConvert.SerializeObject(o));
         }
 
+        protected dynamic ToObject(object o)
+        {
+            if (o == null)
+                throw new ArgumentException("o cannot be null", "o");
+
+            return JsonConvert.DeserializeObject(o.ToString());
+        }
+
         protected IPropertyBag CurrentTestProperties
         {
             get
