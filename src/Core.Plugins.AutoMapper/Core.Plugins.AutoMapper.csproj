@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="Relay.Core" Version="1.0.92" />
+    <PackageReference Include="Relay.Core" Version="1.0.94" />
   </ItemGroup>
 
   <ItemGroup>
