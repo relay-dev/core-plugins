@@ -68,6 +68,32 @@ namespace Core.Plugins.Utilities.FileHandling.Excel
             return data;
         }
 
+        public byte[] CreateWorkbookFromDataTables(List<DataTable> dataTables)
+        {
+            var wb = new XLWorkbook();
+
+            foreach (DataTable dataTable in dataTables)
+            {
+                wb.Worksheets.Add(dataTable, dataTable.TableName);
+            }
+
+            byte[] data;
+
+            using (var outerStream = new MemoryStream())
+            {
+                wb.SaveAs(outerStream);
+                outerStream.Position = 0;
+
+                using (var innerStream = new MemoryStream())
+                {
+                    outerStream.CopyTo(innerStream);
+                    data = innerStream.ToArray();
+                }
+            }
+
+            return data;
+        }
+
         public void SaveWorkbookFromDataTable(DataTable dataTable, string filePath, string sheetName = "Sheet1")
         {
             var xLWorkbook = new XLWorkbook();
