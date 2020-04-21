@@ -76,7 +76,7 @@ namespace Core.Plugins.Utilities.FileHandling.Excel
             {
                 IXLWorksheet worksheet = wb.Worksheets.Add(dataTable, dataTable.TableName);
 
-                if (worksheet.Cell(1, 1).Value.ToString() == "Column1" && worksheet.Cell(1, 2).Value.ToString() == "Column2")
+                if (worksheet.Cell(1, 1).Value.ToString() == "A" && worksheet.Cell(1, 2).Value.ToString() == "B")
                 {
                     worksheet.Row(1).Hide();
                 }
