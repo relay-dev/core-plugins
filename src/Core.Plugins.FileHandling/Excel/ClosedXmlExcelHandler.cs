@@ -74,7 +74,12 @@ namespace Core.Plugins.Utilities.FileHandling.Excel
 
             foreach (DataTable dataTable in dataTables)
             {
-                wb.Worksheets.Add(dataTable, dataTable.TableName);
+                IXLWorksheet worksheet = wb.Worksheets.Add(dataTable, dataTable.TableName);
+
+                if (worksheet.Cell(1, 1).Value.ToString() == "Column1" && worksheet.Cell(1, 2).Value.ToString() == "Column2")
+                {
+                    worksheet.Row(1).Hide();
+                }
             }
 
             byte[] data;
