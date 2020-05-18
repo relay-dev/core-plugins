@@ -42,7 +42,10 @@ namespace Core.Plugins.Application
 
         private IIoCContainerInitializer GetIoCContainerInitializer(ApplicationComposition applicationComposition)
         {
-            applicationComposition.IoCContainer.ThrowIfNull("applicationComposition.IoCContainer");
+            if (applicationComposition.IoCContainer == null)
+            {
+                throw new CoreException(ErrorCode.INVA, "applicationComposition.IoCContainer cannot be null");
+            }
 
             List<Type> iocContainers = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerAttribute>(
                 iocContainer => String.Equals(applicationComposition.IoCContainer.Type.ToString(), iocContainer.Name, StringComparison.CurrentCultureIgnoreCase));
