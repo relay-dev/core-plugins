@@ -17,7 +17,7 @@ namespace Core.Plugins
                 {
                     if (context.ApplicationComposition.DataAccess.Databases.Any())
                     {
-                        iocContainer.RegisterFactory<IDatabaseFactory>();
+                        //iocContainer.RegisterFactory<IDatabaseFactory>();
                     }
 
                     foreach (Repository repository in context.ApplicationComposition.DataAccess.Repositories)
