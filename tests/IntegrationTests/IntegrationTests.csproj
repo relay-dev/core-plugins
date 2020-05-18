@@ -22,7 +22,6 @@
     <ProjectReference Include="..\..\src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.Microsoft.Azure\Core.Plugins.Microsoft.Azure.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.MongoDb\Core.Plugins.MongoDb.csproj" />
-    <ProjectReference Include="..\..\src\Core.Plugins.SQLServer\Core.Plugins.SQLServer.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins\Core.Plugins.csproj" />
   </ItemGroup>
 

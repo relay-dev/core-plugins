@@ -41,8 +41,6 @@ namespace Core.Plugins.Providers
         protected abstract string GetConnectionString(string connectionName);
     }
 
-    #region SimpleConnectionStringProvider
-
     public class SimpleConnectionStringProvider : ConnectionStringProviderBase
     {
         private readonly string _connectionString;
@@ -57,6 +55,4 @@ namespace Core.Plugins.Providers
             return _connectionString;
         }
     }
-
-    #endregion
 }
