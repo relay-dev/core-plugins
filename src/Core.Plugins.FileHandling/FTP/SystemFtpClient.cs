@@ -90,8 +90,6 @@ namespace Core.Plugins.FileHandling.FTP
             stream.Close();
         }
 
-        #region Private
-
         private FtpWebRequest CreateFtpRequest(string filePath, string method)
         {
             FtpWebRequest ftpWebRequest = (FtpWebRequest)FtpWebRequest.Create($"ftp://{FtpClientSettings.Host}/{filePath}");
@@ -159,7 +157,5 @@ namespace Core.Plugins.FileHandling.FTP
 
             return response.Split("|".ToCharArray()).ToList();
         }
-
-        #endregion
     }
 }

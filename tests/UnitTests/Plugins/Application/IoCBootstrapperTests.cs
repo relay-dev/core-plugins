@@ -93,8 +93,6 @@ namespace UnitTests.Plugins.Application
             Output(iocContainer.ToString());
         }
 
-        #region Private
-
         private IoCContainerBootstrapper CUT
         {
             get
@@ -141,7 +139,5 @@ namespace UnitTests.Plugins.Application
                 };
             }
         }
-
-        #endregion
     }
 }

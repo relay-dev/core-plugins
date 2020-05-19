@@ -28,16 +28,6 @@ namespace Core.Plugins.Providers
             return _sequences.AddOrUpdate(sequenceName, 0, (key, value) => value++);
         }
 
-        #region Private
-
-        private string Global
-        {
-            get
-            {
-                return "Global";
-            }
-        }
-
-        #endregion
+        private string Global => "Global";
     }
 }

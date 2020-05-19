@@ -190,8 +190,6 @@ namespace Core.Validation
             }
         }
 
-        #region Private
-
         private object GetValue(Expression expression)
         {
             if (expression is ConstantExpression constantExpression)
@@ -284,7 +282,5 @@ namespace Core.Validation
 
             return str.ToUpper();
         }
-
-        #endregion
     }
 }

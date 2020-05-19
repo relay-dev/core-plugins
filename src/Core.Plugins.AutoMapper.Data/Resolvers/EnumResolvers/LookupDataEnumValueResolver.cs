@@ -59,8 +59,6 @@
 //            return result;
 //        }
 
-//        #region Private
-
 //        private TOutput GetEnumFromIntForLookupValueFromCache(TInput source, LookupDataEnumAttribute lookupDataEnumAttribute, string dataSource, string tableName, string cacheKey)
 //        {
 //            DataTable dataTable =
@@ -95,12 +93,6 @@
 //            return GlobalHelper.ParseEnum<TOutput>(dataRow[columnNameOfFieldName] as string);
 //        }
 
-//        #endregion
-
-//        #region Constants
-
 //        public const string CacheKeyPrefix = "LookupDataTable";
-
-//        #endregion
 //    }
 //}

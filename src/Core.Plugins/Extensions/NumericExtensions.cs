@@ -37,8 +37,6 @@ namespace Core.Plugins.Extensions
             return Convert.ToInt16(val);
         }
 
-        #region Private Methods
-
         private static string GetFormattedValue(int val, string format)
         {
             return format == null
@@ -59,7 +57,5 @@ namespace Core.Plugins.Extensions
                 ? val.ToString()
                 : val.ToString(format);
         }
-
-        #endregion
     }
 }

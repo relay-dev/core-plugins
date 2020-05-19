@@ -193,8 +193,6 @@ namespace Core.Plugins.FileHandling.FTP
             }
         }
 
-        #region Private Methods
-
         private SftpClient CreateSftpClient()
         {
             ConnectionInfo connectionInfo = new PasswordConnectionInfo(FtpClientSettings.Host, FtpClientSettings.Username, FtpClientSettings.Password);
@@ -248,7 +246,5 @@ namespace Core.Plugins.FileHandling.FTP
 
             return true;
         }
-
-        #endregion
     }
 }

@@ -15,16 +15,12 @@ namespace Core.Plugins.Security
     [Component]
     public class PBKDF2HashingComponent : SecurityComponentBase, IHashingComponent
     {
-        #region Settings
-
         private const int _saltByteSize = 24;
         private const int _hashByteSize = 24;
         private const int _pbkdf2Iterations = 1000;
         private const int _iterationIndex = 0;
         private const int _saltIndex = 1;
         private const int _pbkdf2Index = 2;
-
-        #endregion
 
         public string CreateHash(string valueToHash)
         {
@@ -54,8 +50,6 @@ namespace Core.Plugins.Security
 
             return SlowEquals(hash, testHash);
         }
-
-        #region Private
 
         /// <summary>
         /// Compares two byte arrays in length-constant time. This comparison
@@ -103,7 +97,5 @@ namespace Core.Plugins.Security
                 return delimiter;
             }
         }
-
-        #endregion
     }
 }

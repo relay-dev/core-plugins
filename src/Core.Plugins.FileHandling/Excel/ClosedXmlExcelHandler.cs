@@ -108,8 +108,6 @@ namespace Core.Plugins.Utilities.FileHandling.Excel
             xLWorkbook.SaveAs(filePath);
         }
 
-        #region Private
-
         private DataTable ConvertWorksheetToDataTable(IXLWorksheet worksheet)
         {
             var dataTable = new DataTable();
@@ -218,7 +216,5 @@ namespace Core.Plugins.Utilities.FileHandling.Excel
 
             return null;
         }
-
-        #endregion
     }
 }

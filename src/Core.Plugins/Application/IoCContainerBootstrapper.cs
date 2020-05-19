@@ -38,8 +38,6 @@ namespace Core.Plugins.Application
             return iocContainer;
         }
 
-        #region Private
-
         private IIoCContainerInitializer GetIoCContainerInitializer(ApplicationComposition applicationComposition)
         {
             if (applicationComposition.IoCContainer == null)
@@ -138,7 +136,5 @@ namespace Core.Plugins.Application
                 iocContainer.Register(interfaceToMap, injectableType);
             }
         }
-
-        #endregion
     }
 }

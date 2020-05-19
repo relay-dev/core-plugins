@@ -103,8 +103,6 @@ namespace Core.Plugins.Microsoft.Helpers
             return stringBuilder.ToString();
         }
 
-        #region Private
-
         private string GetKeyForApplication(string key)
         {
             if (ApplicationName == string.Empty)
@@ -157,14 +155,8 @@ namespace Core.Plugins.Microsoft.Helpers
             }
         }
 
-        #endregion
-
-        #region Static
-
         private static readonly Object __lockObject = new Object();
         private static readonly int _defaultTimeoutInHours = 2;
         private static readonly string _delimeter = "::";
-
-        #endregion
     }
 }

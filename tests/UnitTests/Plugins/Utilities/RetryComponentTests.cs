@@ -75,16 +75,6 @@ namespace UnitTests.Plugins.Utilities
             Assert.Equal(100, retryResult.Result);
         }
 
-        #region Private
-
-        private RetryComponent CUT
-        {
-            get
-            {
-                return new RetryComponent();
-            }
-        }
-
-        #endregion
+        private RetryComponent CUT => new RetryComponent();
     }
 }

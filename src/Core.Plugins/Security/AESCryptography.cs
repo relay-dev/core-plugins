@@ -8,13 +8,9 @@ namespace Core.Plugins.Security
 {
     public class AESCryptography : SecurityComponentBase
     {
-        #region Settings
-
         protected const int KeySize = 128;
         protected const int BlockSize = 128;
         protected const int SaltSize = 8;
-
-        #endregion
 
         private readonly IKeyProvider _keyProvider;
 
@@ -61,8 +57,6 @@ namespace Core.Plugins.Security
 
             return result;
         }
-
-        #region Protected
 
         protected byte[] EncryptBytes(byte[] bytesToBeEncrypted, byte[] keyInBytes, byte[] saltInBytes)
         {
@@ -123,7 +117,5 @@ namespace Core.Plugins.Security
 
             return decryptedBytes;
         }
-
-        #endregion
     }
 }

@@ -146,8 +146,6 @@ namespace Core.Plugins.Extensions
             return dataTable;
         }
 
-        #region Private Methods
-
         private static object StringToDelimitedCell(object obj, char textQualifier)
         {
             if (textQualifier == '\0')
@@ -216,7 +214,5 @@ namespace Core.Plugins.Extensions
 
             return value + String.Empty.PadRight(spacesNeeded + 2, ' ');
         }
-
-        #endregion
     }
 }

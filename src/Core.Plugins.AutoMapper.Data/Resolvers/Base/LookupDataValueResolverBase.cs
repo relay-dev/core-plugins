@@ -53,8 +53,6 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
             return Resolve(null, null, lookupDataByKey, null, null);
         }
 
-        #region Private
-
         private string GetLookupValue(LookupDataByKey<T> lookupDataByKey, string cacheKey)
         {
             Dictionary<T, string> lookupValues =
@@ -70,7 +68,5 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 
             return keyValuePair.Value;
         }
-
-        #endregion
     }
 }

@@ -9,11 +9,7 @@ namespace Core.Plugins.Security
     [Component]
     public class SHA256HashingComponent : SecurityComponentBase, IHashingComponent
     {
-        #region Settings
-        
         protected const int SaltSize = 8;
-
-        #endregion
 
         public string CreateHash(string valueToHash)
         {
@@ -43,8 +39,6 @@ namespace Core.Plugins.Security
             return CreateHash($"{clearTextString}:{saltUsedForHash}") == valueUsedForHash;
         }
 
-        #region Private Methods
-
         public static string ByteArrayToString(byte[] bytes)
         {
             var stringBuilder = new StringBuilder();
@@ -56,7 +50,5 @@ namespace Core.Plugins.Security
 
             return stringBuilder.ToString();
         }
-
-        #endregion
     }
 }

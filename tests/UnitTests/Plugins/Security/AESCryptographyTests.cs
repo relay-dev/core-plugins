@@ -41,8 +41,6 @@ namespace UnitTests.Plugins.Security
             Output(decryptedValue);
         }
 
-        #region Private
-
         private AESCryptography CUT
         {
             get
@@ -50,7 +48,5 @@ namespace UnitTests.Plugins.Security
                 return new AESCryptography(new KeyProvider(new Dictionary<string, string> { { "Key", "R5TYV2WX1QCUT6UC" } }));
             }
         }
-
-        #endregion
     }
 }

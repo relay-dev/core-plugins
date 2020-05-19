@@ -155,8 +155,6 @@ namespace Core.Plugins.IoC
             return null;
         }
 
-        #region Private
-
         private RegistrationLifetime GetRegistrationLifetime(IoCContainerSettings ioCContainerSettings)
         {
             return (ioCContainerSettings == null || ioCContainerSettings.RegistrationLifetime == RegistrationLifetime.Undefined)
@@ -168,7 +166,5 @@ namespace Core.Plugins.IoC
             return (ioCContainerSettings == null || String.IsNullOrEmpty(ioCContainerSettings.RegistrationNameFormat))
                 ? String.Format(Settings.RegistrationNameFormat, implementationName) : String.Format(ioCContainerSettings.RegistrationNameFormat, implementationName);
         }
-
-        #endregion
     }
 }

@@ -59,8 +59,6 @@
 //            return result;
 //        }
 
-//        #region Private
-
 //        private T GetPrimaryKeyForLookupValueFromCache(Enum source, LookupDataEnumAttribute lookupDataEnumAttribute, string tableName, string cacheKey)
 //        {
 //            DataTable dataTable =
@@ -95,12 +93,6 @@
 //            return (T)dataRow[columnNameOfPrimaryKey];
 //        }
 
-//        #endregion
-
-//        #region Constants
-
 //        public const string CacheKeyPrefix = "LookupDataTable";
-
-//        #endregion
 //    }
 //}

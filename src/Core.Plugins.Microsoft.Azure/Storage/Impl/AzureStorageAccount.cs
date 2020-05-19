@@ -58,8 +58,6 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             return cloudStorageAccount.CreateCloudBlobClient();
         }
 
-        #region Private
-
         private CloudBlobContainer GetStorageAccountContainer(string containerName)
         {
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(_connectionString);
@@ -67,7 +65,5 @@ namespace Core.Plugins.Microsoft.Azure.Storage.Impl
             
             return cloudBlobClient.GetContainerReference(containerName);
         }
-
-        #endregion
     }
 }

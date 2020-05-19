@@ -124,8 +124,6 @@ namespace Core.Plugins.Castle.Windsor.Wrappers
             return stringBuilder.ToString();
         }
 
-        #region Private
-
         private static void Init()
         {
             // Add support for Castle Windsor to automatically inject ILazy<TService> with only a mapping from TService to TImpl
@@ -191,7 +189,5 @@ namespace Core.Plugins.Castle.Windsor.Wrappers
         {
             return _windsorContainer.Kernel.GetAssignableHandlers(type).ToList();
         }
-
-        #endregion
     }
 }
