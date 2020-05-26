@@ -1,10 +1,10 @@
 ﻿using Core.Caching;
-using Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Plugins.Microsoft.Helpers
 {
@@ -134,7 +134,7 @@ namespace Core.Plugins.Microsoft.Helpers
                     return string.Empty;
                 }
 
-                return _configuration.GetAppSetting<string>(Constants.Configuration.AppSettings.ApplicationName);
+                return _configuration[Constants.Configuration.AppSettings.ApplicationName];
             }
         }
 
@@ -147,7 +147,7 @@ namespace Core.Plugins.Microsoft.Helpers
                     return _defaultTimeoutInHours;
                 }
 
-                string appSetting = _configuration.GetAppSetting<string>(Constants.Configuration.AppSettings.CacheExpirationInHours);
+                string appSetting = _configuration[Constants.Configuration.AppSettings.CacheExpirationInHours];
 
                 return string.IsNullOrEmpty(appSetting)
                     ? _defaultTimeoutInHours
