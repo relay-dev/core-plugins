@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Core.Caching;
 using Core.Plugins.AutoMapper.Data.LookupData;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
 {

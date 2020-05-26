@@ -2,11 +2,11 @@
 {
     public class LookupDataBase
     {
-        public string DataSource { get; private set; }
-        public string TableName { get; private set; }
-        public string ColumnNameOfPrimaryKey { get; private set; }
-        public string ColumnNameOfField { get; private set; }
-        public int CacheTimeoutInHours { get; private set; }
+        public string DataSource { get; }
+        public string TableName { get; }
+        public string ColumnNameOfPrimaryKey { get; }
+        public string ColumnNameOfField { get; }
+        public int CacheTimeoutInHours { get; }
 
         public LookupDataBase(string dataSource, string tableName, string columnNameOfPrimaryKey = null, string columnNameOfField = null, int cacheTimeoutInHours = 24)
         {
