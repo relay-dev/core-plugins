@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.FileHandling",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.NUnit", "src\Core.Plugins.NUnit\Core.Plugins.NUnit.csproj", "{1C27FD45-0627-4BD2-B9E2-6BE2B6D4056C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.xUnit", "src\Core.Plugins.xUnit\Core.Plugins.xUnit.csproj", "{F927CAB7-150C-444B-9129-BF63BA8D648A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{1C27FD45-0627-4BD2-B9E2-6BE2B6D4056C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C27FD45-0627-4BD2-B9E2-6BE2B6D4056C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C27FD45-0627-4BD2-B9E2-6BE2B6D4056C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F927CAB7-150C-444B-9129-BF63BA8D648A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F927CAB7-150C-444B-9129-BF63BA8D648A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F927CAB7-150C-444B-9129-BF63BA8D648A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F927CAB7-150C-444B-9129-BF63BA8D648A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

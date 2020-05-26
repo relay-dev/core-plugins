@@ -26,18 +26,14 @@ namespace Core.Plugins.NUnit
         protected JObject ToJObject(object o)
         {
             if (o == null)
+            {
                 throw new ArgumentException("o cannot be null", "o");
+            }
 
             return JsonConvert.DeserializeObject<JObject>(o.ToString());
         }
 
-        protected IPropertyBag CurrentTestProperties
-        {
-            get
-            {
-                return TestExecutionContext.CurrentContext.CurrentTest.Properties;
-            }
-        }
+        protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
 
         protected string TestUsername;
     }

@@ -11,13 +11,7 @@ namespace Core.Plugins.NUnit.Unit
             TestUsername = "AutoMockTest";
         }
 
-        protected TCUT CUT
-        {
-            get
-            {
-                return (TCUT)CurrentTestProperties.Get(CutKey);
-            }
-        }
+        protected TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
 
         [SetUp]
         public virtual void Setup()

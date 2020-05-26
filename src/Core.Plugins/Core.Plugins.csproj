@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Relay.Core" Version="1.0.99" />
+    <PackageReference Include="Relay.Core" Version="1.0.100" />
   </ItemGroup>
 
   <ItemGroup>
