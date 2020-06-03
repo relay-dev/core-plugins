@@ -19,8 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="FluentCommander" Version="1.0.33" />
-    <PackageReference Include="Relay.Core" Version="1.0.100" />
+    <PackageReference Include="FluentCommander" Version="1.0.38" />
+    <PackageReference Include="Relay.Core" Version="1.0.101" />
   </ItemGroup>
 
   <ItemGroup>

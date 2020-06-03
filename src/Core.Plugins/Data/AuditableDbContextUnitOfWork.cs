@@ -4,6 +4,7 @@ using Core.Framework.Descriptor;
 using Core.Plugins.Extensions;
 using Core.Providers;
 using System;
+using Core.Framework;
 
 namespace Core.Plugins.Data
 {
@@ -26,12 +27,12 @@ namespace Core.Plugins.Data
         {
             foreach (object entry in _dbContext.Tracker)
             {
-                if (entry is IHaveAnID entryWithId)
+                if (TryGetEntityId(entry, out long id))
                 {
                     string username = _usernameProvider.Get().ThrowIfNullOrEmpty("IUsernameProvider");
                     DateTime serverDateTime = _dateTimeProvider.Get().ThrowIfNullOrEmpty("IDateTimeProvider");
 
-                    if (entryWithId.ID < 1)
+                    if (id < 1)
                     {
                         var entryWithCreatedFields = entry as IHaveCreatedFields;
                         if (entryWithCreatedFields != null)
@@ -53,6 +54,24 @@ namespace Core.Plugins.Data
             }
 
             return base.Commit();
+        }
+
+        private bool TryGetEntityId(object entry, out long id)
+        {
+            if (entry is IHaveAnId<int> entryWithIntId)
+            {
+                id = entryWithIntId.Id;
+                return true;
+            }
+            
+            if (entry is IHaveAnId<long> entryWithLongId)
+            {
+                id = entryWithLongId.Id;
+                return true;
+            }
+
+            id = -1;
+            return false;
         }
     }
 }

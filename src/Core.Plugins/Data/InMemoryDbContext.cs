@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Core.Framework;
 
 namespace Core.Plugins.Data
 {
@@ -29,12 +30,12 @@ namespace Core.Plugins.Data
         {
             foreach (object entry in Tracker)
             {
-                var entryWithId = entry as IHaveAnID;
+                var entryWithId = entry as IHaveAnId<long>;
                 if (entryWithId != null)
                 {
-                    if (entryWithId.ID < 1)
+                    if (entryWithId.Id < 1)
                     {
-                        entryWithId.ID = _sequenceProvider.Value.Get(entry.GetType().Name);
+                        entryWithId.Id = _sequenceProvider.Value.Get(entry.GetType().Name);
                     }
                 }
             }
@@ -78,5 +79,23 @@ namespace Core.Plugins.Data
         }
 
         public ICollection<object> Tracker { get; }
+
+        private bool TryGetEntityId(object entry, out long id)
+        {
+            if (entry is IHaveAnId<int> entryWithIntId)
+            {
+                id = entryWithIntId.Id;
+                return true;
+            }
+
+            if (entry is IHaveAnId<long> entryWithLongId)
+            {
+                id = entryWithLongId.Id;
+                return true;
+            }
+
+            id = -1;
+            return false;
+        }
     }
 }

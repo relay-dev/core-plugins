@@ -75,7 +75,6 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
 
                         throw new CoreException(e, $"Attempted to map the value of {source} to an Enum of type {typeof(TOutput).Name} using ResolveUsing<LookupDataProvider<T>>().FromMemeber() but the defaults did not work. This is usually because the name of your Enum does not follow the convention of tblEnumName (you tried to query the lookup table {tableName}, which likly doesn't exist). If so, you must add an Attribute to your Enum Type like so: [LookupDataEnumAttribute(TableName = <<Name of lookup data table your enum corresponds with>>)]. You can also specify the column name for which to match the name with, if the column is not in the second position");
                     }
-
                 }, DefaultTimeoutInHours);
 
             string columnNameOfPrimaryKey = lookupDataEnumAttribute.ColumnNameOfPrimaryKey ?? dataTable.Columns[0].ColumnName;

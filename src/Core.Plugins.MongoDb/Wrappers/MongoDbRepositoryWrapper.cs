@@ -5,6 +5,7 @@ using Core.Providers;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Framework;
 
 namespace Core.Plugins.MongoDb.Wrappers
 {
@@ -43,14 +44,13 @@ namespace Core.Plugins.MongoDb.Wrappers
 
         public void Delete(TEntity entity)
         {
-            IHaveAnID entityWithId = entity as IHaveAnID;
-
+            var entityWithId = entity as IHaveAnId<long>;
             if (entityWithId == null)
             {
-                throw new CoreException("The entity parameter must implement IHaveAnID in order to use the Delete() method when using the MongoDbRepository");
+                throw new CoreException("The entity parameter must implement IHaveAnId in order to use the Delete() method when using the MongoDbRepository");
             }
 
-            _mongoDb.GetCollection<TEntity>(typeof(TEntity).Name).DeleteOne(Builders<TEntity>.Filter.Eq("ID", entityWithId.ID));
+            _mongoDb.GetCollection<TEntity>(typeof(TEntity).Name).DeleteOne(Builders<TEntity>.Filter.Eq("ID", entityWithId.Id));
         }
 
         public void Delete(ICollection<TEntity> entities)
