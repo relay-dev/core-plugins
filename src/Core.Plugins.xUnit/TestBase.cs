@@ -3,7 +3,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
+using System.Text.Json;
 using Xunit.Abstractions;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Plugins.xUnit
 {
@@ -14,6 +16,7 @@ namespace Core.Plugins.xUnit
         public TestBase(ITestOutputHelper output)
         {
             _output = output;
+            TestUsername = "UnitTest";
         }
 
         protected virtual void WriteLine(string s)
@@ -33,7 +36,12 @@ namespace Core.Plugins.xUnit
 
         protected virtual void WriteLine(object o)
         {
-            _output.WriteLine(JsonConvert.SerializeObject(o));
+            _output.WriteLine(JsonSerializer.Serialize(o));
+        }
+
+        protected virtual void WriteLineWithOptions(object o, JsonSerializerOptions options)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o, options));
         }
 
         protected JObject ToJObject(object o)
@@ -45,5 +53,7 @@ namespace Core.Plugins.xUnit
 
             return JsonConvert.DeserializeObject<JObject>(o.ToString());
         }
+
+        protected string TestUsername;
     }
 }

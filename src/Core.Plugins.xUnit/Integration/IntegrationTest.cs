@@ -2,13 +2,13 @@
 using System;
 using Xunit.Abstractions;
 
-
 namespace Core.Plugins.xUnit.Integration
 {
-    public abstract class IntegrationTest<TStartup, TSUT> : TestBase where TStartup : IStartup, new()
+    public abstract class IntegrationTest<TStartup, TSUT> : IntegrationTest where TStartup : IStartup, new()
     {
+        // Give each test their own instance
+        protected TSUT SUT => ResolveService<TSUT>();
         private readonly ServiceProviderFixture<TStartup> _serviceProviderFixture;
-        private readonly ITestOutputHelper _output;
 
         protected IntegrationTest(
             ServiceProviderFixture<TStartup> serviceProviderFixture,
@@ -16,17 +16,23 @@ namespace Core.Plugins.xUnit.Integration
             : base(output)
         {
             _serviceProviderFixture = serviceProviderFixture;
-            _output = output;
         }
-
-        // Give each test their own instance
-        protected TSUT SUT => ResolveService<TSUT>();
-        protected const string TestUsername = "IntegrationTest";
-        protected readonly DateTime Timestamp = DateTime.UtcNow;
 
         protected TService ResolveService<TService>()
         {
             return (TService)_serviceProviderFixture.ServiceProvider.GetRequiredService(typeof(TService));
+        }
+    }
+
+    public abstract class IntegrationTest : TestBase
+    {
+        protected readonly DateTime Timestamp;
+
+        protected IntegrationTest(ITestOutputHelper output)
+            : base(output)
+        {
+            TestUsername = "IntegrationTest";
+            Timestamp = DateTime.UtcNow;
         }
     }
 }

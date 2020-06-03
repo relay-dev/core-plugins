@@ -6,12 +6,12 @@ namespace Core.Plugins.NUnit.Unit
 {
     public class AutoMockTest<TCUT> : TestBase where TCUT : class
     {
+        protected TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
+
         public AutoMockTest()
         {
             TestUsername = "AutoMockTest";
         }
-
-        protected TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
 
         [SetUp]
         public virtual void Setup()

@@ -1,8 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Core.Plugins.Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System;
+using System.Data;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Plugins.NUnit
 {
@@ -13,14 +17,29 @@ namespace Core.Plugins.NUnit
             TestUsername = "UnitTest";
         }
 
-        protected void WriteLine(string s)
+        protected virtual void WriteLine(string s)
         {
             Console.WriteLine(s);
         }
 
-        protected void WriteLine(object o)
+        protected virtual void WriteLine(string s, params object[] args)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(o));
+            Console.WriteLine(s, args);
+        }
+
+        protected virtual void WriteLine(DataTable d)
+        {
+            Console.WriteLine(d.ToPrintFriendly());
+        }
+
+        protected virtual void WriteLine(object o)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o));
+        }
+
+        protected virtual void WriteLineWithOptions(object o, JsonSerializerOptions options)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(o, options));
         }
 
         protected JObject ToJObject(object o)
