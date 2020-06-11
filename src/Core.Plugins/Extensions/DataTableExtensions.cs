@@ -123,16 +123,26 @@ namespace Core.Plugins.Extensions
             return dataTable;
         }
 
-        public static void AddAuditFields(this DataTable dataTable, string createdBy, DateTime createdDate)
+        public static DataTable AddColumnWithValue(this DataTable dataTable, string columnName, Type columnType, object staticValue)
         {
-            dataTable.Columns.Add("CreatedBy", typeof(string));
-            dataTable.Columns.Add("CreatedDate", typeof(DateTime));
+            dataTable.Columns.Add(columnName, columnType);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                dataRow["CreatedBy"] = createdBy;
-                dataRow["CreatedDate"] = createdDate;
-            };
+                dataRow[columnName] = staticValue;
+            }
+
+            return dataTable;
+        }
+
+        public static DataTable AddAuditFields(this DataTable dataTable, string createdBy, DateTime createdDate, string modifiedBy = null, DateTime? modifiededDate = null)
+        {
+            AddColumnWithValue(dataTable, "CreatedBy", typeof(string), createdBy);
+            AddColumnWithValue(dataTable, "CreatedDate", typeof(DateTime), createdDate);
+            AddColumnWithValue(dataTable, "ModifiedBy", typeof(string), modifiedBy);
+            AddColumnWithValue(dataTable, "ModifiedDate", typeof(DateTime), modifiededDate);
+
+            return dataTable;
         }
 
         public static DataTable ThrowIfNullOrEmpty(this DataTable dataTable, string errorMessageIfNull = "DataTable was null", string errorMessageIfEmpty = "DataTable was empty")
