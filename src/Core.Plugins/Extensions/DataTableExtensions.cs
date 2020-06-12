@@ -135,12 +135,16 @@ namespace Core.Plugins.Extensions
             return dataTable;
         }
 
-        public static DataTable AddAuditFields(this DataTable dataTable, string createdBy, DateTime createdDate, string modifiedBy = null, DateTime? modifiededDate = null)
+        public static DataTable AddAuditFields(this DataTable dataTable, string createdBy, DateTime createdDate)
         {
-            AddColumnWithValue(dataTable, "CreatedBy", typeof(string), createdBy);
-            AddColumnWithValue(dataTable, "CreatedDate", typeof(DateTime), createdDate);
-            AddColumnWithValue(dataTable, "ModifiedBy", typeof(string), modifiedBy);
-            AddColumnWithValue(dataTable, "ModifiedDate", typeof(DateTime), modifiededDate);
+            dataTable.Columns.Add("CreatedBy", typeof(string));
+            dataTable.Columns.Add("CreatedDate", typeof(DateTime));
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                dataRow["CreatedBy"] = createdBy;
+                dataRow["CreatedDate"] = createdDate;
+            };
 
             return dataTable;
         }
