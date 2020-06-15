@@ -15,7 +15,7 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 nuget:
-  disable_publish_on_pr: true
+  disable_publish_on_pr: false
 before_build:
 - cmd: dotnet restore
 build:
@@ -26,4 +26,7 @@ build:
 test: off
 artifacts:
 - path: src\Core.Plugin\bin\Release\*.nupkg
+  name: NuGet
+deploy:
+- provider: Environment
   name: NuGet
