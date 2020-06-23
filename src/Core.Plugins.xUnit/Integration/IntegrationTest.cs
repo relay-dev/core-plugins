@@ -6,8 +6,6 @@ namespace Core.Plugins.xUnit.Integration
 {
     public abstract class IntegrationTest<TStartup, TSUT> : IntegrationTest where TStartup : IStartup, new()
     {
-        // Give each test their own instance
-        protected TSUT SUT => ResolveService<TSUT>();
         private readonly ServiceProviderFixture<TStartup> _serviceProviderFixture;
 
         protected IntegrationTest(
@@ -18,9 +16,12 @@ namespace Core.Plugins.xUnit.Integration
             _serviceProviderFixture = serviceProviderFixture;
         }
 
+        // Give each test their own instance
+        protected TSUT SUT => ResolveService<TSUT>();
+
         protected TService ResolveService<TService>()
         {
-            return (TService)_serviceProviderFixture.ServiceProvider.GetRequiredService(typeof(TService));
+            return (TService)_serviceProviderFixture.ServiceProvider.CreateScope().ServiceProvider.GetRequiredService(typeof(TService));
         }
     }
 
