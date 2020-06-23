@@ -1,24 +1,34 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 
 namespace Core.Plugins.NUnit.Integration
 {
-    public abstract partial class IntegrationTest<TSUT> : IntegrationTest
+    public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
-        protected TSUT SUT { get; private set; }
+        protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
 
-        public override void OneTimeSetUp()
+        [SetUp]
+        public virtual void Setup()
         {
-            base.OneTimeSetUp();
+            IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
-            SUT = Host.Services.CreateScope().ServiceProvider.GetRequiredService<TSUT>();
+            TSUT sut = serviceProvider.GetRequiredService<TSUT>();
+
+            CurrentTestProperties.Set(SutKey, sut);
+            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
         protected TService ResolveService<TService>()
         {
-            return (TService)Host.Services.GetRequiredService(typeof(TService));
+            var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
+
+            return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
+
+        private const string SutKey = "_sut";
+        private const string ServiceProviderKey = "_serviceProvider";
     }
 
     public abstract class IntegrationTest : TestBase

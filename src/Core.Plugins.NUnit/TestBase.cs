@@ -12,6 +12,9 @@ namespace Core.Plugins.NUnit
 {
     public class TestBase
     {
+        protected string TestUsername;
+        protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
+
         public TestBase()
         {
             TestUsername = "UnitTest";
@@ -51,9 +54,5 @@ namespace Core.Plugins.NUnit
 
             return JsonConvert.DeserializeObject<JObject>(o.ToString());
         }
-
-        protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
-
-        protected string TestUsername;
     }
 }
