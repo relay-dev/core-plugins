@@ -5,6 +5,7 @@ using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -22,27 +23,29 @@ namespace Core.Plugins.NUnit
 
         protected virtual void WriteLine(string s)
         {
+            Debug.WriteLine(s);
             Console.WriteLine(s);
         }
 
         protected virtual void WriteLine(string s, params object[] args)
         {
+            Debug.WriteLine(s, args);
             Console.WriteLine(s, args);
         }
 
         protected virtual void WriteLine(DataTable d)
         {
-            Console.WriteLine(d.ToPrintFriendly());
+            WriteLine(d.ToPrintFriendly());
         }
 
         protected virtual void WriteLine(object o)
         {
-            Console.WriteLine(JsonSerializer.Serialize(o));
+            WriteLine(JsonSerializer.Serialize(o));
         }
 
         protected virtual void WriteLineWithOptions(object o, JsonSerializerOptions options)
         {
-            Console.WriteLine(JsonSerializer.Serialize(o, options));
+            WriteLine(JsonSerializer.Serialize(o, options));
         }
 
         protected JObject ToJObject(object o)
