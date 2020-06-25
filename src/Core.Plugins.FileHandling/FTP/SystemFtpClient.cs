@@ -102,6 +102,11 @@ namespace Core.Plugins.FileHandling.FTP
 
             ftpWebRequest.Method = method;
 
+            if (FtpClientSettings.TimeoutInSeconds.HasValue)
+            {
+                ftpWebRequest.Timeout = FtpClientSettings.TimeoutInSeconds.Value;
+            }
+
             return ftpWebRequest;
         }
 

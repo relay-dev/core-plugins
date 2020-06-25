@@ -18,7 +18,7 @@ namespace Core.Plugins.FileHandling.FTP
             using (SftpClient sftpClient = CreateSftpClient())
             {
                 sftpClient.Connect();
-
+                
                 sftpClient.DeleteFile(filePath);
 
                 sftpClient.Disconnect();
@@ -197,7 +197,14 @@ namespace Core.Plugins.FileHandling.FTP
         {
             ConnectionInfo connectionInfo = new PasswordConnectionInfo(FtpClientSettings.Host, FtpClientSettings.Username, FtpClientSettings.Password);
 
-            return new SftpClient(connectionInfo);
+            var client = new SftpClient(connectionInfo);
+
+            if (FtpClientSettings.TimeoutInSeconds.HasValue)
+            {
+                client.OperationTimeout = TimeSpan.FromSeconds(FtpClientSettings.TimeoutInSeconds.Value);
+            }
+
+            return client;
         }
 
         private string GetUniqueSftpFilePath(string filePath, SftpClient sftpClient)

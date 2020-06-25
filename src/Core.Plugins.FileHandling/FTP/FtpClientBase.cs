@@ -16,7 +16,7 @@ namespace Core.Plugins.FileHandling.FTP
         {
             get
             {
-                return _ftpClientSettings ?? (_ftpClientSettings = new FtpClientSettings(_connectionString));
+                return _ftpClientSettings ??= new FtpClientSettings(_connectionString);
             }
         }
     }
