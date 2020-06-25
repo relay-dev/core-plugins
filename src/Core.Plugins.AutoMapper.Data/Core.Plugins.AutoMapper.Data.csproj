@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="FluentCommander" Version="1.0.115" />
-    <PackageReference Include="Relay.Core" Version="1.0.107" />
+    <PackageReference Include="Relay.Core" Version="1.0.108" />
   </ItemGroup>
 
   <ItemGroup>

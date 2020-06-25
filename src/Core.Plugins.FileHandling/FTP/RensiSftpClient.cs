@@ -69,6 +69,14 @@ namespace Core.Plugins.FileHandling.FTP
             return length;
         }
 
+        public bool IsFileExists(string filePath)
+        {
+            using (SftpClient sftpClient = CreateSftpClient())
+            {
+                return IsFileExistsUsingClient(filePath, sftpClient);
+            }
+        }
+
         public List<string> ListDirectory(string directoryPath)
         {
             var fileNames = new List<string>();
@@ -182,14 +190,6 @@ namespace Core.Plugins.FileHandling.FTP
                 sftpClient.Get(sourcePath).MoveTo(destinationPath);
 
                 sftpClient.Disconnect();
-            }
-        }
-
-        public bool IsFileExists(string filePath)
-        {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                return IsFileExistsUsingClient(filePath, sftpClient);
             }
         }
 

@@ -1,8 +1,10 @@
-﻿using Core.FileHandling;
+﻿using System;
+using Core.FileHandling;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Core.Plugins.FileHandling.FTP
 {
@@ -37,6 +39,20 @@ namespace Core.Plugins.FileHandling.FTP
             FtpWebRequest ftpWebRequest = CreateFtpRequest(filePath, WebRequestMethods.Ftp.GetFileSize);
 
             return SendRequestAndGetResponseString(ftpWebRequest);
+        }
+
+        public bool IsFileExists(string filePath)
+        {
+            try
+            {
+                GetFileSize(filePath);
+            }
+            catch (WebException ex)
+            {
+                return ((FtpWebResponse) ex.Response).StatusCode != FtpStatusCode.ActionNotTakenFileUnavailable;
+            }
+
+            return true;
         }
 
         public List<string> ListDirectory(string directoryPath)
