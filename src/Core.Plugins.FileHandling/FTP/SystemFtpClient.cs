@@ -106,7 +106,7 @@ namespace Core.Plugins.FileHandling.FTP
 
         private FtpWebRequest CreateFtpRequest(string filePath, string method)
         {
-            FtpWebRequest ftpWebRequest = (FtpWebRequest)FtpWebRequest.Create($"ftp://{FtpClientSettings.Host}/{filePath}");
+            FtpWebRequest ftpWebRequest = (FtpWebRequest)WebRequest.Create($"ftp://{FtpClientSettings.Host}/{filePath}");
 
             ftpWebRequest.Credentials = new NetworkCredential(FtpClientSettings.Username, FtpClientSettings.Password);
 
@@ -140,18 +140,13 @@ namespace Core.Plugins.FileHandling.FTP
 
         private string SendRequestAndGetResponseString(FtpWebRequest ftpWebRequest)
         {
-            string response;
+            using FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse();
 
-            using (FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse())
-            {
-                using (Stream ftpStream = ftpWebResponse.GetResponseStream())
-                {
-                    using (var ftpReader = new StreamReader(ftpStream))
-                    {
-                        response = ftpReader.ReadToEnd();
-                    }
-                }
-            }
+            using Stream ftpStream = ftpWebResponse.GetResponseStream();
+
+            using var ftpReader = new StreamReader(ftpStream);
+
+            string response = ftpReader.ReadToEnd();
 
             return response;
         }
@@ -160,21 +155,18 @@ namespace Core.Plugins.FileHandling.FTP
         {
             string response = null;
 
-            using (FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse())
+            using FtpWebResponse ftpWebResponse = (FtpWebResponse)ftpWebRequest.GetResponse();
+
+            using Stream ftpStream = ftpWebResponse.GetResponseStream();
+
+            using var ftpReader = new StreamReader(ftpStream);
+
+            while (ftpReader.Peek() != -1)
             {
-                using (Stream ftpStream = ftpWebResponse.GetResponseStream())
-                {
-                    using (var ftpReader = new StreamReader(ftpStream))
-                    {
-                        while (ftpReader.Peek() != -1)
-                        {
-                            response += ftpReader.ReadLine() + "|";
-                        }
-                    }
-                }
+                response += ftpReader.ReadLine() + "|";
             }
 
-            return response.Split("|".ToCharArray()).ToList();
+            return response?.Split("|".ToCharArray()).ToList();
         }
     }
 }
