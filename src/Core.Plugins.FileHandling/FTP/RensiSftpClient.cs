@@ -3,6 +3,7 @@ using Renci.SshNet;
 using Renci.SshNet.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -15,182 +16,164 @@ namespace Core.Plugins.FileHandling.FTP
 
         public void DeleteFile(string filePath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
-                
-                sftpClient.DeleteFile(filePath);
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.Connect();
+                
+            sftpClient.DeleteFile(filePath);
+
+            sftpClient.Disconnect();
         }
 
         public Stream DownloadFile(string filePath)
         {
             Stream stream = null;
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.DownloadFile(filePath, stream);
+            sftpClient.Connect();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.DownloadFile(filePath, stream);
+
+            sftpClient.Disconnect();
 
             return stream;
         }
 
         public string GetDateTimestamp(string filePath)
         {
-            string lastWriteTime = null;
+            using SftpClient sftpClient = CreateSftpClient();
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            sftpClient.Connect();
 
-                lastWriteTime = sftpClient.GetAttributes(filePath).LastWriteTime.ToString();
-            }
+            var lastWriteTime = sftpClient.GetAttributes(filePath).LastWriteTime.ToString(CultureInfo.InvariantCulture);
 
             return lastWriteTime;
         }
 
         public string GetFileSize(string filePath)
         {
-            string length = null;
+            using SftpClient sftpClient = CreateSftpClient();
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            sftpClient.Connect();
 
-                length = sftpClient.GetAttributes(filePath).Size.ToString();
-            }
+            var length = sftpClient.GetAttributes(filePath).Size.ToString();
 
             return length;
         }
 
         public bool IsFileExists(string filePath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                return IsFileExistsUsingClient(filePath, sftpClient);
-            }
+            using SftpClient sftpClient = CreateSftpClient();
+
+            return IsFileExistsUsingClient(filePath, sftpClient);
         }
 
         public List<string> ListDirectory(string directoryPath)
         {
-            var fileNames = new List<string>();
+            using SftpClient sftpClient = CreateSftpClient();
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            sftpClient.Connect();
 
-                fileNames = sftpClient.ListDirectory(directoryPath)
-                    .Where(file => !file.IsDirectory)
-                    .Select(file => file.Name)
-                    .ToList();
+            var fileNames = sftpClient.ListDirectory(directoryPath)
+                .Where(file => !file.IsDirectory)
+                .Select(file => file.Name)
+                .ToList();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.Disconnect();
 
             return fileNames;
         }
 
         public List<string> ListDirectoryDetails(string directoryPath)
         {
-            var fileNames = new List<string>();
+            using SftpClient sftpClient = CreateSftpClient();
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            sftpClient.Connect();
 
-                fileNames = sftpClient.ListDirectory(directoryPath)
-                    .Where(file => !file.IsDirectory)
-                    .Select(file => $"{file.Name}: {{ Length: {file.Length}; LastWriteTimeUtc: {file.LastWriteTimeUtc}; LastAccessTimeUtc: {file.LastAccessTimeUtc};}}")
-                    .ToList();
+            var fileNames = sftpClient.ListDirectory(directoryPath)
+                .Where(file => !file.IsDirectory)
+                .Select(file => $"{file.Name}: {{ Length: {file.Length}; LastWriteTimeUtc: {file.LastWriteTimeUtc}; LastAccessTimeUtc: {file.LastAccessTimeUtc};}}")
+                .ToList();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.Disconnect();
 
             return fileNames;
         }
 
         public void MakeDirectory(string directoryPath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.CreateDirectory(directoryPath);
+            sftpClient.Connect();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.CreateDirectory(directoryPath);
+
+            sftpClient.Disconnect();
         }
 
         public void RemoveDirectory(string directoryPath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.DeleteDirectory(directoryPath);
+            sftpClient.Connect();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.DeleteDirectory(directoryPath);
+
+            sftpClient.Disconnect();
         }
 
         public void Rename(string currentFilePath, string newFilePath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.RenameFile(currentFilePath, newFilePath);
+            sftpClient.Connect();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.RenameFile(currentFilePath, newFilePath);
+
+            sftpClient.Disconnect();
         }
 
         public void UploadFile(Stream stream, string filePath)
         {
             stream.Position = 0;
 
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                string uniqueFilePath = GetUniqueSftpFilePath(filePath, sftpClient);
+            sftpClient.Connect();
 
-                sftpClient.UploadFile(stream, uniqueFilePath);
+            string uniqueFilePath = GetUniqueSftpFilePath(filePath, sftpClient);
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.UploadFile(stream, uniqueFilePath);
+
+            sftpClient.Disconnect();
         }
 
-        public void ArchiveFile(string fileDirectory, string filename, string subdirectoryName = "", string archiveDirectoryName = "Archive", bool isUseFullPath = false)
+        public void ArchiveFile(string fileDirectory, string filename, string subDirectoryName = "", string archiveDirectoryName = "Archive", bool isUseFullPath = false)
         {
-            if (!String.IsNullOrEmpty(subdirectoryName))
-                subdirectoryName = subdirectoryName + "/";
+            if (!string.IsNullOrEmpty(subDirectoryName))
+            {
+                subDirectoryName += "/";
+            }
 
-            string currentLocation = String.Format("{0}/{1}{2}", fileDirectory, subdirectoryName, filename);
+            string currentLocation = $"{fileDirectory}/{subDirectoryName}{filename}";
 
             string archiveLocation = isUseFullPath
-                ? String.Format("/users/{0}/{1}/{2}{3}/{4}", fileDirectory, fileDirectory, subdirectoryName, archiveDirectoryName, filename)
-                : String.Format("/{0}{1}/{2}", subdirectoryName, archiveDirectoryName, filename);
+                ? string.Format("/users/{0}/{1}/{2}{3}/{4}", fileDirectory, fileDirectory, subDirectoryName, archiveDirectoryName, filename)
+                : string.Format("/{0}{1}/{2}", subDirectoryName, archiveDirectoryName, filename);
 
             MoveFile(currentLocation, archiveLocation);
         }
 
         public void MoveFile(string sourcePath, string destinationPath)
         {
-            using (SftpClient sftpClient = CreateSftpClient())
-            {
-                sftpClient.Connect();
+            using SftpClient sftpClient = CreateSftpClient();
 
-                sftpClient.Get(sourcePath).MoveTo(destinationPath);
+            sftpClient.Connect();
 
-                sftpClient.Disconnect();
-            }
+            sftpClient.Get(sourcePath).MoveTo(destinationPath);
+
+            sftpClient.Disconnect();
         }
 
         private SftpClient CreateSftpClient()
@@ -209,7 +192,7 @@ namespace Core.Plugins.FileHandling.FTP
 
         private string GetUniqueSftpFilePath(string filePath, SftpClient sftpClient)
         {
-            string newfileName = filePath;
+            string newFileName = filePath;
 
             try
             {
@@ -221,9 +204,9 @@ namespace Core.Plugins.FileHandling.FTP
                     {
                         i++;
 
-                        newfileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + "-" + i + Path.GetExtension(filePath);
+                        newFileName = Path.GetDirectoryName(filePath) + "\\" + Path.GetFileNameWithoutExtension(filePath) + "-" + i + Path.GetExtension(filePath);
 
-                        if (IsFileExists(newfileName))
+                        if (IsFileExists(newFileName))
                         {
                             continue;
                         }
@@ -234,10 +217,10 @@ namespace Core.Plugins.FileHandling.FTP
             }
             catch (Exception)
             {
-                return newfileName;
+                return newFileName;
             }
 
-            return newfileName;
+            return newFileName;
         }
 
         private bool IsFileExistsUsingClient(string filePath, SftpClient sftpClient)
