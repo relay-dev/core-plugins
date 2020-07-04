@@ -201,7 +201,7 @@ namespace Core.Plugins.FileHandling.FTP
 
             if (FtpClientSettings.TimeoutInSeconds.HasValue)
             {
-                client.OperationTimeout = TimeSpan.FromSeconds(FtpClientSettings.TimeoutInSeconds.Value);
+                client.OperationTimeout = TimeSpan.FromMilliseconds(FtpClientSettings.TimeoutInSeconds.Value * 1000);
             }
 
             return client;

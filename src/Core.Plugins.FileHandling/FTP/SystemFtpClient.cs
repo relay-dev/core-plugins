@@ -1,10 +1,8 @@
-﻿using System;
-using Core.FileHandling;
+﻿using Core.FileHandling;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Core.Plugins.FileHandling.FTP
 {
@@ -120,7 +118,7 @@ namespace Core.Plugins.FileHandling.FTP
 
             if (FtpClientSettings.TimeoutInSeconds.HasValue)
             {
-                ftpWebRequest.Timeout = FtpClientSettings.TimeoutInSeconds.Value;
+                ftpWebRequest.Timeout = FtpClientSettings.TimeoutInSeconds.Value * 1000;
             }
 
             return ftpWebRequest;
