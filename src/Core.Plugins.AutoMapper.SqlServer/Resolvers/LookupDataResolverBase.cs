@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Core.Plugins.AutoMapper.Data.LookupData;
+using Core.Plugins.AutoMapper.SqlServer.LookupData;
 using Core.Providers;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers
+namespace Core.Plugins.AutoMapper.SqlServer.Resolvers
 {
     public abstract class LookupDataResolverBase<TSource, TDestination> : LookupDataResolverBase, IMemberValueResolver<object, object, TSource, TDestination>
     {

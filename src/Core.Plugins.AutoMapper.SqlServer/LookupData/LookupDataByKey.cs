@@ -1,4 +1,4 @@
-﻿namespace Core.Plugins.AutoMapper.Data.LookupData
+﻿namespace Core.Plugins.AutoMapper.SqlServer.LookupData
 {
     public class LookupDataByKey<T> : LookupDataBase
     {

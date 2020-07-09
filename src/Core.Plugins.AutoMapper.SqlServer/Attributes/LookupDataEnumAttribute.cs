@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Plugins.AutoMapper.Data.Attributes
+namespace Core.Plugins.AutoMapper.SqlServer.Attributes
 {
     [AttributeUsage(AttributeTargets.Enum)]
     public sealed class LookupDataEnumAttribute : Attribute

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Core.Caching;
-using Core.Plugins.AutoMapper.Data.LookupData;
+using Core.Plugins.AutoMapper.SqlServer.LookupData;
 using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers
+namespace Core.Plugins.AutoMapper.SqlServer.Resolvers
 {
     public abstract class LookupDataValueResolverBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
     {

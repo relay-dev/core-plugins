@@ -1,7 +1,7 @@
 ﻿using Core.IoC.Plugins;
 using static Core.Plugins.Constants.Infrastructure;
 
-namespace Core.Plugins.AutoMapper.Data
+namespace Core.Plugins.AutoMapper.SqlServer
 {
     [IoCContainerPlugin(Type = PluginType.MapperData, Name = Plugin.AutoMapperData)]
     public class AutoMapperDataPlugin : IIoCContainerPlugin

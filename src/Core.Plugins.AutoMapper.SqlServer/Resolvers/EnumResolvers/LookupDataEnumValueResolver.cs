@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Core.Caching;
 using Core.Exceptions;
-using Core.Plugins.AutoMapper.Data.Attributes;
+using Core.Plugins.AutoMapper.SqlServer.Attributes;
 using Core.Plugins.Utilities;
 using Core.Providers;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
+namespace Core.Plugins.AutoMapper.SqlServer.Resolvers.EnumResolvers
 {
     public class LookupDataEnumValueResolver<TInput, TOutput> : LookupDataResolverBase, IMemberValueResolver<object, object, TInput, TOutput>
     {
