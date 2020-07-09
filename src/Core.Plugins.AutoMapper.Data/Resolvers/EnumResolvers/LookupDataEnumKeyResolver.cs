@@ -3,7 +3,7 @@ using Core.Caching;
 using Core.Exceptions;
 using Core.Plugins.AutoMapper.Data.Attributes;
 using Core.Plugins.Extensions;
-using FluentCommander;
+using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,20 +11,19 @@ using System.Linq;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
 {
-    public class LookupDataEnumKeyResolver<T> : IMemberValueResolver<object, object, Enum, T>
+    public class LookupDataEnumKeyResolver<T> : LookupDataResolverBase, IMemberValueResolver<object, object, Enum, T>
     {
-        private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
         private readonly ICacheHelper _cacheHelper;
 
-        public int DefaultTimeoutInHours { get; set; }
-
-        public LookupDataEnumKeyResolver(IDatabaseCommanderFactory databaseCommanderFactory, ICacheHelper cacheHelper)
+        public LookupDataEnumKeyResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+            : base(connectionStringProvider)
         {
-            _databaseCommanderFactory = databaseCommanderFactory;
             _cacheHelper = cacheHelper;
 
             DefaultTimeoutInHours = 24;
         }
+
+        public int DefaultTimeoutInHours { get; set; }
 
         public T Resolve(object source, object destination, Enum sourceMember, T destMember, ResolutionContext context)
         {
@@ -66,14 +65,16 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
                 {
                     try
                     {
-                        return _databaseCommanderFactory.Create(lookupDataEnumAttribute.DataSource).ExecuteSql($"SELECT * FROM {tableName}");
+                        string sql = $"SELECT * FROM {tableName}";
+
+                        return ExecuteSql(sql, lookupDataEnumAttribute.DataSource);
                     }
                     catch (Exception e)
                     {
                         if (!e.Message.StartsWith("Invalid object name"))
                             throw;
 
-                        throw new CoreException(e, $"Attempted to map an Enum to a {typeof(T).Name} using ResolveUsing<LookupDataProvider<T>>().FromMemeber() but the defaults did not work. This is usually because the name of your Enum does not follow the convention of tblEnumName (you tried to query the lookup table {tableName}, which likly doesn't exist). If so, you must add an Attribute to your Enum Type like so: [LookupDataEnumAttribute(TableName = <<Name of lookup data table your enum corresponds with>>)]. You can also specify the column name for which to match the name with, if the column is not in the second position");
+                        throw new CoreException(e, $"Attempted to map an Enum to a {typeof(T).Name} using ResolveUsing<LookupDataProvider<T>>().FromMember() but the defaults did not work. This is usually because the name of your Enum does not follow the convention of tblEnumName (you tried to query the lookup table {tableName}, which likly doesn't exist). If so, you must add an Attribute to your Enum Type like so: [LookupDataEnumAttribute(TableName = <<Name of lookup data table your enum corresponds with>>)]. You can also specify the column name for which to match the name with, if the column is not in the second position");
                     }
 
                 }, DefaultTimeoutInHours);

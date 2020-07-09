@@ -1,7 +1,6 @@
 ﻿using Core.Caching;
 using Core.Plugins.AutoMapper.Data.LookupData;
-using Core.Plugins.AutoMapper.Data.Resolvers.Base;
-using FluentCommander;
+using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,18 +10,14 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.DatabaseResolver
 {
     public class LookupDataKeyResolver<T> : LookupDataKeyResolverBase<T>
     {
-        private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
-
-        public LookupDataKeyResolver(IDatabaseCommanderFactory databaseCommanderFactory, ICacheHelper cacheHelper)
-            : base(cacheHelper)
-        {
-            _databaseCommanderFactory = databaseCommanderFactory;
-        }
+        public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+            : base(connectionStringProvider, cacheHelper) { }
 
         protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)
         {
-            DataTable dataTable = _databaseCommanderFactory.Create(lookupDataByValue.DataSource)
-                .ExecuteSql($"SELECT * FROM {lookupDataByValue.TableName}");
+            string sql = $"SELECT * FROM {lookupDataByValue.TableName}";
+
+            DataTable dataTable = ExecuteSql(sql, lookupDataByValue.DataSource);
 
             string columnNameOfPrimaryKey = lookupDataByValue.ColumnNameOfPrimaryKey ?? dataTable.Columns[0].ColumnName;
             string columnNameOfField = lookupDataByValue.ColumnNameOfField ?? dataTable.Columns[1].ColumnName;

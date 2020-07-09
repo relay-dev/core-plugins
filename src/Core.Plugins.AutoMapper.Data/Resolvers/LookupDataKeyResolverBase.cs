@@ -1,22 +1,24 @@
 ﻿using AutoMapper;
 using Core.Caching;
 using Core.Plugins.AutoMapper.Data.LookupData;
+using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
+namespace Core.Plugins.AutoMapper.Data.Resolvers
 {
-    public abstract class LookupDataValueResolverBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
+    public abstract class LookupDataKeyResolverBase<T> : LookupDataResolverBase<LookupDataByValue, T>
     {
         private readonly ICacheHelper _cacheHelper;
 
-        protected LookupDataValueResolverBase(ICacheHelper cacheHelper)
+        protected LookupDataKeyResolverBase(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+            : base(connectionStringProvider)
         {
             _cacheHelper = cacheHelper;
         }
 
-        protected abstract Dictionary<T, string> GetDictionaryToCache(LookupDataByKey<T> lookupDataByKey);
+        protected abstract Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue);
 
         /// <summary>
         /// This is the protected AutoMapper method called within a mapper class when using opt.ResolveUsing()
@@ -24,18 +26,18 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
         /// This is because it's possible for a new value to be inserted into a lookup table after this cache is loaded but before the cache timeout expires
         /// If we don't find what we're looking for, we make a one-time assumption that the cache could be out of sync, so we refresh the cache and try one more time to get the expected value
         /// </summary>
-        public override string Resolve(object source, object destination, LookupDataByKey<T> sourceMember, string destMember, ResolutionContext context)
+        public override T Resolve(object source, object destination, LookupDataByValue sourceMember, T destMember, ResolutionContext context)
         {
-            if (sourceMember == null || EqualityComparer<T>.Default.Equals(sourceMember.Key, default(T)))
+            if (sourceMember == null || String.IsNullOrEmpty(sourceMember.Value))
             {
-                return null;
+                return default(T);
             }
 
             string cacheKey = GetCacheKey(sourceMember.TableName);
 
-            string result = GetLookupValue(sourceMember, cacheKey);
+            T result = GetLookupValue(sourceMember, cacheKey);
 
-            if (result == null)
+            if (EqualityComparer<T>.Default.Equals(result, default(T)))
             {
                 _cacheHelper.Remove(cacheKey);
 
@@ -48,25 +50,25 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.Base
         /// <summary>
         /// Exposing the AutoMapper trigger method allows clients to use this resolver outside of an AutoMapper as well
         /// </summary>
-        public string Resolve(LookupDataByKey<T> lookupDataByKey)
+        public T Resolve(LookupDataByValue lookupDataByValue)
         {
-            return Resolve(null, null, lookupDataByKey, null, null);
+            return Resolve(null, null, lookupDataByValue, default(T), null);
         }
 
-        private string GetLookupValue(LookupDataByKey<T> lookupDataByKey, string cacheKey)
+        private T GetLookupValue(LookupDataByValue lookupDataByValue, string cacheKey)
         {
             Dictionary<T, string> lookupValues =
-                _cacheHelper.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByKey), GetCacheTimeoutInHours(lookupDataByKey));
+                _cacheHelper.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByValue), GetCacheTimeoutInHours(lookupDataByValue));
 
             KeyValuePair<T, string> keyValuePair = lookupValues
-                .SingleOrDefault(kvp => Convert.ToInt64(kvp.Key) == Convert.ToInt64(lookupDataByKey.Key));
+                .SingleOrDefault(kvp => String.Equals(kvp.Value, lookupDataByValue.Value, StringComparison.OrdinalIgnoreCase));
 
-            if (keyValuePair.Equals(default(KeyValuePair<T, string>)))
+            if (keyValuePair.Equals(default(KeyValuePair<int, string>)))
             {
-                return null;
+                return default(T);
             }
 
-            return keyValuePair.Value;
+            return keyValuePair.Key;
         }
     }
 }

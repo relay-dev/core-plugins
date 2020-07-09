@@ -3,7 +3,7 @@ using Core.Caching;
 using Core.Exceptions;
 using Core.Plugins.AutoMapper.Data.Attributes;
 using Core.Plugins.Utilities;
-using FluentCommander;
+using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,20 +11,19 @@ using System.Linq;
 
 namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
 {
-    public class LookupDataEnumValueResolver<TInput, TOutput> : IMemberValueResolver<object, object, TInput, TOutput>
+    public class LookupDataEnumValueResolver<TInput, TOutput> : LookupDataResolverBase, IMemberValueResolver<object, object, TInput, TOutput>
     {
-        private readonly IDatabaseCommanderFactory _databaseCommanderFactory;
         private readonly ICacheHelper _cacheHelper;
 
-        public int DefaultTimeoutInHours { get; set; }
-
-        public LookupDataEnumValueResolver(IDatabaseCommanderFactory databaseCommanderFactory, ICacheHelper cacheHelper)
+        public LookupDataEnumValueResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+            : base(connectionStringProvider)
         {
-            _databaseCommanderFactory = databaseCommanderFactory;
             _cacheHelper = cacheHelper;
 
             DefaultTimeoutInHours = 24;
         }
+
+        public int DefaultTimeoutInHours { get; set; }
 
         public TOutput Resolve(object source, object destination, TInput sourceMember, TOutput destMember, ResolutionContext context)
         {
@@ -66,7 +65,9 @@ namespace Core.Plugins.AutoMapper.Data.Resolvers.EnumResolvers
                 {
                     try
                     {
-                        return _databaseCommanderFactory.Create(dataSource).ExecuteSql($"SELECT * FROM {tableName}");
+                        string sql = $"SELECT * FROM {tableName}";
+
+                        return ExecuteSql(sql, dataSource);
                     }
                     catch (Exception e)
                     {
