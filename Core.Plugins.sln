@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper", "src\Core.Plugins.AutoMapper\Core.Plugins.AutoMapper.csproj", "{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper.Data", "src\Core.Plugins.AutoMapper.Data\Core.Plugins.AutoMapper.Data.csproj", "{BD5CBB32-32AC-4B36-B945-F4530646353E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper.SqlServer", "src\Core.Plugins.AutoMapper.SqlServer\Core.Plugins.AutoMapper.SqlServer.csproj", "{BD5CBB32-32AC-4B36-B945-F4530646353E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Castle.Windsor", "src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj", "{BF583D10-306B-4F4F-A0AB-54139D1A0555}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.FileHandling",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.NUnit", "src\Core.Plugins.NUnit\Core.Plugins.NUnit.csproj", "{1C27FD45-0627-4BD2-B9E2-6BE2B6D4056C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.xUnit", "src\Core.Plugins.xUnit\Core.Plugins.xUnit.csproj", "{F927CAB7-150C-444B-9129-BF63BA8D648A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.xUnit", "src\Core.Plugins.xUnit\Core.Plugins.xUnit.csproj", "{F927CAB7-150C-444B-9129-BF63BA8D648A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
