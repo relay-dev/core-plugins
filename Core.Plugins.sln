@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper", "src\Core.Plugins.AutoMapper\Core.Plugins.AutoMapper.csproj", "{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper.SqlServer", "src\Core.Plugins.AutoMapper.SqlServer\Core.Plugins.AutoMapper.SqlServer.csproj", "{BD5CBB32-32AC-4B36-B945-F4530646353E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Castle.Windsor", "src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj", "{BF583D10-306B-4F4F-A0AB-54139D1A0555}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.FluentValidation", "src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj", "{EDE5EDCC-3367-47AF-BBD1-0903F2DAFE1A}"
@@ -53,10 +51,6 @@ Global
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD5CBB32-32AC-4B36-B945-F4530646353E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD5CBB32-32AC-4B36-B945-F4530646353E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD5CBB32-32AC-4B36-B945-F4530646353E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD5CBB32-32AC-4B36-B945-F4530646353E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF583D10-306B-4F4F-A0AB-54139D1A0555}.Release|Any CPU.ActiveCfg = Release|Any CPU
