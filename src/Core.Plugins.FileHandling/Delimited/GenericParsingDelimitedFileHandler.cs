@@ -1,30 +1,41 @@
-﻿using System;
-using System.Data;
-using Core.FileHandling;
+﻿using Core.FileHandling;
 using GenericParsing;
+using System;
+using System.Data;
+using System.IO;
 
-namespace Core.Plugins.Utilities.FileHandling.Delimited
+namespace Core.Plugins.FileHandling.Delimited
 {
     public class GenericParsingDelimitedFileHandler : IDelimitedFileHandler
     {
         public DataTable GetFileAsDataTable(string filepath, char columnDelimiter = ',')
         {
-            DataTable dataTable;
+            using var parser = new GenericParserAdapter();
 
-            using (var parser = new GenericParserAdapter())
-            {
-                parser.SetDataSource(filepath);
+            parser.SetDataSource(filepath);
 
-                parser.ColumnDelimiter = columnDelimiter;
-                parser.FirstRowHasHeader = true;
-                parser.MaxBufferSize = 4096;
-                parser.MaxRows = Int32.MaxValue;
-                parser.TextQualifier = '\"';
+            return FileToDataTable(parser, columnDelimiter);
+        }
 
-                dataTable = parser.GetDataTable();
-            }
+        public DataTable GetFileStreamAsDataTable(Stream stream, char columnDelimiter = ',')
+        {
+            using var parser = new GenericParserAdapter();
+            using StreamReader streamReader = new StreamReader(stream);
 
-            return dataTable;
+            parser.SetDataSource(streamReader);
+
+            return FileToDataTable(parser, columnDelimiter);
+        }
+
+        private DataTable FileToDataTable(GenericParserAdapter parser, char columnDelimiter)
+        {
+            parser.ColumnDelimiter = columnDelimiter;
+            parser.FirstRowHasHeader = true;
+            parser.MaxBufferSize = 4096;
+            parser.MaxRows = Int32.MaxValue;
+            parser.TextQualifier = '\"';
+
+            return parser.GetDataTable();
         }
     }
 }
