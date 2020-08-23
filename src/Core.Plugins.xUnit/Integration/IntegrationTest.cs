@@ -27,13 +27,14 @@ namespace Core.Plugins.xUnit.Integration
 
     public abstract class IntegrationTest : TestBase
     {
-        protected readonly DateTime Timestamp;
-
         protected IntegrationTest(ITestOutputHelper output)
             : base(output)
         {
             TestUsername = "IntegrationTest";
             Timestamp = DateTime.UtcNow;
+
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("IS_LOCAL", "true");
         }
     }
 }

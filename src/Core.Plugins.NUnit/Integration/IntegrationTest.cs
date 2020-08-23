@@ -39,6 +39,9 @@ namespace Core.Plugins.NUnit.Integration
         protected IntegrationTest()
         {
             TestUsername = "IntegrationTest";
+
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("IS_LOCAL", "true");
         }
 
         [OneTimeSetUp]
