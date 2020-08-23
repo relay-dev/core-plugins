@@ -1,18 +1,18 @@
 ﻿using Core.Caching;
 using Core.Data;
+using Core.Framework;
 using Core.Framework.Attributes;
-using Core.Framework.Descriptor;
 using Core.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using Core.Framework;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Data
 {
-    [Component(Type = Constants.Infrastructure.ComponentType.DbContext, Name = Constants.Infrastructure.Component.InMemoryDbContext, PluginName = Constants.Infrastructure.Plugin.CoreDataAccess)]
+    [Component(Type = ComponentType.DbContext, Name = Component.InMemoryDbContext, PluginName = Plugin.CoreDataAccess)]
     internal class InMemoryDbContext : IDbContext
     {
         private readonly ICacheHelper _cacheHelper;

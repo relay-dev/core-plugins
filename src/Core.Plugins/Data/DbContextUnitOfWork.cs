@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Core.Data;
 using Core.Framework.Attributes;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Data
 {
-    [Component(Type = Constants.Infrastructure.ComponentType.UnitOfWork, Name = Constants.Infrastructure.Component.DbContextUnitOfWork, PluginName = Constants.Infrastructure.Plugin.CoreDataAccess)]
+    [Component(Type = ComponentType.UnitOfWork, Name = Component.DbContextUnitOfWork, PluginName = Plugin.CoreDataAccess)]
     internal class DbContextUnitOfWork : IUnitOfWork
     {
         private readonly IDbContext _dbContext;

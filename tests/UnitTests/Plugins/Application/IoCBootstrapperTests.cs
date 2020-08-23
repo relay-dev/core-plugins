@@ -1,8 +1,8 @@
 using Core.Application;
 using Core.IoC;
-using Core.Plugins;
 using Core.Plugins.Application;
 using Core.Plugins.Castle.Windsor.Wrappers;
+using Core.Plugins.Constants;
 using Core.Plugins.Utilities;
 using Core.Providers;
 using System.Collections.Generic;
@@ -103,41 +103,36 @@ namespace UnitTests.Plugins.Application
             }
         }
 
-        private ApplicationComposition ValidApplicationComposition
-        {
-            get
+        private ApplicationComposition ValidApplicationComposition =>
+            new ApplicationComposition
             {
-                return new ApplicationComposition
+                IoCContainer = new IoCContainer
                 {
-                    IoCContainer = new IoCContainer
+                    Type = IoCContainerType.CastleWindsor.ToString(),
+                    Plugins = new List<IoCContainerPlugin>
                     {
-                        Type = IoCContainerType.CastleWindsor.ToString(),
-                        Plugins = new List<IoCContainerPlugin>
+                        new IoCContainerPlugin
                         {
-                            new IoCContainerPlugin
-                            {
-                                Name = Constants.Infrastructure.Plugin.CoreProviders
-                            },
-                            new IoCContainerPlugin
-                            {
-                                Name = Constants.Infrastructure.Plugin.CoreDataAccess
-                            }
-                        }
-                    },
-                    DataAccess = new DataAccess
-                    {
-                        Repositories = new List<Repository>
+                            Name = PluginConstants.Infrastructure.Plugin.CoreProviders
+                        },
+                        new IoCContainerPlugin
                         {
-                            new Repository
-                            {
-                                Name = Constants.Infrastructure.Component.DbContextRepository,
-                                UnitOfWork = Constants.Infrastructure.Component.DbContextUnitOfWork,
-                                DbContext = Constants.Infrastructure.Component.InMemoryDbContext
-                            }
+                            Name = PluginConstants.Infrastructure.Plugin.CoreDataAccess
                         }
                     }
-                };
-            }
-        }
+                },
+                DataAccess = new DataAccess
+                {
+                    Repositories = new List<Repository>
+                    {
+                        new Repository
+                        {
+                            Name = PluginConstants.Infrastructure.Component.DbContextRepository,
+                            UnitOfWork = PluginConstants.Infrastructure.Component.DbContextUnitOfWork,
+                            DbContext = PluginConstants.Infrastructure.Component.InMemoryDbContext
+                        }
+                    }
+                }
+            };
     }
 }

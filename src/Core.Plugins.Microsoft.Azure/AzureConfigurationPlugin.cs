@@ -1,7 +1,7 @@
 ﻿using Core.IoC.Plugins;
 using Core.Plugins.Microsoft.Azure.Wrappers;
 using Core.Providers;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Microsoft.Azure
 {

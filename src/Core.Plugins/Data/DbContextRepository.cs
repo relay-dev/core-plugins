@@ -2,10 +2,11 @@
 using Core.Framework.Attributes;
 using System.Collections.Generic;
 using System.Linq;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Data
 {
-    [Component(Type = Constants.Infrastructure.ComponentType.Repository, Name = Constants.Infrastructure.Component.DbContextRepository, PluginName = Constants.Infrastructure.Plugin.CoreDataAccess)]
+    [Component(Type = ComponentType.Repository, Name = Component.DbContextRepository, PluginName = Plugin.CoreDataAccess)]
     internal class DbContextRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly ICollection<TEntity> _dbSet;

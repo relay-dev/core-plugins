@@ -1,5 +1,5 @@
 ﻿using Core.IoC.Plugins;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.FluentValidation
 {

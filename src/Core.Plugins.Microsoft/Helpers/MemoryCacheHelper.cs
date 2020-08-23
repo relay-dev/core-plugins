@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
+using Core.Application;
 using Microsoft.Extensions.Configuration;
 
 namespace Core.Plugins.Microsoft.Helpers
@@ -12,16 +13,18 @@ namespace Core.Plugins.Microsoft.Helpers
     {
         private readonly ObjectCache _objectCache;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationContext _applicationContext;
 
         public MemoryCacheHelper()
         {
             _objectCache = MemoryCache.Default;
         }
 
-        public MemoryCacheHelper(IConfiguration configuration)
+        public MemoryCacheHelper(IConfiguration configuration, ApplicationContext applicationContext)
         {
             _objectCache = MemoryCache.Default;
             _configuration = configuration;
+            _applicationContext = applicationContext;
         }
 
         public bool ContainsKey(string key)
@@ -82,7 +85,7 @@ namespace Core.Plugins.Microsoft.Helpers
 
         public void RemoveAll()
         {
-            foreach (KeyValuePair<string, object> keyValuePair in _objectCache.Where(kvp => !kvp.Key.Contains(Constants.Keywords.ActiveLogins)))
+            foreach (KeyValuePair<string, object> keyValuePair in _objectCache.Where(kvp => !kvp.Key.Contains(_activeLogins)))
             {
                 _objectCache.Remove(keyValuePair.Key);
             }
@@ -92,7 +95,7 @@ namespace Core.Plugins.Microsoft.Helpers
         {
             var stringBuilder = new StringBuilder($"Cache contents:");
 
-            foreach (KeyValuePair<string, object> keyValuePair in _objectCache.Where(kvp => !kvp.Key.Contains(Constants.Keywords.ActiveLogins)))
+            foreach (KeyValuePair<string, object> keyValuePair in _objectCache.Where(kvp => !kvp.Key.Contains(_activeLogins)))
             {
                 stringBuilder.AppendLine(Environment.NewLine);
                 stringBuilder.AppendLine(String.Empty.PadRight(50, '='));
@@ -134,7 +137,7 @@ namespace Core.Plugins.Microsoft.Helpers
                     return string.Empty;
                 }
 
-                return _configuration[Constants.Configuration.AppSettings.ApplicationName];
+                return _configuration[_applicationContext.ApplicationName];
             }
         }
 
@@ -147,7 +150,7 @@ namespace Core.Plugins.Microsoft.Helpers
                     return _defaultTimeoutInHours;
                 }
 
-                string appSetting = _configuration[Constants.Configuration.AppSettings.CacheExpirationInHours];
+                string appSetting = _configuration["CacheExpirationInHours"];
 
                 return string.IsNullOrEmpty(appSetting)
                     ? _defaultTimeoutInHours
@@ -158,5 +161,6 @@ namespace Core.Plugins.Microsoft.Helpers
         private static readonly Object __lockObject = new Object();
         private static readonly int _defaultTimeoutInHours = 2;
         private static readonly string _delimeter = "::";
+        private static readonly string _activeLogins = "ActiveLogins";
     }
 }

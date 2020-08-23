@@ -3,7 +3,7 @@ using Core.Data;
 using Core.IoC.Plugins;
 using Core.Plugins.Data;
 using System.Linq;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins
 {

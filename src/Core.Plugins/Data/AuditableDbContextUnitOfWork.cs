@@ -1,14 +1,15 @@
 ﻿using Core.Data;
+using Core.Framework;
 using Core.Framework.Attributes;
 using Core.Framework.Descriptor;
 using Core.Plugins.Extensions;
 using Core.Providers;
 using System;
-using Core.Framework;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Data
 {
-    [Component(Type = Constants.Infrastructure.ComponentType.UnitOfWork, Name = Constants.Infrastructure.Component.AuditableDbContextUnitOfWork, PluginName = Constants.Infrastructure.Plugin.CoreDataAccess)]
+    [Component(Type = ComponentType.UnitOfWork, Name = Component.AuditableDbContextUnitOfWork, PluginName = Plugin.CoreDataAccess)]
     internal class AuditableDbContextUnitOfWork : DbContextUnitOfWork
     {
         private readonly IDbContext _dbContext;

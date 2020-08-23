@@ -3,7 +3,7 @@ using Core.Data;
 using Core.IoC;
 using Core.IoC.Plugins;
 using Core.Plugins.MongoDb.Wrappers;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.MongoDb
 {

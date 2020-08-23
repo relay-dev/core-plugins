@@ -4,7 +4,7 @@ using Core.Plugins.AutoMapper.Wrappers;
 using System;
 using System.Linq;
 using System.Reflection;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 using IMapper = Core.Mapping.IMapper;
 
 namespace Core.Plugins.AutoMapper

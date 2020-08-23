@@ -1,7 +1,7 @@
 ﻿using Core.Caching;
 using Core.IoC.Plugins;
 using Core.Plugins.Microsoft.Helpers;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins.Microsoft
 {

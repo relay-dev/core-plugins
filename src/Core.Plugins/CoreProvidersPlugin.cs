@@ -1,7 +1,7 @@
 ﻿using Core.IoC.Plugins;
 using Core.Plugins.Providers;
 using Core.Providers;
-using static Core.Plugins.Constants.Infrastructure;
+using static Core.Plugins.Constants.PluginConstants.Infrastructure;
 
 namespace Core.Plugins
 {
