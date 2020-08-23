@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Core.IoC.Plugins;
-using Core.Plugins.AutoMapper.Wrappers;
 using System;
 using System.Linq;
 using System.Reflection;
 using static Core.Plugins.Constants.PluginConstants.Infrastructure;
-using IMapper = Core.Mapping.IMapper;
 
 namespace Core.Plugins.AutoMapper
 {
@@ -15,7 +13,7 @@ namespace Core.Plugins.AutoMapper
         public IoCContainerPluginBuilder Load(IoCContainerPluginContext context)
         {
             return new IoCContainerPluginBuilder()
-                .OnInstall(iocContainer => iocContainer.Register<IMapper, AutoMapperWrapper>())
+                //.OnInstall(iocContainer => iocContainer.Register<IMapper, AutoMapperWrapper>())
                 .AfterInstall(iocContainer =>
                 {
                     foreach (Assembly assembly in new Assembly[] { })

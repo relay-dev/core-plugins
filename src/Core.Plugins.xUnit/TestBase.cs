@@ -12,11 +12,13 @@ namespace Core.Plugins.xUnit
     public class TestBase
     {
         private readonly ITestOutputHelper _output;
+        protected DateTime Timestamp;
 
         public TestBase(ITestOutputHelper output)
         {
             _output = output;
             TestUsername = "UnitTest";
+            Timestamp = DateTime.UtcNow;
         }
 
         protected virtual void WriteLine(string s)

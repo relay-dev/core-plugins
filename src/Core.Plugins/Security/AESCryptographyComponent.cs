@@ -48,31 +48,30 @@ namespace Core.Plugins.Security
         {
             string cipherString = encryptedValue.Value;
 
-            using (var secureString = new SecureString())
+            using var secureString = new SecureString();
+
+            if (!cipherString.Contains(":"))
             {
-                if (!cipherString.Contains(":"))
-                {
-                    throw new ArgumentException("The cipherString to Decrypt does not contain a : character, which is used to split out the salt used during encryption", "cipherString");
-                }
-
-                string valueToDecrypt = cipherString.Split(':')[0];
-                string saltUsedForEncryption = cipherString.Split(':')[1];
-
-                byte[] bytesToBeDecrypted = Convert.FromBase64String(valueToDecrypt);
-                byte[] keyInBytes = Encoding.UTF8.GetBytes(_keyProvider.Get());
-                byte[] saltInBytes = Convert.FromBase64String(saltUsedForEncryption);
-
-                keyInBytes = SHA256.Create().ComputeHash(keyInBytes);
-
-                byte[] bytes = DecryptBytes(bytesToBeDecrypted, keyInBytes, saltInBytes);
-
-                foreach (char c in Encoding.UTF8.GetChars(bytes))
-                {
-                    secureString.AppendChar(c);
-                }
-
-                return secureString;
+                throw new ArgumentException("The cipherString to Decrypt does not contain a : character, which is used to split out the salt used during encryption", "cipherString");
             }
+
+            string valueToDecrypt = cipherString.Split(':')[0];
+            string saltUsedForEncryption = cipherString.Split(':')[1];
+
+            byte[] bytesToBeDecrypted = Convert.FromBase64String(valueToDecrypt);
+            byte[] keyInBytes = Encoding.UTF8.GetBytes(_keyProvider.Get());
+            byte[] saltInBytes = Convert.FromBase64String(saltUsedForEncryption);
+
+            keyInBytes = SHA256.Create().ComputeHash(keyInBytes);
+
+            byte[] bytes = DecryptBytes(bytesToBeDecrypted, keyInBytes, saltInBytes);
+
+            foreach (char c in Encoding.UTF8.GetChars(bytes))
+            {
+                secureString.AppendChar(c);
+            }
+
+            return secureString;
         }
     }
 }

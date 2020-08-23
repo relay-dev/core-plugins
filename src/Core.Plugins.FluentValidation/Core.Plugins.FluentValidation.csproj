@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.1.3" />
-    <PackageReference Include="Relay.Core" Version="1.0.112" />
+    <PackageReference Include="Relay.Core" Version="1.0.114" />
   </ItemGroup>
 
   <ItemGroup>

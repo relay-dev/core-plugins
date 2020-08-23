@@ -1,4 +1,5 @@
 ﻿using Core.Exceptions;
+using Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Core.Validation
+namespace Core.Plugins.Validation
 {
-    public class InlineValidator : IValidatorInline
+    public class InlineValidator : IInlineValidator
     {
         private readonly List<string> _errors;
 
@@ -17,12 +18,12 @@ namespace Core.Validation
             _errors = new List<string>();
         }
 
-        public IValidatorInline Not<T>(ExpressionType expressionType, Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IInlineValidator Not<T>(ExpressionType expressionType, Expression<Func<T>> argExpression, T value) where T : IComparable
         {
             return Not(Expression.Lambda<Func<bool>>(Expression.MakeBinary(expressionType, argExpression.Body, Expression.Constant(value))));
         }
 
-        public IValidatorInline Not(Expression<Func<bool>> expression)
+        public IInlineValidator Not(Expression<Func<bool>> expression)
         {
             if (expression.Compile()())
             {
@@ -48,7 +49,7 @@ namespace Core.Validation
 
                     argumentMessage = String.Format("{0} is {1} {2} which is invalid.", name, GetNode(binaryExpression), value == null ? "null" : value.ToString());
                 }
-                
+
                 if (bodyExpression is MethodCallExpression methodExpression)
                 {
                     var methodName = methodExpression.Method.Name;
@@ -68,7 +69,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotNull(Expression<Func<object>> argExpression)
+        public IInlineValidator NotNull(Expression<Func<object>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -81,7 +82,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotNullOrEmpty(Expression<Func<string>> argExpression)
+        public IInlineValidator NotNullOrEmpty(Expression<Func<string>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -95,7 +96,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotNullOrEmptyCollection<T>(Expression<Func<ICollection<T>>> argExpression)
+        public IInlineValidator NotNullOrEmptyCollection<T>(Expression<Func<ICollection<T>>> argExpression)
         {
             var value = argExpression.Compile()();
             string argumentName = GetNameFromExpression(argExpression.Body);
@@ -112,7 +113,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotDefault<T>(Expression<Func<T>> argExpression)
+        public IInlineValidator NotDefault<T>(Expression<Func<T>> argExpression)
         {
             var value = argExpression.Compile()();
             string argumentName = GetNameFromExpression(argExpression.Body);
@@ -123,7 +124,7 @@ namespace Core.Validation
             {
                 _errors.Add($"{argumentName} cannot be null");
             }
-            
+
             if (value.Equals(comparason))
             {
                 string compare = (comparason == null ? "null" : comparason.ToString());
@@ -134,7 +135,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotInvalidID(Expression<Func<long>> argExpression)
+        public IInlineValidator NotInvalidID(Expression<Func<long>> argExpression)
         {
             if (argExpression.Compile().Invoke() < 1)
             {
@@ -146,7 +147,7 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotEnumUndefined(Expression<Func<Enum>> argExpression)
+        public IInlineValidator NotEnumUndefined(Expression<Func<Enum>> argExpression)
         {
             var value = argExpression.Compile()();
 
@@ -160,22 +161,22 @@ namespace Core.Validation
             return this;
         }
 
-        public IValidatorInline NotGreaterThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IInlineValidator NotGreaterThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
         {
             return Not(ExpressionType.GreaterThan, argExpression, value);
         }
 
-        public IValidatorInline NotGreaterThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IInlineValidator NotGreaterThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
         {
             return Not(ExpressionType.GreaterThanOrEqual, argExpression, value);
         }
 
-        public IValidatorInline NotLessThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IInlineValidator NotLessThan<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
         {
             return Not(ExpressionType.LessThan, argExpression, value);
         }
 
-        public IValidatorInline NotLessThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
+        public IInlineValidator NotLessThanOrEqual<T>(Expression<Func<T>> argExpression, T value) where T : IComparable
         {
             return Not(ExpressionType.LessThanOrEqual, argExpression, value);
         }

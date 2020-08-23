@@ -14,11 +14,13 @@ namespace Core.Plugins.NUnit
     public class TestBase
     {
         protected string TestUsername;
+        protected DateTime Timestamp;
         protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
 
         public TestBase()
         {
             TestUsername = "UnitTest";
+            Timestamp = DateTime.UtcNow;
         }
 
         protected virtual void WriteLine(string s)
