@@ -28,8 +28,7 @@ namespace Core.Plugins.Validation
             if (expression.Compile()())
             {
                 var bodyExpression = expression.Body;
-                string argumentMessage = String.Empty;
-                string name = String.Empty;
+                string argumentMessage = string.Empty;
 
                 if (bodyExpression is BinaryExpression binaryExpression)
                 {
@@ -37,6 +36,7 @@ namespace Core.Plugins.Validation
                     var rightExpression = binaryExpression.Right;
 
                     object value;
+                    string name;
                     if ((name = GetNameFromExpression(leftExpression)) != null)
                     {
                         value = GetValue(rightExpression);
@@ -47,7 +47,7 @@ namespace Core.Plugins.Validation
                         value = GetValue(rightExpression);
                     }
 
-                    argumentMessage = String.Format("{0} is {1} {2} which is invalid.", name, GetNode(binaryExpression), value == null ? "null" : value.ToString());
+                    argumentMessage = $"{name} is {GetNode(binaryExpression)} {(value == null ? "null" : value.ToString())} which is invalid.";
                 }
 
                 if (bodyExpression is MethodCallExpression methodExpression)
@@ -60,7 +60,7 @@ namespace Core.Plugins.Validation
                         return val == null ? "null" : val.ToString();
                     }).ToList();
 
-                    argumentMessage = String.Format(CultureInfo.InvariantCulture, "{0} was {1} while calling {2} which is invalid.", string.Join(", ", parameterNames), string.Join(", ", values), methodName);
+                    argumentMessage = string.Format(CultureInfo.InvariantCulture, "{0} was {1} while calling {2} which is invalid.", string.Join(", ", parameterNames), string.Join(", ", values), methodName);
                 }
 
                 _errors.Add(argumentMessage);
@@ -76,6 +76,7 @@ namespace Core.Plugins.Validation
             if (value == null)
             {
                 string argumentName = GetNameFromExpression(argExpression.Body);
+
                 _errors.Add($"{argumentName} cannot be null");
             }
 
@@ -86,7 +87,7 @@ namespace Core.Plugins.Validation
         {
             var value = argExpression.Compile()();
 
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 string argumentName = GetNameFromExpression(argExpression.Body);
 
@@ -118,16 +119,16 @@ namespace Core.Plugins.Validation
             var value = argExpression.Compile()();
             string argumentName = GetNameFromExpression(argExpression.Body);
 
-            T comparason = default(T);
+            T comparison = default;
 
             if (ReferenceEquals(value, null))
             {
                 _errors.Add($"{argumentName} cannot be null");
             }
 
-            if (value.Equals(comparason))
+            if (value != null && value.Equals(comparison))
             {
-                string compare = (comparason == null ? "null" : comparason.ToString());
+                string compare = (comparison == null ? "null" : comparison.ToString());
 
                 _errors.Add($"{argumentName} cannot be {compare}");
             }
@@ -135,7 +136,7 @@ namespace Core.Plugins.Validation
             return this;
         }
 
-        public IInlineValidator NotInvalidID(Expression<Func<long>> argExpression)
+        public IInlineValidator NotInvalidId(Expression<Func<long>> argExpression)
         {
             if (argExpression.Compile().Invoke() < 1)
             {
@@ -185,7 +186,7 @@ namespace Core.Plugins.Validation
         {
             if (_errors.Any())
             {
-                string errorMessage = String.Join(Environment.NewLine, _errors);
+                string errorMessage = string.Join(Environment.NewLine, _errors);
 
                 throw new CoreException(ErrorCode.INVA, $"Encountered the following errors: {errorMessage}");
             }
@@ -194,27 +195,44 @@ namespace Core.Plugins.Validation
         private object GetValue(Expression expression)
         {
             if (expression is ConstantExpression constantExpression)
+            {
                 return constantExpression.Value;
+            }
 
             if (expression is UnaryExpression unaryExpression)
+            {
                 return GetValue(unaryExpression.Operand);
+            }
 
             if (expression is MethodCallExpression invocationExpression)
-                return invocationExpression.Method.Invoke(GetValue(invocationExpression.Object), invocationExpression.Arguments.Select(GetValue).ToArray());
-
-            if (expression is MemberExpression memberExpression)
             {
-                var propertyInfo = memberExpression.Member as PropertyInfo;
-                if (propertyInfo != null)
-                    return propertyInfo.GetValue(GetValue(memberExpression.Expression), null);
+                return invocationExpression.Method.Invoke(GetValue(invocationExpression.Object), invocationExpression.Arguments.Select(GetValue).ToArray());
+            }
 
-                var fieldInfo = memberExpression.Member as FieldInfo;
-                if (fieldInfo != null)
-                    return fieldInfo.GetValue(GetValue(memberExpression.Expression));
+            if (!(expression is MemberExpression memberExpression))
+            {
+                return null;
+            }
 
-                var methodInfo = memberExpression.Member as MethodInfo;
-                if (methodInfo != null)
-                    return methodInfo.Invoke(GetValue(memberExpression.Expression), new object[0]);
+            var propertyInfo = memberExpression.Member as PropertyInfo;
+
+            if (propertyInfo != null)
+            {
+                return propertyInfo.GetValue(GetValue(memberExpression.Expression), null);
+            }
+
+            var fieldInfo = memberExpression.Member as FieldInfo;
+
+            if (fieldInfo != null)
+            {
+                return fieldInfo.GetValue(GetValue(memberExpression.Expression));
+            }
+
+            var methodInfo = memberExpression.Member as MethodInfo;
+
+            if (methodInfo != null)
+            {
+                return methodInfo.Invoke(GetValue(memberExpression.Expression), new object[0]);
             }
 
             return null;
@@ -247,28 +265,31 @@ namespace Core.Plugins.Validation
 
         private string GetNameFromExpression(Expression argExpression, string name = null)
         {
-            var memberExpression = argExpression as MemberExpression;
-
-            if (memberExpression != null)
+            if (argExpression is MemberExpression memberExpression)
             {
-                if (name == null)
-                    name = string.Empty;
+                name ??= string.Empty;
                 name += GetNameFromExpression(memberExpression.Expression);
                 if (name != string.Empty)
+                {
                     name += ".";
+                }
                 name += memberExpression.Member.Name;
             }
 
             return ToUpperFirstLetter(name);
         }
 
-        private string GetNameFromUnaryExpression(Expression argExpression, string name = null)
+        private string GetNameFromUnaryExpression(Expression argExpression)
         {
             if (!(argExpression is UnaryExpression unaryExpression))
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
             if (!(unaryExpression.Operand is MemberExpression memberExpression))
+            {
                 return unaryExpression.Operand.Type.Name;
+            }
 
             return ToUpperFirstLetter(memberExpression.Member.Name);
         }
@@ -276,10 +297,14 @@ namespace Core.Plugins.Validation
         private string ToUpperFirstLetter(string str)
         {
             if (str == null)
+            {
                 return null;
+            }
 
             if (str.Length > 1)
+            {
                 return char.ToUpper(str[0]) + str.Substring(1).ToLower();
+            }
 
             return str.ToUpper();
         }

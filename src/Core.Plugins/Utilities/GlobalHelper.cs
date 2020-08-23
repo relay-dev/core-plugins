@@ -18,7 +18,7 @@ namespace Core.Plugins.Utilities
         
         public static DateTime? GetDateTimeOrNull(object val)
         {
-            return val == null || val == DBNull.Value || Convert.ToString(val) == String.Empty
+            return val == null || val == DBNull.Value || Convert.ToString(val) == string.Empty
                 ? (DateTime?)null
                 : Convert.ToDateTime(val);
         }
@@ -46,7 +46,7 @@ namespace Core.Plugins.Utilities
 
         public static bool GetSafeBoolean(object val)
         {
-            if (val == null || val == DBNull.Value || String.IsNullOrEmpty(val.ToString().Trim()))
+            if (val == null || val == DBNull.Value || string.IsNullOrEmpty(val.ToString().Trim()))
                 return false;
 
             if (val.ToString().ToLower() == "yes" || val.ToString().ToLower() == "y" || val.ToString().ToLower() == "1" || val.ToString().ToLower() == "true" || val.ToString().ToLower() == "t")
@@ -61,13 +61,13 @@ namespace Core.Plugins.Utilities
         public static TValue GetSafeDatabaseValue<TValue>(object val)
         {
             return (val == null || val == DBNull.Value)
-                ? default(TValue)
+                ? default
                 : (TValue)val;
         }
 
         public static DateTime GetSafeDateTime(object val)
         {
-            return (val == null || val == DBNull.Value || Convert.ToString(val) == String.Empty)
+            return (val == null || val == DBNull.Value || Convert.ToString(val) == string.Empty)
                 ? DateTime.MinValue
                 : Convert.ToDateTime(val);
         }
@@ -96,13 +96,13 @@ namespace Core.Plugins.Utilities
         public static string GetSafeString(object val)
         {
             return (val == null || val == DBNull.Value)
-                ? String.Empty
+                ? string.Empty
                 : val.ToString();
         }
 
         public static string GetStringOrNull(object val)
         {
-            if (val == null || val == DBNull.Value || val.ToString() == String.Empty || val.ToString().ToLower() == "null")
+            if (val == null || val == DBNull.Value || val.ToString() == string.Empty || val.ToString().ToLower() == "null")
                 return null;
 
             return val.ToString();
@@ -110,12 +110,12 @@ namespace Core.Plugins.Utilities
 
         public static bool IsAnyStringPopulated(params string[] strings)
         {
-            return !strings.All(String.IsNullOrEmpty);
+            return !strings.All(string.IsNullOrEmpty);
         }
 
         public static TReturn ParseEnum<TReturn>(string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 value = "Undefined";
 
             try
@@ -124,28 +124,23 @@ namespace Core.Plugins.Utilities
             }
             catch
             {
-                return default(TReturn);
+                return default;
             }
         }
 
-        public static string SerializeToXML(object obj)
+        public static string SerializeToXml(object obj)
         {
             try
             {
                 var serializer = new XmlSerializer(obj.GetType());
 
-                using (var writer = new StringWriter())
-                {
-                    serializer.Serialize(writer, obj);
+                using var writer = new StringWriter();
 
-                    return writer.ToString()
-                        .Replace(@"<?xml version=""1.0"" encoding=""utf-16""?>", "")
-                        .Replace(@" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "")
-                        .Replace(@" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "")
-                        .Replace(@" xsi:nil=""true""", "")
-                        .Replace(@"&lt;", "<")
-                        .Replace(@"&gt;", ">");
-                }
+                serializer.Serialize(writer, obj);
+
+                return writer.ToString()
+                    .Replace(@"&lt;", "<")
+                    .Replace(@"&gt;", ">");
             }
             catch (Exception e)
             {
@@ -153,16 +148,13 @@ namespace Core.Plugins.Utilities
             }
         }
 
-        public static TResult DeserializeXML<TResult>(string xml)
+        public static TResult DeserializeXml<TResult>(string xml)
         {
             var serializer = new XmlSerializer(typeof(TResult));
 
-            TResult result;
+            using TextReader reader = new StringReader(xml);
 
-            using (TextReader reader = new StringReader(xml))
-            {
-                result = (TResult)serializer.Deserialize(reader);
-            }
+            var result = (TResult)serializer.Deserialize(reader);
 
             return result;
         }
@@ -170,7 +162,9 @@ namespace Core.Plugins.Utilities
         public static object TryGetValue(DataRow dataRow, string columnName)
         {
             if (dataRow == null || !dataRow.Table.Columns.Contains(columnName) || dataRow[columnName] == DBNull.Value)
+            {
                 return null;
+            }
 
             return dataRow[columnName];
         }

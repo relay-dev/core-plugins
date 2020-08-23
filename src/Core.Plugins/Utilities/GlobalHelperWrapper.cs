@@ -84,14 +84,14 @@ namespace Core.Plugins.Utilities
             return GlobalHelper.ParseEnum<TResult>(value);
         }
 
-        public string SerializeToXML(object o)
+        public string SerializeToXml(object o)
         {
-            return GlobalHelper.SerializeToXML(o);
+            return GlobalHelper.SerializeToXml(o);
         }
 
-        public TResult DeserializeXML<TResult>(string xml)
+        public TResult DeserializeXml<TResult>(string xml)
         {
-            return GlobalHelper.DeserializeXML<TResult>(xml);
+            return GlobalHelper.DeserializeXml<TResult>(xml);
         }
 
         public object TryGetValue(DataRow dataRow, string columnName)

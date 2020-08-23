@@ -6,7 +6,7 @@ namespace Core.Plugins.Providers
 {
     [Component]
     [Injectable]
-    public class RandomGuidProvider : IRandomGuidProvider
+    public class RandomGuidProvider : IGuidProvider
     {
         public Guid Get() => Guid.NewGuid();
     }
