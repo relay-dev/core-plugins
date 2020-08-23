@@ -1,5 +1,4 @@
-﻿using Core.Framework.Attributes;
-using Core.Framework.Enums;
+﻿using Core.Framework;
 using System;
 using System.Linq;
 

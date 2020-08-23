@@ -1,4 +1,4 @@
-﻿using Core.Framework.Attributes;
+﻿using Core.Framework;
 using Core.IoC;
 using Core.Providers;
 using System.Collections.Concurrent;

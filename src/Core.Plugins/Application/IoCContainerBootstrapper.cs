@@ -1,7 +1,6 @@
 ﻿using Core.Application;
 using Core.Exceptions;
-using Core.Framework.Attributes;
-using Core.Framework.Enums;
+using Core.Framework;
 using Core.IoC;
 using Core.IoC.Plugins;
 using Core.Utilities;
@@ -44,7 +43,7 @@ namespace Core.Plugins.Application
             }
 
             List<Type> iocContainers = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerAttribute>(
-                iocContainer => String.Equals(applicationComposition.IoCContainer.Type.ToString(), iocContainer.Name, StringComparison.CurrentCultureIgnoreCase));
+                iocContainer => string.Equals(applicationComposition.IoCContainer.Type, iocContainer.Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (!iocContainers.Any())
                 throw new CoreException(ErrorCode.CORE, $"Could not find any IoCContainer with Name = {applicationComposition.IoCContainer}");
@@ -58,7 +57,7 @@ namespace Core.Plugins.Application
         private IIoCContainerPlugin GetIoCContainerPlugin(ApplicationComposition applicationComposition, string pluginName)
         {
             List<Type> iocContainerPlugins = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerPluginAttribute>(
-                iocContainerPlugin => String.Equals(pluginName, iocContainerPlugin.Name, StringComparison.CurrentCultureIgnoreCase));
+                iocContainerPlugin => string.Equals(pluginName, iocContainerPlugin.Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (!iocContainerPlugins.Any())
                 throw new CoreException(ErrorCode.CORE, $"Could not find any IoCContainerPlugin with Name = {pluginName}");

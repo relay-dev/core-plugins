@@ -14,12 +14,12 @@ namespace UnitTests.Core.Plugins
         {
             string input = "Host=ftp.testing.com;Port=20;Username=ABC;Password=123456;";
 
-            var ftpClientSettings = new SmtpClientSettings(input);
+            var settings = new SmtpClientSettings(input);
 
-            Assert.NotNull(ftpClientSettings.Host);
-            Assert.NotNull(ftpClientSettings.Port);
-            Assert.NotNull(ftpClientSettings.Username);
-            Assert.NotNull(ftpClientSettings.Password);
+            Assert.NotNull(settings.Host);
+            Assert.NotNull(settings.Port);
+            Assert.NotNull(settings.Username);
+            Assert.NotNull(settings.Password);
         }
     }
 }

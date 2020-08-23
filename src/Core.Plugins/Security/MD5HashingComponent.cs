@@ -1,7 +1,7 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Core.Framework.Attributes;
+﻿using Core.Framework;
 using Core.Security;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Core.Plugins.Security
 {

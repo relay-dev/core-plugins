@@ -1,7 +1,5 @@
 ﻿using Core.Data;
 using Core.Framework;
-using Core.Framework.Attributes;
-using Core.Framework.Descriptor;
 using Core.Plugins.Extensions;
 using Core.Providers;
 using System;
@@ -35,8 +33,7 @@ namespace Core.Plugins.Data
 
                     if (id < 1)
                     {
-                        var entryWithCreatedFields = entry as IHaveCreatedFields;
-                        if (entryWithCreatedFields != null)
+                        if (entry is IHaveCreatedFields entryWithCreatedFields)
                         {
                             entryWithCreatedFields.CreatedBy = username;
                             entryWithCreatedFields.CreatedDate = serverDateTime;
@@ -44,8 +41,7 @@ namespace Core.Plugins.Data
                     }
                     else
                     {
-                        var entryWithModifiedFields = entry as IHaveModifiedFields;
-                        if (entryWithModifiedFields != null)
+                        if (entry is IHaveModifiedFields entryWithModifiedFields)
                         {
                             entryWithModifiedFields.ModifiedBy = username;
                             entryWithModifiedFields.ModifiedDate = serverDateTime;
@@ -62,16 +58,19 @@ namespace Core.Plugins.Data
             if (entry is IHaveAnId<int> entryWithIntId)
             {
                 id = entryWithIntId.Id;
+
                 return true;
             }
             
             if (entry is IHaveAnId<long> entryWithLongId)
             {
                 id = entryWithLongId.Id;
+
                 return true;
             }
 
             id = -1;
+
             return false;
         }
     }

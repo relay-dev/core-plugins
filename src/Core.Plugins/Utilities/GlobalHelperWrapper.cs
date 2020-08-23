@@ -1,4 +1,4 @@
-﻿using Core.Framework.Attributes;
+﻿using Core.Framework;
 using Core.Utilities;
 using System;
 using System.Data;
