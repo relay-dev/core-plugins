@@ -19,6 +19,8 @@ namespace Core.Plugins.FileHandling.Delimited
 
         public DataTable GetFileStreamAsDataTable(Stream stream, char columnDelimiter = ',')
         {
+            stream.Position = 0;
+
             using var parser = new GenericParserAdapter();
             using StreamReader streamReader = new StreamReader(stream);
 
