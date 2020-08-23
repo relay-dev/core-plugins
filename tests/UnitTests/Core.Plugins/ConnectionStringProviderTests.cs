@@ -32,9 +32,9 @@ namespace UnitTests.Core.Plugins
                 { "DatabasePassword", expectedPassword }
             };
 
-            TestConfiguration TestConfiguration = new TestConfiguration(testConfigurationData);
+            var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(TestConfiguration);
+            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -59,9 +59,9 @@ namespace UnitTests.Core.Plugins
                 { "DatabasePassword", expectedPassword }
             };
 
-            TestConfiguration TestConfiguration = new TestConfiguration(testConfigurationData);
+            var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(TestConfiguration);
+            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -85,9 +85,9 @@ namespace UnitTests.Core.Plugins
                 { "DatabasePassword", expectedPassword }
             };
 
-            TestConfiguration TestConfiguration = new TestConfiguration(testConfigurationData);
+            var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(TestConfiguration);
+            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -111,9 +111,9 @@ namespace UnitTests.Core.Plugins
                 { "DatabasePassword", expectedPassword }
             };
 
-            TestConfiguration TestConfiguration = new TestConfiguration(testConfigurationData);
+            var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(TestConfiguration);
+            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             cut.Get(connectionName);
@@ -134,14 +134,8 @@ namespace UnitTests.Core.Plugins
 
         public string this[string key]
         {
-            get
-            {
-                return _testConfiguration[key];
-            }
-            set
-            {
-                _testConfiguration[key] = value;
-            }
+            get => _testConfiguration[key];
+            set => _testConfiguration[key] = value;
         }
 
         public IEnumerable<IConfigurationSection> GetChildren()
@@ -173,14 +167,8 @@ namespace UnitTests.Core.Plugins
 
         public string this[string key]
         {
-            get
-            {
-                return _testConfiguration[key];
-            }
-            set
-            {
-                _testConfiguration[key] = value;
-            }
+            get => _testConfiguration[key];
+            set => _testConfiguration[key] = value;
         }
 
         public string Key => throw new NotImplementedException();

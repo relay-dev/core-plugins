@@ -11,7 +11,7 @@ namespace Core.Plugins.Providers
     {
         public string Get(string connectionName)
         {
-            string connectionString = GetConnectionString(connectionName);
+            string connectionString = GetOptional(connectionName);
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -19,6 +19,11 @@ namespace Core.Plugins.Providers
             }
 
             return connectionString;
+        }
+
+        public string GetOptional(string connectionName)
+        {
+            return GetConnectionString(connectionName);
         }
 
         public string Get()
