@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace Core.Plugins.Extensions
 {
     public static class EnumerableExtensions
     {
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable == null || !enumerable.Any();
+        }
+
         public static string ToCsvString<T>(this IEnumerable<T> items)
         {
             return string.Format("'{0}'", string.Join("', '", items));
