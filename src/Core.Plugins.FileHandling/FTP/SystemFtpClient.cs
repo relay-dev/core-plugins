@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace Core.Plugins.FileHandling.FTP
+namespace Core.Plugins.FileHandling.Ftp
 {
     public class SystemFtpClient : FtpClientBase, IFtpClient
     {

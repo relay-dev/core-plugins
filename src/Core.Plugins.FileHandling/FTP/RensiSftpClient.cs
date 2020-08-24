@@ -7,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace Core.Plugins.FileHandling.FTP
+namespace Core.Plugins.FileHandling.Ftp
 {
     public class RensiSftpClient : FtpClientBase, IFtpClient
     {

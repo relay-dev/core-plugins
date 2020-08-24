@@ -1,7 +1,8 @@
 ﻿using Core.FileHandling;
+using Core.Plugins.Communication.Ftp;
 using Core.Providers;
 
-namespace Core.Plugins.FileHandling.FTP
+namespace Core.Plugins.FileHandling.Ftp
 {
     public class FtpClientFactory : IFtpClientFactory
     {

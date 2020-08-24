@@ -3,7 +3,7 @@ using Core.Plugins.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace Core.Plugins.FileHandling.FTP
+namespace Core.Plugins.Communication.Ftp
 {
     /// <summary>
     /// Settings used to connect to an FTP drive

@@ -22,8 +22,7 @@ namespace Core.Plugins.Extensions
 
         public static List<T> RemoveNulls<T>(this List<T> list) where T : class
         {
-            if (list != null)
-                list.RemoveAll(obj => obj == null);
+            list?.RemoveAll(obj => obj == null);
 
             return list;
         }
