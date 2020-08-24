@@ -20,8 +20,12 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="GenericParsing" Version="1.2.2" />
-    <PackageReference Include="Relay.Core" Version="1.0.117" />
+    <PackageReference Include="Relay.Core" Version="1.0.123" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Plugins\Core.Plugins.csproj" />
   </ItemGroup>
 
 </Project>

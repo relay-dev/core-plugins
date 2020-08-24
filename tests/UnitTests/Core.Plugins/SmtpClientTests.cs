@@ -1,4 +1,4 @@
-﻿using Core.Communication.Smtp;
+﻿using Core.Plugins.Communication.Smtp;
 using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;

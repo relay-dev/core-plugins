@@ -5,7 +5,7 @@ namespace Core.Plugins.Providers
 {
     [Component]
     [Injectable]
-    internal class UsernameProvider : IUsernameProvider
+    public class UsernameProvider : IUsernameProvider
     {
         private readonly string _username;
 

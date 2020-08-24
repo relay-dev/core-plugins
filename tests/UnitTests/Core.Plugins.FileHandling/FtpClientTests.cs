@@ -1,4 +1,4 @@
-﻿using Core.FileHandling;
+﻿using Core.Plugins.FileHandling.FTP;
 using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;

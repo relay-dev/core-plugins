@@ -1,4 +1,5 @@
 ﻿using Core.Plugins.Application;
+using Core.Plugins.Extensions;
 using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,15 +17,15 @@ namespace UnitTests.Core.Plugins
             const string connectionString = "SegmentOne=ValueOne;SegmentTwo=ValueTwo;";
             
             // Act
-            var parser = new ConnectionStringParser(connectionString);
+            dynamic parsed = new ConnectionStringParser().Parse(connectionString).ToDynamic();
 
             // Assert
-            Assert.NotNull(parser);
-            Assert.NotNull(parser.Segment);
-            Assert.NotNull(parser.Segment.SegmentOne);
-            Assert.Equal("ValueOne", parser.Segment.SegmentOne);
-            Assert.NotNull(parser.Segment.SegmentTwo);
-            Assert.Equal("ValueTwo", parser.Segment.SegmentTwo);
+            Assert.NotNull(parsed);
+            Assert.NotNull(parsed);
+            Assert.NotNull(parsed.SegmentOne);
+            Assert.Equal("ValueOne", parsed.SegmentOne);
+            Assert.NotNull(parsed.SegmentTwo);
+            Assert.Equal("ValueTwo", parsed.SegmentTwo);
         }
     }
 }

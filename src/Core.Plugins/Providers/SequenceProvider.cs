@@ -7,7 +7,7 @@ namespace Core.Plugins.Providers
 {
     [Component]
     [Injectable(Lifetime = RegistrationLifetime.Singleton)]
-    internal class SequenceProvider : ISequenceProvider
+    public class SequenceProvider : ISequenceProvider
     {
         private readonly ConcurrentDictionary<string, long> _sequences;
 

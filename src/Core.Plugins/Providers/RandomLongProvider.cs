@@ -6,7 +6,7 @@ namespace Core.Plugins.Providers
 {
     [Component]
     [Injectable]
-    internal class RandomLongProvider : IRandomLongProvider
+    public class RandomLongProvider : IRandomLongProvider
     {
         public long Get()
         {
