@@ -7,16 +7,16 @@ namespace Core.Plugins.Providers
     [Injectable]
     public class UsernameProvider : IUsernameProvider
     {
-        private readonly string _username;
+        private readonly ICommandContextProvider _commandContextProvider;
 
-        public UsernameProvider(string username)
+        public UsernameProvider(ICommandContextProvider commandContextProvider)
         {
-            _username = username;
+            _commandContextProvider = commandContextProvider;
         }
 
         public string Get()
         {
-            return _username;
+            return _commandContextProvider.Get().Username;
         }
     }
 }
