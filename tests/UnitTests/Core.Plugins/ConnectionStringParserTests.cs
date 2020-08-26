@@ -27,5 +27,23 @@ namespace UnitTests.Core.Plugins
             Assert.NotNull(parsed.SegmentTwo);
             Assert.Equal("ValueTwo", parsed.SegmentTwo);
         }
+
+        [Fact]
+        public void GetConnectionString_ShouldParseAsExpected_WhenEqualSignIsInSegment()
+        {
+            // Arrange
+            const string connectionString = "Host=SomeURL;Key=12345=;";
+            
+            // Act
+            dynamic parsed = new ConnectionStringParser().Parse(connectionString).ToDynamic();
+
+            // Assert
+            Assert.NotNull(parsed);
+            Assert.NotNull(parsed);
+            Assert.NotNull(parsed.Host);
+            Assert.Equal("SomeURL", parsed.SegmentOne);
+            Assert.NotNull(parsed.Key);
+            Assert.Equal("12345=", parsed.SegmentTwo);
+        }
     }
 }

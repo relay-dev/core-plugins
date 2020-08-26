@@ -9,10 +9,37 @@ namespace Core.Plugins.Application
     {
         public Dictionary<string, string> Parse(string connectionString)
         {
-            return connectionString.Split(';')
-                .Where(prop => !string.IsNullOrEmpty(prop))
-                .Select(prop => prop.Split(new[] { '=' }, 2))
-                .ToDictionary(prop => prop[0].Trim(), t => t[1].Trim(), StringComparer.InvariantCultureIgnoreCase);
+            var dictionary = new Dictionary<string, string>();
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                return dictionary;
+            }
+
+            string[] segments = connectionString.Split(';', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string segment in segments)
+            {
+                if (!segment.Contains("="))
+                {
+                    throw new Exception("Connections string has an invalid format. The following character must be present in each segment: =");
+                }
+
+                string[] segmentVales = segment.Split('=');
+
+                if (segmentVales.Length == 2)
+                {
+                    dictionary.Add(segmentVales[0], segmentVales[1]);
+                }
+                else
+                {
+                    string segmentValue = string.Concat(segmentVales.Skip(1));
+
+                    dictionary.Add(segmentVales[0], segmentValue);
+                }
+            }
+
+            return dictionary;
         }
     }
 }
