@@ -5,9 +5,9 @@ using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
-    public class SmtpClientTests : xUnitTestBase
+    public class SmtpClientSettingsTests : xUnitTestBase
     {
-        public SmtpClientTests(ITestOutputHelper output) : base(output) { }
+        public SmtpClientSettingsTests(ITestOutputHelper output) : base(output) { }
 
         [Fact]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
