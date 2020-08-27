@@ -33,7 +33,7 @@ namespace Core.Plugins.Application
                 }
                 else
                 {
-                    string segmentValue = string.Concat(segmentVales.Skip(1));
+                    string segmentValue = string.Join('=', segmentVales.Skip(1));
 
                     dictionary.Add(segmentVales[0], segmentValue);
                 }
