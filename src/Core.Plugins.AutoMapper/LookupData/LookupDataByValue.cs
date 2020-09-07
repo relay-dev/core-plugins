@@ -1,8 +1,17 @@
-﻿namespace Core.Plugins.AutoMapper.LookupData
+﻿using System;
+using System.Linq.Expressions;
+
+namespace Core.Plugins.AutoMapper.LookupData
 {
     public class LookupDataByValue : LookupDataBase
     {
-        public string Value { get; private set; }
+        public string Value { get; }
+
+        public LookupDataByValue(Expression<Func<string>> valueFactory)
+            : base(GetMemberName(valueFactory))
+        {
+            Value = valueFactory.Compile()();
+        }
 
         public LookupDataByValue(string value, string tableName)
             : base(tableName)

@@ -1,4 +1,7 @@
-﻿namespace Core.Plugins.AutoMapper.LookupData
+﻿using System;
+using System.Linq.Expressions;
+
+namespace Core.Plugins.AutoMapper.LookupData
 {
     public class LookupDataBase
     {
@@ -25,5 +28,16 @@
             ColumnNameOfField = columnNameOfField;
             CacheTimeoutInHours = cacheTimeoutInHours;
         }
+
+        protected static string GetMemberName<T>(Expression<Func<T>> expression) =>
+            expression.Body switch
+            {
+                MemberExpression m =>
+                    m.Member.Name,
+                UnaryExpression u when u.Operand is MemberExpression m =>
+                    m.Member.Name,
+                _ =>
+                    throw new NotImplementedException(expression.GetType().ToString())
+            };
     }
 }
