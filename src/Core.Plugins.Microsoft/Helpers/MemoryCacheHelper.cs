@@ -1,11 +1,11 @@
-﻿using Core.Caching;
+﻿using Core.Application;
+using Core.Caching;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
-using Core.Application;
-using Microsoft.Extensions.Configuration;
 
 namespace Core.Plugins.Microsoft.Helpers
 {
@@ -74,6 +74,18 @@ namespace Core.Plugins.Microsoft.Helpers
             }
 
             return value;
+        }
+
+        public List<string> GetAllKeys()
+        {
+            var result = new List<string>();
+
+            foreach (KeyValuePair<string, object> keyValuePair in _objectCache.Where(kvp => !kvp.Key.Contains(_activeLogins)))
+            {
+                result.Add(keyValuePair.Key);
+            }
+
+            return result;
         }
 
         public object Remove(string key)
