@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Resolvers.DatabaseResolver
+namespace Core.Plugins.AutoMapper.Converters.Database
 {
-    public class LookupDataKeyResolver<T> : LookupDataKeyResolverBase<T>
+    public class LookupDataKeyConverter<T> : LookupDataValueConverterBase<T>
     {
-        public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+        public LookupDataKeyConverter(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
             : base(connectionStringProvider, cacheHelper) { }
 
         protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)
