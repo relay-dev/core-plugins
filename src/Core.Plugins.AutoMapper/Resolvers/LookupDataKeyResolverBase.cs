@@ -6,16 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Converters
+namespace Core.Plugins.AutoMapper.Resolvers
 {
-    public abstract class LookupDataValueConverterBase<T> : LookupDataConverterBase<LookupDataByValue, T>
+    public abstract class LookupDataKeyResolverBase<T> : LookupDataResolverBase<LookupDataByValue, T>
     {
-        private readonly ICacheHelper _cacheHelper;
+        private readonly ICacheHelper _cache;
 
-        protected LookupDataValueConverterBase(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
+        protected LookupDataKeyResolverBase(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
             : base(connectionStringProvider)
         {
-            _cacheHelper = cacheHelper;
+            _cache = cache;
         }
 
         protected abstract Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue);
@@ -26,22 +26,22 @@ namespace Core.Plugins.AutoMapper.Converters
         /// This is because it's possible for a new value to be inserted into a lookup table after this cache is loaded but before the cache timeout expires
         /// If we don't find what we're looking for, we make a one-time assumption that the cache could be out of sync, so we refresh the cache and try one more time to get the expected value
         /// </summary>
-        public override T Convert(LookupDataByValue source, T destination, ResolutionContext context)
+        public override T Resolve(object source, object destination, LookupDataByValue sourceMember, T destMember, ResolutionContext context)
         {
-            if (source == null || string.IsNullOrEmpty(source.Value))
+            if (sourceMember == null || string.IsNullOrEmpty(sourceMember.Value))
             {
                 return default;
             }
 
-            string cacheKey = GetCacheKey(source.TableName);
+            string cacheKey = GetCacheKey(sourceMember.TableName);
 
-            T result = GetLookupValue(source, cacheKey);
+            T result = GetLookupValue(sourceMember, cacheKey);
 
             if (EqualityComparer<T>.Default.Equals(result, default))
             {
-                _cacheHelper.Remove(cacheKey);
+                _cache.Remove(cacheKey);
 
-                result = GetLookupValue(source, cacheKey);
+                result = GetLookupValue(sourceMember, cacheKey);
             }
 
             return result;
@@ -50,18 +50,18 @@ namespace Core.Plugins.AutoMapper.Converters
         /// <summary>
         /// Exposing the AutoMapper trigger method allows clients to use this resolver outside of an AutoMapper as well
         /// </summary>
-        public T Convert(LookupDataByValue lookupDataByValue)
+        public T Resolve(LookupDataByValue lookupDataByValue)
         {
-            return Convert(lookupDataByValue, default, null);
+            return Resolve(null, null, lookupDataByValue, default, null);
         }
 
         private T GetLookupValue(LookupDataByValue lookupDataByValue, string cacheKey)
         {
             Dictionary<T, string> lookupValues =
-                _cacheHelper.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByValue), GetCacheTimeoutInHours(lookupDataByValue));
+                _cache.GetOrSet(cacheKey, () => GetDictionaryToCache(lookupDataByValue), GetCacheTimeoutInHours(lookupDataByValue));
 
             KeyValuePair<T, string> keyValuePair = lookupValues
-                .SingleOrDefault(kvp => String.Equals(kvp.Value, lookupDataByValue.Value, StringComparison.OrdinalIgnoreCase));
+                .SingleOrDefault(kvp => string.Equals(kvp.Value, lookupDataByValue.Value, StringComparison.OrdinalIgnoreCase));
 
             if (keyValuePair.Equals(default(KeyValuePair<int, string>)))
             {

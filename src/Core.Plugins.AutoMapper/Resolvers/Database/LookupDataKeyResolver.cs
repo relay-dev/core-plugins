@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Core.Plugins.AutoMapper.Converters.Database
+namespace Core.Plugins.AutoMapper.Resolvers.Database
 {
-    public class LookupDataKeyConverter<T> : LookupDataValueConverterBase<T>
+    public class LookupDataKeyResolver<T> : LookupDataKeyResolverBase<T>
     {
-        public LookupDataKeyConverter(IConnectionStringProvider connectionStringProvider, ICacheHelper cacheHelper)
-            : base(connectionStringProvider, cacheHelper) { }
+        public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
+            : base(connectionStringProvider, cache) { }
 
         protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)
         {
-            string sql = $"SELECT * FROM {lookupDataByValue.TableName}";
+            string sql = $"SELECT * FROM {lookupDataByValue.TableName} (NOLOCK)";
 
             DataTable dataTable = ExecuteSql(sql, lookupDataByValue.DataSource);
 

@@ -4,14 +4,11 @@ using Core.Providers;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace Core.Plugins.AutoMapper.Converters
+namespace Core.Plugins.AutoMapper.Resolvers
 {
-    public abstract class LookupDataConverterBase<TSource, TDestination> : LookupDataResolverBase, ITypeConverter<TSource, TDestination>
+    public abstract class LookupDataResolverBase<TSource, TDestination> : LookupDataResolverBase, IMemberValueResolver<object, object, TSource, TDestination>
     {
-        protected const int DefaultCacheTimeoutInHours = 24;
-        public const string CacheKeyPrefix = "Reserved::LookupData::";
-
-        protected LookupDataConverterBase(IConnectionStringProvider connectionStringProvider)
+        protected LookupDataResolverBase(IConnectionStringProvider connectionStringProvider)
             : base(connectionStringProvider) { }
 
         protected int GetCacheTimeoutInHours(LookupDataBase lookupData)
@@ -24,11 +21,13 @@ namespace Core.Plugins.AutoMapper.Converters
             return $"{CacheKeyPrefix}{tableName}";
         }
 
-        public abstract TDestination Convert(TSource source, TDestination destination, ResolutionContext context);
+        public abstract TDestination Resolve(object source, object destination, TSource sourceMember, TDestination destMember, ResolutionContext context);
     }
 
     public abstract class LookupDataResolverBase
     {
+        protected const int DefaultCacheTimeoutInHours = 24;
+        public const string CacheKeyPrefix = "Reserved::Core::LookupData::";
         private readonly IConnectionStringProvider _connectionStringProvider;
 
         protected LookupDataResolverBase(IConnectionStringProvider connectionStringProvider)
