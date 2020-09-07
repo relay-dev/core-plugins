@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.11.1" />
-    <PackageReference Include="Relay.Core" Version="1.0.128" />
+    <PackageReference Include="Relay.Core" Version="1.0.130" />
   </ItemGroup>
 
   <ItemGroup>
