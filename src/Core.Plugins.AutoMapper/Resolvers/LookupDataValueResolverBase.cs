@@ -10,9 +10,9 @@ namespace Core.Plugins.AutoMapper.Resolvers
 {
     public abstract class LookupDataValueResolverBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
     {
-        private readonly ICacheHelper _cache;
+        private readonly ICache _cache;
 
-        protected LookupDataValueResolverBase(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
+        protected LookupDataValueResolverBase(IConnectionStringProvider connectionStringProvider, ICache cache)
             : base(connectionStringProvider)
         {
             _cache = cache;

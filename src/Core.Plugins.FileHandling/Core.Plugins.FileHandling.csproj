@@ -8,7 +8,7 @@
     <Company>Relay Technologies</Company>
     <Product>Core Plugins</Product>
     <Description>Plugins available for the Core framework</Description>
-    <Copyright>Copyright ©2019</Copyright>
+    <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
     <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="GenericParsing" Version="1.2.2" />
-    <PackageReference Include="Relay.Core" Version="1.0.135" />
+    <PackageReference Include="Relay.Core" Version="1.0.142" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
   </ItemGroup>
 

@@ -1,12 +1,9 @@
-﻿using Core.Framework;
-using Core.Utilities;
+﻿using Core.Utilities;
 using System;
 using System.Data;
 
 namespace Core.Plugins.Utilities
 {
-    [Component]
-    [Injectable]
     public class GlobalHelperWrapper : IGlobalHelper
     {
         public bool? GetBooleanOrNull(object val)
@@ -82,16 +79,6 @@ namespace Core.Plugins.Utilities
         public TResult ParseEnum<TResult>(string value)
         {
             return GlobalHelper.ParseEnum<TResult>(value);
-        }
-
-        public string SerializeToXml(object o)
-        {
-            return GlobalHelper.SerializeToXml(o);
-        }
-
-        public TResult DeserializeXml<TResult>(string xml)
-        {
-            return GlobalHelper.DeserializeXml<TResult>(xml);
         }
 
         public object TryGetValue(DataRow dataRow, string columnName)

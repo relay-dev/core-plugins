@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using ClosedXML.Excel;
 using Core.FileHandling;
-using System.IO;
-using System.Collections.Generic;
 
-namespace Core.Plugins.Utilities.FileHandling.Excel
+namespace Core.Plugins.FileHandling.Excel
 {
     public class ClosedXmlExcelHandler : IExcelFileHandler
     {

@@ -1,10 +1,7 @@
-﻿using Core.Framework;
-using Core.Providers;
+﻿using Core.Providers;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable]
     public class UsernameProvider : IUsernameProvider
     {
         private readonly ICommandContextProvider _commandContextProvider;

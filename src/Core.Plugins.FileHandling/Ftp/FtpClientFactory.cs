@@ -1,5 +1,5 @@
-﻿using Core.FileHandling;
-using Core.Plugins.Communication.Ftp;
+﻿using Core.Ftp;
+using Core.Plugins.Ftp;
 using Core.Providers;
 
 namespace Core.Plugins.FileHandling.Ftp

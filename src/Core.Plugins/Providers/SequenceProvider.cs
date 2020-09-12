@@ -1,12 +1,8 @@
-﻿using Core.Framework;
-using Core.IoC;
-using Core.Providers;
+﻿using Core.Providers;
 using System.Collections.Concurrent;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable(Lifetime = RegistrationLifetime.Singleton)]
     public class SequenceProvider : ISequenceProvider
     {
         private readonly ConcurrentDictionary<string, long> _sequences;

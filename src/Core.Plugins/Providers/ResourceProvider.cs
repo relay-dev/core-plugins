@@ -1,5 +1,4 @@
 ﻿using Core.Exceptions;
-using Core.Framework;
 using Core.Providers;
 using System;
 using System.Collections.Generic;
@@ -8,11 +7,9 @@ using System.Resources;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable]
     public class ResourceProvider : IResourceProvider
     {
-        private IDictionary<string, IDictionary<string, string>> _resourceStrings;
+        private readonly IDictionary<string, IDictionary<string, string>> _resourceStrings;
 
         public ResourceProvider()
         {

@@ -1,18 +1,18 @@
-﻿using Core.Plugins.Communication.Ftp;
-using UnitTests.Base;
+﻿using Core.Plugins.Ftp;
+using Core.Plugins.xUnit;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
-    public class FtpClientSettingsTests : xUnitTestBase
+    public class FtpClientSettingsTests : TestBase
     {
         public FtpClientSettingsTests(ITestOutputHelper output) : base(output) { }
 
         [Fact]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
         {
-            string input = "Host=guroosolutions.com;Username=admin@guroosolutions.com;Password=R8u3y6wnfUeNG52dsSuy;TimeoutInSeconds=1800;IsSftp=false;";
+            string input = "Host=host.com;Username=username;Password=password;TimeoutInSeconds=1800;IsSftp=false;";
 
             var settings = new FtpClientSettings(input);
 

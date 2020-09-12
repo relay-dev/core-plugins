@@ -2,7 +2,6 @@
 using Core.Caching;
 using Core.Exceptions;
 using Core.Plugins.AutoMapper.LookupData;
-using Core.Plugins.Extensions;
 using Core.Providers;
 using System;
 using System.Collections.Generic;
@@ -13,9 +12,9 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
 {
     public class LookupDataEnumKeyResolver<T> : LookupDataResolverBase, IMemberValueResolver<object, object, System.Enum, T>
     {
-        private readonly ICacheHelper _cache;
+        private readonly ICache _cache;
 
-        public LookupDataEnumKeyResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
+        public LookupDataEnumKeyResolver(IConnectionStringProvider connectionStringProvider, ICache cache)
             : base(connectionStringProvider)
         {
             _cache = cache;
@@ -80,7 +79,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
 
             DataRow dataRow = dataTable
                 .AsEnumerable()
-                .FirstOrDefault(dr => dr[columnNameOfFieldName] != DBNull.Value && dr[columnNameOfFieldName].ToString().Remove(" ").ToLower() == source.ToString().ToLower());
+                .FirstOrDefault(dr => dr[columnNameOfFieldName] != DBNull.Value && dr[columnNameOfFieldName].ToString().Replace(" ", string.Empty).ToLower() == source.ToString().ToLower());
 
             if (dataRow == null)
             {

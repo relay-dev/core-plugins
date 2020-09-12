@@ -1,11 +1,8 @@
-﻿using Core.Framework;
-using Core.Providers;
+﻿using Core.Providers;
 using System;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable]
     public class RandomLongProvider : IRandomLongProvider
     {
         public long Get()
@@ -29,13 +26,19 @@ namespace Core.Plugins.Providers
         public long Get(long minValue, long maxValue)
         {
             if (minValue < 0)
+            {
                 throw new ArgumentException("minValue cannot be less than 0", nameof(minValue));
+            }
 
             if (maxValue <= 0)
+            {
                 throw new ArgumentException("maxValue cannot be less than or equal to 0", nameof(maxValue));
+            }
 
             if (maxValue < minValue)
+            {
                 throw new ArgumentException("maxValue cannot be less than minValue", nameof(maxValue));
+            }
 
             ulong uRange = (ulong)(maxValue - minValue);
 

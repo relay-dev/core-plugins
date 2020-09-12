@@ -1,11 +1,11 @@
-﻿using Core.Plugins.Communication.Ftp;
-using UnitTests.Base;
+﻿using Core.Plugins.Ftp;
+using Core.Plugins.xUnit;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins.FileHandling
 {
-    public class FtpClientTests : xUnitTestBase
+    public class FtpClientTests : TestBase
     {
         public FtpClientTests(ITestOutputHelper output) : base(output) { }
 

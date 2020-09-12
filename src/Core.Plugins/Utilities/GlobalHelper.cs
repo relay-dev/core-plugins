@@ -1,5 +1,4 @@
-﻿using Core.Plugins.Extensions;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -9,13 +8,57 @@ namespace Core.Plugins.Utilities
 {
     public static class GlobalHelper
     {
+        public static TReturn ParseEnum<TReturn>(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                value = "Undefined";
+
+            try
+            {
+                return (TReturn)Enum.Parse(typeof(TReturn), value.Replace(" ", string.Empty).Replace("-", string.Empty), true);
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
+        public static object TryGetValue(DataRow dataRow, string columnName)
+        {
+            if (dataRow == null || !dataRow.Table.Columns.Contains(columnName) || dataRow[columnName] == DBNull.Value)
+            {
+                return null;
+            }
+
+            return dataRow[columnName];
+        }
+
+        public static bool IsAnyStringPopulated(params string[] strings)
+        {
+            return !strings.All(string.IsNullOrEmpty);
+        }
+
+        public static bool GetSafeBoolean(object val)
+        {
+            if (val == null || val == DBNull.Value || string.IsNullOrEmpty(val.ToString().Trim()))
+                return false;
+
+            if (val.ToString().ToLower() == "yes" || val.ToString().ToLower() == "y" || val.ToString().ToLower() == "1" || val.ToString().ToLower() == "true" || val.ToString().ToLower() == "t")
+                return true;
+
+            if (val.ToString().ToLower() == "no" || val.ToString().ToLower() == "n" || val.ToString().ToLower() == "0" || val.ToString().ToLower() == "false" || val.ToString().ToLower() == "f" || val.ToString().ToLower() == "null")
+                return false;
+
+            return Convert.ToBoolean(val);
+        }
+
         public static bool? GetBooleanOrNull(object val)
         {
             return val == null || val == DBNull.Value
                 ? (bool?)null
                 : GetSafeBoolean(val);
         }
-        
+
         public static DateTime? GetDateTimeOrNull(object val)
         {
             return val == null || val == DBNull.Value || Convert.ToString(val) == string.Empty
@@ -42,20 +85,6 @@ namespace Core.Plugins.Utilities
             return val == null || val == DBNull.Value
                 ? (long?)null
                 : Convert.ToInt64(val);
-        }
-
-        public static bool GetSafeBoolean(object val)
-        {
-            if (val == null || val == DBNull.Value || string.IsNullOrEmpty(val.ToString().Trim()))
-                return false;
-
-            if (val.ToString().ToLower() == "yes" || val.ToString().ToLower() == "y" || val.ToString().ToLower() == "1" || val.ToString().ToLower() == "true" || val.ToString().ToLower() == "t")
-                return true;
-
-            if (val.ToString().ToLower() == "no" || val.ToString().ToLower() == "n" || val.ToString().ToLower() == "0" || val.ToString().ToLower() == "false" || val.ToString().ToLower() == "f" || val.ToString().ToLower() == "null")
-                return false;
-
-            return Convert.ToBoolean(val);
         }
 
         public static TValue GetSafeDatabaseValue<TValue>(object val)
@@ -106,67 +135,6 @@ namespace Core.Plugins.Utilities
                 return null;
 
             return val.ToString();
-        }
-
-        public static bool IsAnyStringPopulated(params string[] strings)
-        {
-            return !strings.All(string.IsNullOrEmpty);
-        }
-
-        public static TReturn ParseEnum<TReturn>(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                value = "Undefined";
-
-            try
-            {
-                return (TReturn)Enum.Parse(typeof(TReturn), value.Remove(" ").Remove("-"), true);
-            }
-            catch
-            {
-                return default;
-            }
-        }
-
-        public static string SerializeToXml(object obj)
-        {
-            try
-            {
-                var serializer = new XmlSerializer(obj.GetType());
-
-                using var writer = new StringWriter();
-
-                serializer.Serialize(writer, obj);
-
-                return writer.ToString()
-                    .Replace(@"&lt;", "<")
-                    .Replace(@"&gt;", ">");
-            }
-            catch (Exception e)
-            {
-                return $"<SerializeToString() failed>{Environment.NewLine}Exception: {e.Message}";
-            }
-        }
-
-        public static TResult DeserializeXml<TResult>(string xml)
-        {
-            var serializer = new XmlSerializer(typeof(TResult));
-
-            using TextReader reader = new StringReader(xml);
-
-            var result = (TResult)serializer.Deserialize(reader);
-
-            return result;
-        }
-
-        public static object TryGetValue(DataRow dataRow, string columnName)
-        {
-            if (dataRow == null || !dataRow.Table.Columns.Contains(columnName) || dataRow[columnName] == DBNull.Value)
-            {
-                return null;
-            }
-
-            return dataRow[columnName];
         }
     }
 }

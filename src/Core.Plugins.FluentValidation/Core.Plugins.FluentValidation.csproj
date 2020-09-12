@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
     <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
-    <Copyright>Copyright ©2019</Copyright>
+    <Copyright>Copyright ©2020</Copyright>
     <Description>Plugins available for the Core framework</Description>
     <Product>Core Plugins</Product>
     <Company>Relay Technologies</Company>
@@ -19,7 +19,8 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.2.0" />
-    <PackageReference Include="Relay.Core" Version="1.0.135" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Relay.Core" Version="1.0.142" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,8 @@
 ﻿using Core.Application;
-using Core.Framework;
 using Core.Providers;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable]
     public class ApplicationContextProvider : IApplicationContextProvider
     {
         private readonly ApplicationContext _applicationContext;

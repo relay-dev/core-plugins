@@ -9,7 +9,7 @@
     <Company>Relay Technologies</Company>
     <Product>Core Plugins</Product>
     <Description>Plugins available for the Core framework</Description>
-    <Copyright>Copyright ©2019</Copyright>
+    <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
     <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -18,22 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Relay.Core" Version="1.0.135" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Messages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Messages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Relay.Core" Version="1.0.142" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
 </Project>

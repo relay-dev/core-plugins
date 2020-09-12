@@ -10,7 +10,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Database
 {
     public class LookupDataValueResolver<T> : LookupDataValueResolverBase<T>
     {
-        public LookupDataValueResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
+        public LookupDataValueResolver(IConnectionStringProvider connectionStringProvider, ICache cache)
             : base(connectionStringProvider, cache) { }
 
         protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByKey<T> lookupDataByKey)

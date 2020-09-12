@@ -1,4 +1,5 @@
-﻿using Core.FileHandling;
+﻿using Core.Ftp;
+using Core.Plugins.Ftp;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using System;

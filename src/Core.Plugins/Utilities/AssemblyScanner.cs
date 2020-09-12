@@ -1,6 +1,4 @@
-﻿using Core.Framework;
-using Core.Plugins.Extensions;
-using Core.Utilities;
+﻿using Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +7,6 @@ using System.Reflection;
 
 namespace Core.Plugins.Utilities
 {
-    [Component]
-    [Injectable]
     public class AssemblyScanner : IAssemblyScanner
     {
         public List<Assembly> GetApplicationAssemblies()
@@ -19,9 +15,12 @@ namespace Core.Plugins.Utilities
                 .OrderBy(a => a.FullName)
                 .ToList();
 
-            string[] referencedPaths = Directory.GetFiles(path: AppDomain.CurrentDomain.BaseDirectory, searchPattern: "*.dll");
+            string[] referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
 
-            referencedPaths.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
+            foreach (string path in referencedPaths)
+            {
+                loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path)));
+            }
 
             return loadedAssemblies.Distinct().ToList();
         }

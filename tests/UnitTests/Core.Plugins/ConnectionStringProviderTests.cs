@@ -1,19 +1,18 @@
-﻿using Core.Plugins.Extensions;
-using Core.Plugins.Microsoft.Azure.Wrappers;
+﻿using Core.Plugins.Providers;
+using Core.Plugins.xUnit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnitTests.Base;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
-    /// This cannot be Auto Mocked, as IConfiguration methods used by AzureConnectionStringByConfigurationProvider are static extension methods and cannot be mocked
+    /// This cannot be Auto Mocked, as IConfiguration methods used by ConnectionStringByConfigurationProvider are static extension methods and cannot be mocked
     /// Instead, we'll create a type down below that exhibits the behavior we'd otherwise mock
-    public class ConnectionStringProviderTests : xUnitTestBase
+    public class ConnectionStringProviderTests : TestBase
     {
         public ConnectionStringProviderTests(ITestOutputHelper output) : base(output) { }
 
@@ -34,7 +33,7 @@ namespace UnitTests.Core.Plugins
 
             var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
+            var cut = new ConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -61,7 +60,7 @@ namespace UnitTests.Core.Plugins
 
             var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
+            var cut = new ConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -87,7 +86,7 @@ namespace UnitTests.Core.Plugins
 
             var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
+            var cut = new ConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             string actual = cut.Get(connectionName);
@@ -113,7 +112,7 @@ namespace UnitTests.Core.Plugins
 
             var testConfiguration = new TestConfiguration(testConfigurationData);
 
-            var cut = new AzureConnectionStringByConfigurationProvider(testConfiguration);
+            var cut = new ConnectionStringByConfigurationProvider(testConfiguration);
 
             // Act
             cut.Get(connectionName);
@@ -150,7 +149,7 @@ namespace UnitTests.Core.Plugins
 
         public IConfigurationSection GetSection(string key)
         {
-            var filteredDictionary = _testConfiguration.Where(kvp => kvp.Key.StartsWith(key + ".")).ToDictionary(kvp => kvp.Key.Remove(key + "."), kvp => kvp.Value);
+            var filteredDictionary = _testConfiguration.Where(kvp => kvp.Key.StartsWith(key + ".")).ToDictionary(kvp => kvp.Key.Replace(key + ".", string.Empty), kvp => kvp.Value);
 
             return new TestConfigurationSection(filteredDictionary);
         }

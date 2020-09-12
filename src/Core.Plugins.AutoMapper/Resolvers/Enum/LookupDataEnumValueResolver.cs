@@ -13,9 +13,9 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
 {
     public class LookupDataEnumValueResolver<TInput, TOutput> : LookupDataResolverBase, IMemberValueResolver<object, object, TInput, TOutput>
     {
-        private readonly ICacheHelper _cache;
+        private readonly ICache _cache;
 
-        public LookupDataEnumValueResolver(IConnectionStringProvider connectionStringProvider, ICacheHelper cache)
+        public LookupDataEnumValueResolver(IConnectionStringProvider connectionStringProvider, ICache cache)
             : base(connectionStringProvider)
         {
             _cache = cache;

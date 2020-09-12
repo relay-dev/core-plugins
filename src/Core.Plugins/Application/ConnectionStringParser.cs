@@ -41,5 +41,14 @@ namespace Core.Plugins.Application
 
             return dictionary;
         }
+
+        protected static TValue TryGetValueOrNull<TKey, TValue>(IDictionary<TKey, TValue> dictionary, TKey key) where TValue : class
+        {
+            bool isSuccessful = dictionary.TryGetValue(key, out var value);
+
+            return isSuccessful
+                ? value
+                : null;
+        }
     }
 }

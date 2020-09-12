@@ -1,11 +1,11 @@
-﻿using Core.Plugins.Communication.Smtp;
-using UnitTests.Base;
+﻿using Core.Plugins.Smtp;
+using Core.Plugins.xUnit;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
-    public class SmtpClientSettingsTests : xUnitTestBase
+    public class SmtpClientSettingsTests : TestBase
     {
         public SmtpClientSettingsTests(ITestOutputHelper output) : base(output) { }
 

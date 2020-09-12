@@ -1,11 +1,8 @@
-﻿using Core.Framework;
-using Core.Providers;
+﻿using Core.Providers;
 using System;
 
 namespace Core.Plugins.Providers
 {
-    [Component]
-    [Injectable]
     public class RandomCodeProvider : IRandomCodeProvider
     {
         private readonly IRandomLongProvider _randomLongProvider;

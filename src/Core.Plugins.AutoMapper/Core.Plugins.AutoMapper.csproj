@@ -9,7 +9,7 @@
     <Company>Relay Technologies</Company>
     <Product>Core Plugins</Product>
     <Description>Plugins available for the Core framework</Description>
-    <Copyright>Copyright ©2019</Copyright>
+    <Copyright>Copyright ©2020</Copyright>
     <PackageProjectUrl>https://github.com/relay-dev/core-plugins</PackageProjectUrl>
     <PackageIconUrl>https://i.imgur.com/ptZKdWs.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/relay-dev/core-plugins.git</RepositoryUrl>
@@ -19,8 +19,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
-    <PackageReference Include="Relay.Core" Version="1.0.135" />
+    <PackageReference Include="Relay.Core" Version="1.0.142" />
   </ItemGroup>
 
   <ItemGroup>
