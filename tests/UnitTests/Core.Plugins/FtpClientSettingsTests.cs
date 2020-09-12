@@ -1,24 +1,29 @@
 ﻿using Core.Plugins.Ftp;
-using Core.Plugins.xUnit;
-using Xunit;
-using Xunit.Abstractions;
+using Core.Plugins.NUnit;
+using NUnit.Framework;
+using Shouldly;
 
 namespace UnitTests.Core.Plugins
 {
+    [TestFixture]
     public class FtpClientSettingsTests : TestBase
     {
-        public FtpClientSettingsTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
         {
+            // Arrange
             string input = "Host=host.com;Username=username;Password=password;TimeoutInSeconds=1800;IsSftp=false;";
 
+            // Act
             var settings = new FtpClientSettings(input);
 
-            Assert.NotNull(settings.Host);
-            Assert.NotNull(settings.Username);
-            Assert.NotNull(settings.Password);
+            // Assert
+            settings.Host.ShouldNotBeNull();
+            settings.Host.ShouldBe("host.com");
+            settings.Username.ShouldNotBeNull();
+            settings.Username.ShouldBe("username");
+            settings.Password.ShouldNotBeNull();
+            settings.Password.ShouldBe("password");
         }
     }
 }

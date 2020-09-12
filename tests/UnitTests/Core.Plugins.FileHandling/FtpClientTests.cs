@@ -1,38 +1,51 @@
 ﻿using Core.Plugins.Ftp;
-using Core.Plugins.xUnit;
-using Xunit;
-using Xunit.Abstractions;
+using Core.Plugins.NUnit;
+using NUnit.Framework;
+using Shouldly;
 
 namespace UnitTests.Core.Plugins.FileHandling
 {
+    [TestFixture]
     public class FtpClientTests : TestBase
     {
-        public FtpClientTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
         {
+            // Arrange
             string input = "Host=sftp.testing.com;Username=ABC;Password=123456;IsSftp=true";
 
-            var ftpClientSettings = new FtpClientSettings(input);
+            // Act
+            var settings = new FtpClientSettings(input);
 
-            Assert.NotNull(ftpClientSettings.Host);
-            Assert.NotNull(ftpClientSettings.Username);
-            Assert.NotNull(ftpClientSettings.Password);
-            Assert.True(ftpClientSettings.IsSftp);
+            // Assert
+            settings.Host.ShouldNotBeNull();
+            settings.Host.ShouldBe("sftp.testing.com");
+            settings.Port.ShouldNotBeNull();
+            settings.Port.ShouldBe("20");
+            settings.Username.ShouldNotBeNull();
+            settings.Username.ShouldBe("ABC");
+            settings.Password.ShouldNotBeNull();
+            settings.Password.ShouldBe("123456");
+            settings.IsSftp.ShouldBe(true);
         }
 
-        [Fact]
-        public void Constructor_ShouldDefaultIsSftp_WhenConnectionStringOmmitsTheProperty()
+        [Test]
+        public void Constructor_ShouldDefaultIsSftp_WhenConnectionStringOmitsTheProperty()
         {
-            string input = "Host=ftp.totalims.com;Username=GAP;Password=ran798;";
+            // Arrange
+            string input = "Host=sftp.testing.com;Username=ABC;Password=123456";
 
-            var ftpClientSettings = new FtpClientSettings(input);
+            // Act
+            var settings = new FtpClientSettings(input);
 
-            Assert.NotNull(ftpClientSettings.Host);
-            Assert.NotNull(ftpClientSettings.Username);
-            Assert.NotNull(ftpClientSettings.Password);
-            Assert.False(ftpClientSettings.IsSftp);
+            // Assert
+            settings.Host.ShouldNotBeNull();
+            settings.Host.ShouldBe("sftp.testing.com");
+            settings.Username.ShouldNotBeNull();
+            settings.Username.ShouldBe("ABC");
+            settings.Password.ShouldNotBeNull();
+            settings.Password.ShouldBe("123456");
+            settings.IsSftp.ShouldBe(false);
         }
     }
 }

@@ -1,22 +1,21 @@
-﻿using Core.Plugins.Providers;
-using Core.Plugins.xUnit;
+﻿using Core.Plugins.NUnit;
+using Core.Plugins.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
+using NUnit.Framework;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
     /// This cannot be Auto Mocked, as IConfiguration methods used by ConnectionStringByConfigurationProvider are static extension methods and cannot be mocked
     /// Instead, we'll create a type down below that exhibits the behavior we'd otherwise mock
+    [TestFixture]
     public class ConnectionStringProviderTests : TestBase
     {
-        public ConnectionStringProviderTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldReplaceAllPlaceholders_WhenPlaceholdersExist()
         {
             // Arrange
@@ -39,11 +38,11 @@ namespace UnitTests.Core.Plugins
             string actual = cut.Get(connectionName);
 
             // Assert
-            Assert.DoesNotContain("{{", actual);
-            Assert.DoesNotContain("}}", actual);
+            actual.ShouldNotContain("{{");
+            actual.ShouldNotContain("}}");
         }
 
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldReplaceLeadingPlaceholderAsExpected_WhenPlaceholdersExist()
         {
             // Arrange
@@ -66,10 +65,10 @@ namespace UnitTests.Core.Plugins
             string actual = cut.Get(connectionName);
 
             // Assert
-            Assert.Contains(expectedUsername, actual);
+            actual.ShouldContain(expectedUsername);
         }
 
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldReplaceTrailingPlaceholderAsExpected_WhenPlaceholdersExist()
         {
             // Arrange
@@ -92,10 +91,10 @@ namespace UnitTests.Core.Plugins
             string actual = cut.Get(connectionName);
 
             // Assert
-            Assert.Contains(expectedPassword, actual);
+            actual.ShouldContain(expectedPassword);
         }
 
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldNotThrowAnException_WhenNoPlaceholdersExist()
         {
             // Arrange
@@ -118,7 +117,7 @@ namespace UnitTests.Core.Plugins
             cut.Get(connectionName);
 
             // Assert
-            Assert.True(true);
+            true.ShouldBe(true);
         }
     }
 

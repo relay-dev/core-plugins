@@ -3,93 +3,121 @@ using Core.IoC;
 using Core.Plugins.Application;
 using Core.Plugins.Castle.Windsor.Impl;
 using Core.Plugins.Framework;
+using Core.Plugins.NUnit;
 using Core.Plugins.Utilities;
-using Core.Plugins.xUnit;
 using Core.Providers;
+using NUnit.Framework;
+using Shouldly;
 using System.Collections.Generic;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace UnitTests.Plugins.Application
 {
+    [TestFixture]
     public class IoCBootstrapperTests : TestBase
     {
-        public IoCBootstrapperTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void Startup_ShouldReturnNonNullIoCContainer_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
+            // Assert
+            iocContainer.ShouldNotBeNull();
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Startup_ShouldReturnIoCContainerAsConfiguredByAppComposition_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
-            Assert.True(iocContainer.GetType() == typeof(WindsorIoCContainer));
+            // Assert
+            iocContainer.ShouldNotBeNull();
+            iocContainer.GetType().ShouldBe(typeof(WindsorIoCContainer));
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Startup_ShouldInstallPluginsAsConfiguredByAppComposition_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
-            Assert.Contains(iocContainer.Registrations, r => r.ServiceType == (typeof(IDateTimeProvider)));
+            // Assert
+            iocContainer.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldContain(r => r.ServiceType == typeof(IDateTimeProvider));
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Startup_ShouldInstallRepositoriesFromAppComposition_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
-            Assert.Contains(iocContainer.Registrations, r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.DbContextRepository"));
+            // Assert
+            iocContainer.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldContain(r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.DbContextRepository"));
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Startup_ShouldInstallUnitOfWorkFromAppComposition_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
-            Assert.Contains(iocContainer.Registrations, r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.DbContextUnitOfWork"));
+            // Assert
+            iocContainer.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldContain(r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.DbContextUnitOfWork"));
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 
-        [Fact]
+        [Test]
         public void Startup_ShouldInstallDbContextFromAppComposition_WhenAppCompositionIsValid()
         {
+            // Arrange
             var input = ValidApplicationComposition;
 
+            // Act
             IIoCContainer iocContainer = CUT.Startup(input);
 
-            Assert.NotNull(iocContainer);
-            Assert.Contains(iocContainer.Registrations, r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.InMemoryDbContext"));
+            // Assert
+            iocContainer.ShouldNotBeNull();
+            iocContainer.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldNotBeNull();
+            iocContainer.Registrations.ShouldContain(r => r.ImplementationType.ToString().StartsWith("Core.Plugins.Data.InMemoryDbContext"));
 
+            // Print
             WriteLine(iocContainer.ToString());
         }
 

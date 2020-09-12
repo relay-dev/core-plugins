@@ -1,47 +1,48 @@
-﻿using Core.Plugins.Providers;
+﻿using Core.Plugins.NUnit;
+using Core.Plugins.Providers;
 using Core.Plugins.Security;
-using Core.Plugins.xUnit;
 using Moq;
-using Xunit;
-using Xunit.Abstractions;
+using NUnit.Framework;
+using Shouldly;
 
 namespace UnitTests.Plugins.Security
 {
+    [TestFixture]
     public class AesCryptographyServiceTests : TestBase
     {
-        public AesCryptographyServiceTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void AesCryptography_ShouldEncryptInputAsExpected_WhenInputIsValid()
         {
+            // Arrange
             const string valueToEncrypt = "encrypt";
             const string expectedResult = "JunvToRuNjpHAhSKVECm9w==:ZsxfZgMpNEo=";
 
+            // Act
             string encryptedValue = CUT.Encrypt(valueToEncrypt);
 
-            string decryptedValue = CUT.Decrypt(encryptedValue);
+            // Assert
+            encryptedValue.ShouldBe(expectedResult);
+            encryptedValue.ShouldNotBe(valueToEncrypt);
 
-            Assert.Equal(expectedResult, decryptedValue);
-            Assert.Equal(valueToEncrypt, decryptedValue);
-            Assert.NotEqual(valueToEncrypt, encryptedValue);
-
+            // Print
             WriteLine(encryptedValue);
         }
 
-        [Fact]
+        [Test]
         public void AesCryptography_ShouldDecryptInputAsExpected_WhenInputIsValid()
         {
+            // Arrange
             const string valueToDecrypt = "JunvToRuNjpHAhSKVECm9w==:ZsxfZgMpNEo=";
             const string expectedResult = "encrypt";
 
+            // Act
             string decryptedValue = CUT.Decrypt(valueToDecrypt);
 
-            string encryptedValue = CUT.Encrypt(decryptedValue);
+            // Assert
+            decryptedValue.ShouldBe(expectedResult);
+            decryptedValue.ShouldNotBe(valueToDecrypt);
 
-            Assert.Equal(expectedResult, encryptedValue);
-            Assert.Equal(valueToDecrypt, encryptedValue);
-            Assert.NotEqual(valueToDecrypt, decryptedValue);
-
+            // Print
             WriteLine(decryptedValue);
         }
 

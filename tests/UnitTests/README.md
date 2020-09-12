@@ -1,3 +1,10 @@
-﻿Method naming convention:
+﻿### Test method conventions:
 
-{{MethodName}}_{{ExpectedBehavior}}_{{StateUnderTest}}
+public void MethodName_ExpectedBehavior_StateUnderTest()
+{
+	// Arrange
+
+	// Act
+
+	// Assert
+}

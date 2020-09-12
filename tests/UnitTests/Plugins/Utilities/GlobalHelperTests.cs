@@ -1,36 +1,41 @@
-﻿using Core.Plugins.Utilities;
-using Core.Plugins.xUnit;
-using Xunit;
-using Xunit.Abstractions;
+﻿using Core.Plugins.NUnit;
+using Core.Plugins.Utilities;
+using NUnit.Framework;
+using Shouldly;
 
 namespace UnitTests.Plugins.Utilities
 {
+    [TestFixture]
     public class GlobalHelperTests : TestBase
     {
-        public GlobalHelperTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void IsAnyStringPopulated_ShouldReturnFalse_WhenAllStringsAreEmpty()
         {
+            // Arrange & Act
             bool result = GlobalHelper.IsAnyStringPopulated(null, string.Empty, "");
 
-            Assert.False(result);
+            // Assert
+            result.ShouldBeFalse();
         }
 
-        [Fact]
+        [Test]
         public void IsAnyStringPopulated_ShouldReturnTrue_WhenAllStringsAreNotEmpty()
         {
+            // Arrange & Act
             bool result = GlobalHelper.IsAnyStringPopulated("A", "B", "ABC");
 
-            Assert.True(result);
+            // Assert
+            result.ShouldBeTrue();
         }
 
-        [Fact]
+        [Test]
         public void IsAnyStringPopulated_ShouldReturnTrue_WhenAtLeastOneStringIsNotEmpty()
         {
+            // Arrange & Act
             bool result = GlobalHelper.IsAnyStringPopulated(null, string.Empty, "Populated!");
 
-            Assert.True(result);
+            // Assert
+            result.ShouldBeTrue();
         }
     }
 }

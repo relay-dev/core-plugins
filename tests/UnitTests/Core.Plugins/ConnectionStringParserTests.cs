@@ -1,17 +1,16 @@
 ﻿using Core.Plugins.Application;
-using Core.Plugins.xUnit;
+using Core.Plugins.NUnit;
+using NUnit.Framework;
+using Shouldly;
 using System.Collections.Generic;
 using System.Dynamic;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace UnitTests.Core.Plugins
 {
+    [TestFixture]
     public class ConnectionStringParserTests : TestBase
     {
-        public ConnectionStringParserTests(ITestOutputHelper output) : base(output) { }
-
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldReplaceAllPlaceholders_WhenPlaceholdersExist()
         {
             // Arrange
@@ -22,15 +21,14 @@ namespace UnitTests.Core.Plugins
             dynamic parsed = ToDynamic(dictionary);
 
             // Assert
-            Assert.NotNull(parsed);
-            Assert.NotNull(parsed);
-            Assert.NotNull(parsed.SegmentOne);
-            Assert.Equal("ValueOne", parsed.SegmentOne);
-            Assert.NotNull(parsed.SegmentTwo);
-            Assert.Equal("ValueTwo", parsed.SegmentTwo);
+            ((object)parsed).ShouldNotBeNull();
+            ((object)parsed.SegmentOne).ShouldNotBeNull();
+            ((object)parsed.SegmentOne).ShouldBe("ValueOne");
+            ((object)parsed.SegmentTwo).ShouldNotBeNull();
+            ((object)parsed.SegmentTwo).ShouldBe("ValueTwo");
         }
 
-        [Fact]
+        [Test]
         public void GetConnectionString_ShouldParseAsExpected_WhenEqualSignIsInSegment()
         {
             // Arrange
@@ -41,12 +39,11 @@ namespace UnitTests.Core.Plugins
             dynamic parsed = ToDynamic(dictionary);
 
             // Assert
-            Assert.NotNull(parsed);
-            Assert.NotNull(parsed);
-            Assert.NotNull(parsed.Host);
-            Assert.Equal("SomeURL", parsed.SegmentOne);
-            Assert.NotNull(parsed.Key);
-            Assert.Equal("12345=", parsed.SegmentTwo);
+            ((object)parsed).ShouldNotBeNull();
+            ((object)parsed.Host).ShouldNotBeNull();
+            ((object)parsed.Host).ShouldBe("SomeURL");
+            ((object)parsed.Key).ShouldNotBeNull();
+            ((object)parsed.Key).ShouldBe("12345=");
         }
 
         private static dynamic ToDynamic<TKey, TValue>(IDictionary<TKey, TValue> dictionary)

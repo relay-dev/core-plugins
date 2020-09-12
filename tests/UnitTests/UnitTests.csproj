@@ -8,12 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="Moq" Version="4.14.5" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Shouldly" Version="3.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +16,7 @@
     <ProjectReference Include="..\..\src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.FileHandling\Core.Plugins.FileHandling.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj" />
-    <ProjectReference Include="..\..\src\Core.Plugins.xUnit\Core.Plugins.xUnit.csproj" />
+    <ProjectReference Include="..\..\src\Core.Plugins.NUnit\Core.Plugins.NUnit.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins\Core.Plugins.csproj" />
   </ItemGroup>
 
