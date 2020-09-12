@@ -8,7 +8,7 @@ namespace Core.Plugins.MediatR
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFluentValidationPlugin(this IServiceCollection services, List<Type> commandHandlerTypes)
+        public static IServiceCollection AddMediatRPlugin(this IServiceCollection services, List<Type> commandHandlerTypes)
         {
             if (commandHandlerTypes == null || !commandHandlerTypes.Any())
             {
