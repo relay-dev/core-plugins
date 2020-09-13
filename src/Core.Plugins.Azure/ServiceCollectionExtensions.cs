@@ -18,7 +18,7 @@ namespace Core.Plugins.Azure
         {
             if (config.GetConnectionString(connectionStringName) == null)
             {
-                throw new CoreException(ErrorCode.INVA, $"Could not find StorageAccount connection string with name '{connectionStringName}'");
+                return services;
             }
 
             // Add StorageAccount
@@ -32,7 +32,7 @@ namespace Core.Plugins.Azure
         {
             if (config.GetConnectionString(connectionStringName) == null)
             {
-                throw new CoreException(ErrorCode.INVA, $"Could not find EventGrid connection string with name '{connectionStringName}'");
+                return services;
             }
 
             // Add EventGrid
