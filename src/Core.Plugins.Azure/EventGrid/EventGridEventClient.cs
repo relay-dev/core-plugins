@@ -4,7 +4,6 @@ using Core.Providers;
 using Core.Utilities;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
-using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -31,6 +30,17 @@ namespace Core.Plugins.Azure.EventGrid
             _connectionStringProvider = connectionStringProvider;
         }
 
+        public async Task<string> RaiseEventAsync(string subscriptionEventType, object data, CancellationToken cancellationToken)
+        {
+            var e = new Event
+            {
+                EventType = subscriptionEventType,
+                Data = data
+            };
+
+            return await RaiseEventAsync(e, cancellationToken);
+        }
+
         public async Task<string> RaiseEventAsync(Event e, CancellationToken cancellationToken)
         {
             string data = await _jsonSerializer.SerializeAsync(e.Data, cancellationToken);
@@ -41,7 +51,7 @@ namespace Core.Plugins.Azure.EventGrid
                 {
                     Id = e.Id,
                     EventTime = _dateTimeProvider.Get(),
-                    Topic = e.Topic,
+                    Topic = e.Topic ?? TopicName,
                     EventType = e.EventType,
                     Subject = e.Subject,
                     DataVersion = e.DataVersion,
@@ -55,5 +65,6 @@ namespace Core.Plugins.Azure.EventGrid
         }
 
         private string TopicHostname => new Uri(new ConnectionStringParser().Parse(_connectionStringProvider.Get("DefaultEventGridConnection"))["Endpoint"]).Host;
+        private string TopicName => new ConnectionStringParser().Parse(_connectionStringProvider.Get("DefaultEventGridConnection"))["Topic"];
     }
 }
