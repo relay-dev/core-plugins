@@ -1,8 +1,11 @@
 ﻿using Core.Events;
+using Core.Plugins.Application;
 using Core.Providers;
 using Core.Utilities;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,15 +17,18 @@ namespace Core.Plugins.Azure.EventGrid
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IEventGridClient _eventGridClient;
+        private readonly IConnectionStringProvider _connectionStringProvider;
 
         public EventGridEventClient(
             IJsonSerializer jsonSerializer,
             IDateTimeProvider dateTimeProvider,
-            IEventGridClient eventGridClient)
+            IEventGridClient eventGridClient,
+            IConnectionStringProvider connectionStringProvider)
         {
             _jsonSerializer = jsonSerializer;
             _dateTimeProvider = dateTimeProvider;
             _eventGridClient = eventGridClient;
+            _connectionStringProvider = connectionStringProvider;
         }
 
         public async Task<string> RaiseEventAsync(Event e, CancellationToken cancellationToken)
@@ -43,9 +49,11 @@ namespace Core.Plugins.Azure.EventGrid
                 }
             };
 
-            await _eventGridClient.PublishEventsAsync(e.Topic, events, cancellationToken);
+            await _eventGridClient.PublishEventsAsync(TopicHostname, events, cancellationToken);
 
             return e.Id;
         }
+
+        private string TopicHostname => new Uri(new ConnectionStringParser().Parse(_connectionStringProvider.Get("DefaultEventGridConnection"))["Endpoint"]).Host;
     }
 }
