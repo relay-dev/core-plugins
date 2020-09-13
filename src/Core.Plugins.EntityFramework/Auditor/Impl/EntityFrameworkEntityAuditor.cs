@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 
-namespace Core.Plugins.EntityFramework.Impl
+namespace Core.Plugins.EntityFramework.Auditor.Impl
 {
     public class EntityFrameworkEntityAuditor : IEntityAuditor
     {

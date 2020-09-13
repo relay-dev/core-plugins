@@ -1,4 +1,5 @@
-﻿using Core.Plugins.EntityFramework.Impl;
+﻿using Core.Plugins.EntityFramework.Auditor;
+using Core.Plugins.EntityFramework.Auditor.Impl;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Plugins.EntityFramework
