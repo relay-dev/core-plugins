@@ -9,8 +9,7 @@ namespace Core.Plugins.NUnit.Integration
     {
         protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
 
-        [SetUp]
-        public virtual void Setup()
+        public override void Setup()
         {
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
@@ -48,6 +47,12 @@ namespace Core.Plugins.NUnit.Integration
         public virtual void OneTimeSetUp()
         {
             Host = Bootstrap();
+        }
+
+        [SetUp]
+        public virtual void Setup()
+        {
+            
         }
     }
 }
