@@ -71,9 +71,6 @@ namespace Core.Plugins
                 return services;
             }
 
-            // Add Warmup
-            services.AddTransient<WarmupTaskExecutor>();
-
             // Add Warmup types
             warmupTypes.ForEach(warmupType =>
             {
