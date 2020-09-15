@@ -26,8 +26,8 @@ namespace Core.Plugins.NUnit.Integration
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
 
-        private const string SutKey = "_sut";
-        private const string ServiceProviderKey = "_serviceProvider";
+        protected const string SutKey = "_sut";
+        protected const string ServiceProviderKey = "_serviceProvider";
     }
 
     public abstract class IntegrationTest : TestBase
