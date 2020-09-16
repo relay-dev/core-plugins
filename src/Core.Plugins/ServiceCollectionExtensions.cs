@@ -1,18 +1,11 @@
 ﻿using Core.Application;
 using Core.Caching;
-using Core.Ftp;
 using Core.Plugins.Application;
 using Core.Plugins.Caching;
-using Core.Plugins.Framework;
-using Core.Plugins.Ftp;
 using Core.Plugins.Providers;
-using Core.Plugins.Security;
-using Core.Plugins.Smtp;
 using Core.Plugins.Utilities;
 using Core.Plugins.Validation;
 using Core.Providers;
-using Core.Security;
-using Core.Smtp;
 using Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -31,9 +24,6 @@ namespace Core.Plugins
             // Add Cache
             services.AddScoped<ICache, DistributedCache>();
 
-            // Add Ftp
-            services.AddScoped<IFtpClient, SystemFtpClient>();
-
             // Add Providers
             services.AddScoped<IApplicationContextProvider, ApplicationContextProvider>();
             services.AddScoped<ICommandContextProvider, CommandContextProvider>();
@@ -46,14 +36,6 @@ namespace Core.Plugins
             services.AddScoped<IResourceProvider, ResourceProvider>();
             services.AddScoped<ISequenceProvider, SequenceProvider>();
             services.AddScoped<IUsernameProvider, UsernameProvider>();
-
-            // Add Security
-            services.AddScoped<ICryptographyService, AesCryptographyService>();
-            services.AddScoped<IHashingService, Sha256HashingService>();
-
-            // Add Smtp
-            services.AddScoped<ISmtpClient, SystemSmtpClient>();
-            services.AddScoped<ISmtpClientFactory, SmtpClientFactory>();
 
             // Add Utilities
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
