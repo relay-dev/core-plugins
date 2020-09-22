@@ -41,6 +41,18 @@ namespace Core.Plugins.Azure.EventGrid
             return await RaiseEventAsync(e, cancellationToken);
         }
 
+        public async Task<string> RaiseEventAsync(string subscriptionEventType, string subject, object data, CancellationToken cancellationToken)
+        {
+            var e = new Event
+            {
+                EventType = subscriptionEventType,
+                Subject = subject,
+                Data = data
+            };
+
+            return await RaiseEventAsync(e, cancellationToken);
+        }
+
         public async Task<string> RaiseEventAsync(Event e, CancellationToken cancellationToken)
         {
             string data = await _jsonSerializer.SerializeAsync(e.Data, cancellationToken);
@@ -51,7 +63,7 @@ namespace Core.Plugins.Azure.EventGrid
                 {
                     Id = e.Id,
                     EventTime = _dateTimeProvider.Get(),
-                    Topic = e.Topic ?? TopicName,
+                    Topic = TopicName,
                     EventType = e.EventType,
                     Subject = e.Subject,
                     DataVersion = e.DataVersion,
