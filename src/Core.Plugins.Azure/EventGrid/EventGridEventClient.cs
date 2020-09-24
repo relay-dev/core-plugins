@@ -1,7 +1,6 @@
 ﻿using Core.Events;
 using Core.Plugins.Application;
 using Core.Providers;
-using Core.Utilities;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
 using System;
@@ -13,18 +12,15 @@ namespace Core.Plugins.Azure.EventGrid
 {
     public class EventGridEventClient : IEventClient
     {
-        private readonly IJsonSerializer _jsonSerializer;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IEventGridClient _eventGridClient;
         private readonly IConnectionStringProvider _connectionStringProvider;
 
         public EventGridEventClient(
-            IJsonSerializer jsonSerializer,
             IDateTimeProvider dateTimeProvider,
             IEventGridClient eventGridClient,
             IConnectionStringProvider connectionStringProvider)
         {
-            _jsonSerializer = jsonSerializer;
             _dateTimeProvider = dateTimeProvider;
             _eventGridClient = eventGridClient;
             _connectionStringProvider = connectionStringProvider;
@@ -55,8 +51,6 @@ namespace Core.Plugins.Azure.EventGrid
 
         public async Task<string> RaiseEventAsync(Event e, CancellationToken cancellationToken)
         {
-            string data = await _jsonSerializer.SerializeAsync(e.Data, cancellationToken);
-
             var events = new List<EventGridEvent>
             {
                 new EventGridEvent
@@ -67,7 +61,7 @@ namespace Core.Plugins.Azure.EventGrid
                     EventType = e.EventType,
                     Subject = e.Subject,
                     DataVersion = e.DataVersion,
-                    Data = data
+                    Data = e.Data
                 }
             };
 
