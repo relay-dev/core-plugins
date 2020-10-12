@@ -41,7 +41,6 @@ namespace Core.Plugins
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
             services.AddScoped<IGlobalHelper, GlobalHelperWrapper>();
             services.AddScoped<IInlineValidator, InlineValidator>();
-            services.AddScoped<IJsonSerializer, SystemJsonSerializer>();
 
             return services;
         }
