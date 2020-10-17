@@ -35,7 +35,7 @@ namespace Core.Plugins
             services.AddScoped<IRandomLongProvider, RandomLongProvider>();
             services.AddScoped<IResourceProvider, ResourceProvider>();
             services.AddScoped<ISequenceProvider, SequenceProvider>();
-            services.AddScoped<IUsernameProvider, UsernameProvider>();
+            //services.AddScoped<IUsernameProvider, UsernameProvider>();
 
             // Add Utilities
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
