@@ -33,8 +33,6 @@ namespace Core.Plugins.NUnit.Integration
     public abstract class IntegrationTest : TestBase
     {
         protected IHost Host;
-        public abstract IHost Bootstrap();
-        public abstract void BootstrapTest();
 
         protected IntegrationTest()
         {
@@ -55,5 +53,9 @@ namespace Core.Plugins.NUnit.Integration
         {
             BootstrapTest();
         }
+
+        public abstract IHost Bootstrap();
+
+        public virtual void BootstrapTest() { }
     }
 }
