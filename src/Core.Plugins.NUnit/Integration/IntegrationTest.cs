@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
+using System;
 
 namespace Core.Plugins.NUnit.Integration
 {
@@ -9,7 +9,7 @@ namespace Core.Plugins.NUnit.Integration
     {
         protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
 
-        public override void Setup()
+        public override void BootstrapTest()
         {
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
@@ -34,6 +34,7 @@ namespace Core.Plugins.NUnit.Integration
     {
         protected IHost Host;
         public abstract IHost Bootstrap();
+        public abstract void BootstrapTest();
 
         protected IntegrationTest()
         {
@@ -44,15 +45,15 @@ namespace Core.Plugins.NUnit.Integration
         }
 
         [OneTimeSetUp]
-        public virtual void OneTimeSetUp()
+        public void OneTimeSetUp()
         {
             Host = Bootstrap();
         }
 
         [SetUp]
-        public virtual void Setup()
+        public void Setup()
         {
-            
+            BootstrapTest();
         }
     }
 }
