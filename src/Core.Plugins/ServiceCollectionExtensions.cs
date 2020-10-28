@@ -20,6 +20,9 @@ namespace Core.Plugins
         {
             // Add Application services
             services.AddScoped<IConnectionStringParser, ConnectionStringParser>();
+            
+            // Add Caching
+            services.AddScoped<ICache, DistributedCache>();
 
             // Add Providers
             services.AddScoped<IApplicationContextProvider, ApplicationContextProvider>();
