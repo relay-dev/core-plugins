@@ -22,5 +22,10 @@ namespace Core.Plugins.Caching
         {
             return CacheKeys.Keys.ToList();
         }
+
+        public static void Clear()
+        {
+            CacheKeys.Clear();
+        }
     }
 }
