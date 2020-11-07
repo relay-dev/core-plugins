@@ -1,6 +1,6 @@
-﻿using Core.Caching;
-using Core.Plugins.AutoMapper.LookupData;
+﻿using Core.Plugins.AutoMapper.LookupData;
 using Core.Providers;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +10,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Database
 {
     public class LookupDataKeyResolver<T> : LookupDataKeyResolverBase<T>
     {
-        public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, ICache cache)
+        public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, IMemoryCache cache)
             : base(connectionStringProvider, cache) { }
 
         protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)

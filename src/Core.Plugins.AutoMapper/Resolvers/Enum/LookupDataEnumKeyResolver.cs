@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using Core.Caching;
 using Core.Exceptions;
 using Core.Plugins.AutoMapper.LookupData;
+using Core.Plugins.Caching;
 using Core.Providers;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,9 +13,9 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
 {
     public class LookupDataEnumKeyResolver<T> : LookupDataResolverBase, IMemberValueResolver<object, object, System.Enum, T>
     {
-        private readonly ICache _cache;
+        private readonly IMemoryCache _cache;
 
-        public LookupDataEnumKeyResolver(IConnectionStringProvider connectionStringProvider, ICache cache)
+        public LookupDataEnumKeyResolver(IConnectionStringProvider connectionStringProvider, IMemoryCache cache)
             : base(connectionStringProvider)
         {
             _cache = cache;
@@ -38,7 +39,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
             }
 
             string tableName = lookupDataEnumAttribute.TableName ?? sourceMember.GetType().Name;
-            string cacheKey = _cache.FormatKey(CacheKeyPrefix, tableName);
+            string cacheKey = string.Join("::", CacheKeyPrefix, tableName);
 
             T result = GetPrimaryKeyForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, tableName, cacheKey);
 

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using Core.Caching;
 using Core.Plugins.AutoMapper.LookupData;
+using Core.Plugins.Caching;
 using Core.Providers;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Core.Plugins.AutoMapper.Resolvers
 {
     public abstract class LookupDataValueResolverBase<T> : LookupDataResolverBase<LookupDataByKey<T>, string>
     {
-        private readonly ICache _cache;
+        private readonly IMemoryCache _cache;
 
-        protected LookupDataValueResolverBase(IConnectionStringProvider connectionStringProvider, ICache cache)
+        protected LookupDataValueResolverBase(IConnectionStringProvider connectionStringProvider, IMemoryCache cache)
             : base(connectionStringProvider)
         {
             _cache = cache;
