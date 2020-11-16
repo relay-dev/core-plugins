@@ -34,7 +34,6 @@ namespace Core.Plugins
 
             // Add Utilities
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
-            services.AddScoped<IGlobalHelper, GlobalHelperWrapper>();
             services.AddScoped<IInlineValidator, InlineValidator>();
 
             return services;
