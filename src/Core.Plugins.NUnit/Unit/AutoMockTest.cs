@@ -14,14 +14,9 @@ namespace Core.Plugins.NUnit.Unit
         }
 
         [SetUp]
-        public virtual void Setup()
+        public void Setup()
         {
-            var autoMocker = new AutoMocker();
-
-            TCUT cut = autoMocker.CreateInstance<TCUT>();
-
-            CurrentTestProperties.Set(CutKey, cut);
-            CurrentTestProperties.Set(ContainerKey, autoMocker);
+            BootstrapTest();
         }
 
         protected Mock<TMock> ResolveMock<TMock>() where TMock : class
@@ -29,6 +24,16 @@ namespace Core.Plugins.NUnit.Unit
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
 
             return autoMocker.GetMock<TMock>();
+        }
+
+        protected virtual void BootstrapTest()
+        {
+            var autoMocker = new AutoMocker();
+
+            TCUT cut = autoMocker.CreateInstance<TCUT>();
+
+            CurrentTestProperties.Set(CutKey, cut);
+            CurrentTestProperties.Set(ContainerKey, autoMocker);
         }
 
         private const string CutKey = "_cut";
