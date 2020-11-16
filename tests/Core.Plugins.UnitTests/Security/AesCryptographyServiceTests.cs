@@ -1,11 +1,10 @@
 ﻿using Core.Plugins.NUnit;
-using Core.Plugins.Providers;
 using Core.Plugins.Security;
-using Moq;
+using Core.Providers;
 using NUnit.Framework;
 using Shouldly;
 
-namespace UnitTests.Plugins.Security
+namespace Core.Plugins.UnitTests.Security
 {
     [TestFixture]
     public class AesCryptographyServiceTests : TestBase
@@ -15,14 +14,14 @@ namespace UnitTests.Plugins.Security
         {
             // Arrange
             const string valueToEncrypt = "encrypt";
-            const string expectedResult = "JunvToRuNjpHAhSKVECm9w==:ZsxfZgMpNEo=";
 
             // Act
             string encryptedValue = CUT.Encrypt(valueToEncrypt);
+            string decryptedValue = CUT.Decrypt(encryptedValue);
 
             // Assert
-            encryptedValue.ShouldBe(expectedResult);
             encryptedValue.ShouldNotBe(valueToEncrypt);
+            decryptedValue.ShouldBe(valueToEncrypt);
 
             // Print
             WriteLine(encryptedValue);
@@ -46,18 +45,26 @@ namespace UnitTests.Plugins.Security
             WriteLine(decryptedValue);
         }
 
-        private AesCryptographyService CUT
+        private AesCryptographyService CUT => new AesCryptographyService(new TestKeyProvider("R5TYV2WX1QCUT6UC"));
+    }
+
+    internal class TestKeyProvider : IKeyProvider
+    {
+        private readonly string _key;
+
+        public TestKeyProvider(string key)
         {
-            get
-            {
-                var encryptionKeyProviderMock = new Mock<EncryptionKeyProvider>();
+            _key = key;
+        }
 
-                encryptionKeyProviderMock
-                    .Setup(mock => mock.Get(It.IsAny<string>()))
-                    .Returns("R5TYV2WX1QCUT6UC");
+        public string Get()
+        {
+            return _key;
+        }
 
-                return new AesCryptographyService(encryptionKeyProviderMock.Object);
-            }
-        } 
+        public string Get(string keyIdentifier)
+        {
+            return _key;
+        }
     }
 }

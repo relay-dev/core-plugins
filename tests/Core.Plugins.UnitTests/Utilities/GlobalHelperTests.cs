@@ -3,7 +3,7 @@ using Core.Plugins.Utilities;
 using NUnit.Framework;
 using Shouldly;
 
-namespace UnitTests.Plugins.Utilities
+namespace Core.Plugins.UnitTests.Utilities
 {
     [TestFixture]
     public class GlobalHelperTests : TestBase

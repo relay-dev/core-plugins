@@ -5,7 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Dynamic;
 
-namespace UnitTests.Core.Plugins
+namespace Core.Plugins.UnitTests.Application
 {
     [TestFixture]
     public class ConnectionStringParserTests : TestBase

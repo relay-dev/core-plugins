@@ -3,7 +3,7 @@ using Core.Plugins.Smtp;
 using NUnit.Framework;
 using Shouldly;
 
-namespace UnitTests.Core.Plugins
+namespace Core.Plugins.UnitTests.Smtp
 {
     [TestFixture]
     public class SmtpClientSettingsTests : TestBase

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins", "src\Core.Pl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C5548B55-761F-4575-B25E-C0CEB940F40B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.AutoMapper", "src\Core.Plugins.AutoMapper\Core.Plugins.AutoMapper.csproj", "{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Castle.Windsor", "src\Core.Plugins.Castle.Windsor\Core.Plugins.Castle.Windsor.csproj", "{BF583D10-306B-4F4F-A0AB-54139D1A0555}"
@@ -21,11 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.NUnit", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.xUnit", "src\Core.Plugins.xUnit\Core.Plugins.xUnit.csproj", "{F927CAB7-150C-444B-9129-BF63BA8D648A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.EntityFramework", "src\Core.Plugins.EntityFramework\Core.Plugins.EntityFramework.csproj", "{485EBA2A-1152-4EBE-8D87-D715228D6FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.EntityFramework", "src\Core.Plugins.EntityFramework\Core.Plugins.EntityFramework.csproj", "{485EBA2A-1152-4EBE-8D87-D715228D6FAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.MediatR", "src\Core.Plugins.MediatR\Core.Plugins.MediatR.csproj", "{0FA29DB4-9BE4-41E7-8287-B6D171FDD2E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.MediatR", "src\Core.Plugins.MediatR\Core.Plugins.MediatR.csproj", "{0FA29DB4-9BE4-41E7-8287-B6D171FDD2E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.Azure", "src\Core.Plugins.Azure\Core.Plugins.Azure.csproj", "{8B2AF92D-620C-45B7-8622-7DCEF72DA866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Azure", "src\Core.Plugins.Azure\Core.Plugins.Azure.csproj", "{8B2AF92D-620C-45B7-8622-7DCEF72DA866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.UnitTests", "tests\Core.Plugins.UnitTests\Core.Plugins.UnitTests.csproj", "{937BA1FC-8002-41A8-81CC-D4BA40C64C93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{9F96E952-7543-460D-922E-87E5AB15B698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F96E952-7543-460D-922E-87E5AB15B698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F96E952-7543-460D-922E-87E5AB15B698}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{851EEF2D-BF41-473D-AD1C-19AB0AFA2294}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,12 +73,16 @@ Global
 		{8B2AF92D-620C-45B7-8622-7DCEF72DA866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B2AF92D-620C-45B7-8622-7DCEF72DA866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B2AF92D-620C-45B7-8622-7DCEF72DA866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9F4D0D3F-3A20-4918-91DD-6BF612B7BB86} = {C5548B55-761F-4575-B25E-C0CEB940F40B}
+		{937BA1FC-8002-41A8-81CC-D4BA40C64C93} = {C5548B55-761F-4575-B25E-C0CEB940F40B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C6E60D3-FE38-4C97-B823-F5380E1D0B65}

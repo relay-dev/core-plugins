@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UnitTests.Core.Plugins
+namespace Core.Plugins.UnitTests.Providers
 {
     /// This cannot be Auto Mocked, as IConfiguration methods used by ConnectionStringByConfigurationProvider are static extension methods and cannot be mocked
     /// Instead, we'll create a type down below that exhibits the behavior we'd otherwise mock

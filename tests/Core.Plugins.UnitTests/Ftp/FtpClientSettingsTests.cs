@@ -3,16 +3,16 @@ using Core.Plugins.NUnit;
 using NUnit.Framework;
 using Shouldly;
 
-namespace UnitTests.Core.Plugins.FileHandling
+namespace Core.Plugins.UnitTests.Ftp
 {
     [TestFixture]
-    public class FtpClientTests : TestBase
+    public class FtpClientSettingsTests : TestBase
     {
         [Test]
         public void Constructor_ShouldParseConnectionStringAsExpected_WhenConnectionStringIsValid()
         {
             // Arrange
-            string input = "Host=sftp.testing.com;Username=ABC;Password=123456;IsSftp=true";
+            string input = "Host=sftp.testing.com;Port=20;Username=ABC;Password=123456;IsSftp=true";
 
             // Act
             var settings = new FtpClientSettings(input);
