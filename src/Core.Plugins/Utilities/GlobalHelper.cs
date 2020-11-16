@@ -33,6 +33,11 @@ namespace Core.Plugins.Utilities
             return dataRow[columnName];
         }
 
+        public static bool IsAnyStringEmpty(params string[] strings)
+        {
+            return strings.Any(string.IsNullOrEmpty);
+        }
+
         public static bool IsAnyStringPopulated(params string[] strings)
         {
             return !strings.All(string.IsNullOrEmpty);
