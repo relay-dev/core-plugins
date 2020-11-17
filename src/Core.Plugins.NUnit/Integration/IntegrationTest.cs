@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using System.Threading;
@@ -9,28 +10,21 @@ namespace Core.Plugins.NUnit.Integration
     public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
         protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
+        protected ILogger Logger => ResolveService<ILogger<TSUT>>();
 
         protected override void BootstrapTest()
         {
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
-            if (serviceProvider != null)
-            {
-                TSUT sut = serviceProvider.GetRequiredService<TSUT>();
+            TSUT sut = serviceProvider.GetRequiredService<TSUT>();
 
-                CurrentTestProperties.Set(SutKey, sut);
-                CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
-            }
+            CurrentTestProperties.Set(SutKey, sut);
+            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
         protected TService ResolveService<TService>()
         {
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
-
-            if (serviceProvider == null)
-            {
-                throw new InvalidOperationException("IServiceProvider was not set");
-            }
 
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
