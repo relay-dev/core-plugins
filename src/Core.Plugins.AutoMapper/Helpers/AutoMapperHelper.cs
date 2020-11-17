@@ -8,6 +8,11 @@ namespace Core.Plugins.AutoMapper.Helpers
 {
     public static class AutoMapperHelper
     {
+        public static MapperConfiguration GenerateMapperConfiguration<TMapper>()
+        {
+            return GenerateMapperConfiguration(new[] { typeof(TMapper).Assembly });
+        }
+
         public static MapperConfiguration GenerateMapperConfiguration(Assembly[] assemblies)
         {
             return new MapperConfiguration(cfg =>
