@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Core.Plugins.AutoMapper.Mappers;
+using Core.Plugins.AutoMapper.Extensions;
 using Core.Plugins.AutoMapper.Resolvers.Database;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,7 +27,9 @@ namespace Core.Plugins.AutoMapper
 
                         return cfg;
                     });
-                }, mapperTypes.Union(CoreMapperTypes));
+
+                    cfg.AddCoreAutoMappers();
+                });
 
             // Add Resolvers
             services.AddScoped(typeof(LookupDataKeyResolver<>));
@@ -35,11 +37,5 @@ namespace Core.Plugins.AutoMapper
 
             return services;
         }
-
-        private static readonly List<Type> CoreMapperTypes = new List<Type>
-        {
-            typeof(PrimitiveMappers),
-            typeof(SystemMappers)
-        };
     }
 }
