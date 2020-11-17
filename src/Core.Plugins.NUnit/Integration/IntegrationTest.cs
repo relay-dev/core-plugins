@@ -14,20 +14,26 @@ namespace Core.Plugins.NUnit.Integration
         {
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
-            TSUT sut = serviceProvider.GetRequiredService<TSUT>();
+            if (serviceProvider != null)
+            {
+                TSUT sut = serviceProvider.GetRequiredService<TSUT>();
 
-            CurrentTestProperties.Set(SutKey, sut);
-            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
+                CurrentTestProperties.Set(SutKey, sut);
+                CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
+            }
         }
 
         protected TService ResolveService<TService>()
         {
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
+            if (serviceProvider == null)
+            {
+                throw new InvalidOperationException("IServiceProvider was not set");
+            }
+
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
-
-        protected CancellationToken CancellationToken => new CancellationToken();
 
         protected const string SutKey = "_sut";
         protected const string ServiceProviderKey = "_serviceProvider";
@@ -60,5 +66,7 @@ namespace Core.Plugins.NUnit.Integration
         protected abstract IHost Bootstrap();
 
         protected virtual void BootstrapTest() { }
+
+        protected CancellationToken CancellationToken => new CancellationToken();
     }
 }
