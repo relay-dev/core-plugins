@@ -3,6 +3,7 @@ using Core.Ftp;
 using Core.Plugins.FileHandling.Delimited;
 using Core.Plugins.FileHandling.Excel;
 using Core.Plugins.FileHandling.Ftp;
+using Core.Plugins.Ftp;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Plugins.FileHandling
@@ -18,6 +19,10 @@ namespace Core.Plugins.FileHandling
             if (isUseSftp)
             {
                 services.AddScoped<IFtpClient, RensiSftpClient>();
+            }
+            else
+            {
+                services.AddScoped<IFtpClient, SystemFtpClient>();
             }
 
             return services;
