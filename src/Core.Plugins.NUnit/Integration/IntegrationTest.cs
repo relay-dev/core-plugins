@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 using System;
+using System.Threading;
 
 namespace Core.Plugins.NUnit.Integration
 {
@@ -25,6 +26,8 @@ namespace Core.Plugins.NUnit.Integration
 
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
+
+        protected CancellationToken CancellationToken => new CancellationToken();
 
         protected const string SutKey = "_sut";
         protected const string ServiceProviderKey = "_serviceProvider";
