@@ -29,7 +29,7 @@ namespace Core.Plugins.AutoMapper
                     });
 
                     cfg.AddCoreAutoMappers();
-                });
+                }, mapperTypes);
 
             // Add Resolvers
             services.AddScoped(typeof(LookupDataKeyResolver<>));
