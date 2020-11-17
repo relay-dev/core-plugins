@@ -7,32 +7,6 @@ using System.Threading;
 
 namespace Core.Plugins.NUnit.Integration
 {
-    public abstract class IntegrationTest<TSUT> : IntegrationTest
-    {
-        protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
-        protected ILogger Logger => ResolveService<ILogger<TSUT>>();
-
-        protected override void BootstrapTest()
-        {
-            IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
-
-            TSUT sut = serviceProvider.GetRequiredService<TSUT>();
-
-            CurrentTestProperties.Set(SutKey, sut);
-            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
-        }
-
-        protected TService ResolveService<TService>()
-        {
-            var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
-
-            return (TService)serviceProvider.GetRequiredService(typeof(TService));
-        }
-
-        protected const string SutKey = "_sut";
-        protected const string ServiceProviderKey = "_serviceProvider";
-    }
-
     public abstract class IntegrationTest : TestBase
     {
         protected IHost Host;
@@ -62,5 +36,31 @@ namespace Core.Plugins.NUnit.Integration
         protected virtual void BootstrapTest() { }
 
         protected CancellationToken CancellationToken => new CancellationToken();
+    }
+
+    public abstract class IntegrationTest<TSUT> : IntegrationTest
+    {
+        protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
+        protected ILogger Logger => ResolveService<ILogger<TSUT>>();
+
+        protected override void BootstrapTest()
+        {
+            IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
+
+            TSUT sut = serviceProvider.GetRequiredService<TSUT>();
+
+            CurrentTestProperties.Set(SutKey, sut);
+            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
+        }
+
+        protected TService ResolveService<TService>()
+        {
+            var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
+
+            return (TService)serviceProvider.GetRequiredService(typeof(TService));
+        }
+
+        protected const string SutKey = "_sut";
+        protected const string ServiceProviderKey = "_serviceProvider";
     }
 }

@@ -4,6 +4,19 @@ using Xunit.Abstractions;
 
 namespace Core.Plugins.xUnit.Integration
 {
+    public abstract class IntegrationTest : TestBase
+    {
+        protected IntegrationTest(ITestOutputHelper output)
+            : base(output)
+        {
+            TestUsername = "IntegrationTest";
+            Timestamp = DateTime.UtcNow;
+
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("IS_LOCAL", "true");
+        }
+    }
+
     public abstract class IntegrationTest<TStartup, TSUT> : IntegrationTest where TStartup : IStartup, new()
     {
         private readonly ServiceProviderFixture<TStartup> _serviceProviderFixture;
@@ -22,19 +35,6 @@ namespace Core.Plugins.xUnit.Integration
         protected TService ResolveService<TService>()
         {
             return (TService)_serviceProviderFixture.ServiceProvider.CreateScope().ServiceProvider.GetRequiredService(typeof(TService));
-        }
-    }
-
-    public abstract class IntegrationTest : TestBase
-    {
-        protected IntegrationTest(ITestOutputHelper output)
-            : base(output)
-        {
-            TestUsername = "IntegrationTest";
-            Timestamp = DateTime.UtcNow;
-
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
-            Environment.SetEnvironmentVariable("IS_LOCAL", "true");
         }
     }
 }
