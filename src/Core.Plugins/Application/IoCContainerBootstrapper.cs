@@ -42,8 +42,8 @@ namespace Core.Plugins.Application
                 throw new CoreException(ErrorCode.INVA, "applicationComposition.IoCContainer cannot be null");
             }
 
-            List<Type> iocContainers = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerAttribute>(
-                iocContainer => string.Equals(applicationComposition.IoCContainer.Type, iocContainer.Name, StringComparison.CurrentCultureIgnoreCase));
+            List<Type> iocContainers = _assemblyScanner.FindTypesWithAttribute<IoCContainerAttribute>(_assemblyScanner.GetApplicationAssemblies(),
+                iocContainer => string.Equals(applicationComposition.IoCContainer.Type, iocContainer.Name, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
             if (!iocContainers.Any())
                 throw new CoreException(ErrorCode.CORE, $"Could not find any IoCContainer with Name = {applicationComposition.IoCContainer}");
@@ -56,8 +56,8 @@ namespace Core.Plugins.Application
 
         private IIoCContainerPlugin GetIoCContainerPlugin(ApplicationComposition applicationComposition, string pluginName)
         {
-            List<Type> iocContainerPlugins = _assemblyScanner.GetApplicationTypesWithAttribute<IoCContainerPluginAttribute>(
-                iocContainerPlugin => string.Equals(pluginName, iocContainerPlugin.Name, StringComparison.CurrentCultureIgnoreCase));
+            List<Type> iocContainerPlugins = _assemblyScanner.FindTypesWithAttribute<IoCContainerPluginAttribute>(_assemblyScanner.GetApplicationAssemblies(),
+                iocContainerPlugin => string.Equals(pluginName, iocContainerPlugin.Name, StringComparison.CurrentCultureIgnoreCase)).ToList();
 
             if (!iocContainerPlugins.Any())
                 throw new CoreException(ErrorCode.CORE, $"Could not find any IoCContainerPlugin with Name = {pluginName}");
@@ -114,7 +114,8 @@ namespace Core.Plugins.Application
 
         private void RegisterInjectableTypes(IIoCContainer iocContainer)
         {
-            List<Type> injectableTypes = _assemblyScanner.GetApplicationTypesWithAttribute<InjectableAttribute>(injectable => injectable.AutoWiring != Opt.Out);
+            IEnumerable<Type> injectableTypes = _assemblyScanner
+                .FindTypesWithAttribute<InjectableAttribute>(_assemblyScanner.GetApplicationAssemblies(), injectable => injectable.AutoWiring != Opt.Out);
 
             foreach (Type injectableType in injectableTypes)
             {

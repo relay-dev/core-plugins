@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.MediatR", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Azure", "src\Core.Plugins.Azure\Core.Plugins.Azure.csproj", "{8B2AF92D-620C-45B7-8622-7DCEF72DA866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.UnitTests", "tests\Core.Plugins.UnitTests\Core.Plugins.UnitTests.csproj", "{937BA1FC-8002-41A8-81CC-D4BA40C64C93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.UnitTests", "tests\Core.Plugins.UnitTests\Core.Plugins.UnitTests.csproj", "{937BA1FC-8002-41A8-81CC-D4BA40C64C93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

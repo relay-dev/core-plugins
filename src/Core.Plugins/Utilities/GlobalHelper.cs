@@ -18,13 +18,19 @@ namespace Core.Plugins.Utilities
         public static bool GetBoolean(object o)
         {
             if (o == null || o == DBNull.Value || string.IsNullOrEmpty(o.ToString().Trim()))
+            {
                 return false;
+            }
 
             if (o.ToString().ToLower() == "yes" || o.ToString().ToLower() == "y" || o.ToString().ToLower() == "1" || o.ToString().ToLower() == "true" || o.ToString().ToLower() == "t")
+            {
                 return true;
+            }
 
             if (o.ToString().ToLower() == "no" || o.ToString().ToLower() == "n" || o.ToString().ToLower() == "0" || o.ToString().ToLower() == "false" || o.ToString().ToLower() == "f" || o.ToString().ToLower() == "null")
+            {
                 return false;
+            }
 
             return Convert.ToBoolean(o);
         }

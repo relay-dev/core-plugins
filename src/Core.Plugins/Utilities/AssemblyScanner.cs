@@ -9,7 +9,55 @@ namespace Core.Plugins.Utilities
 {
     public class AssemblyScanner : IAssemblyScanner
     {
-        public List<Assembly> GetApplicationAssemblies()
+        public IEnumerable<Type> FindTypesWithAttribute<TAttribute>(IEnumerable<Assembly> assemblies, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
+        {
+            if (predicate != null)
+            {
+                return assemblies
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any(a => predicate.Invoke((TAttribute)a)))
+                    .ToList();
+            }
+
+            return assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any())
+                .ToList();
+        }
+
+        public IEnumerable<Type> FindTypesWithBaseClass<TBaseClass>(IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return assemblies
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => (t.IsSubclassOf(typeof(TBaseClass)) || t == typeof(TBaseClass)) && predicate.Invoke(t))
+                    .ToList();
+            }
+
+            return assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.IsSubclassOf(typeof(TBaseClass)) || t == typeof(TBaseClass))
+                .ToList();
+        }
+
+        public IEnumerable<Type> FindTypesWithInterface<TInterface>(IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return assemblies
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => (t.GetInterfaces().Contains(typeof(TInterface)) || t.IsAssignableFrom(typeof(TInterface))) && predicate.Invoke(t))
+                    .ToList();
+            }
+
+            return assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.GetInterfaces().Contains(typeof(TInterface)) || t.IsAssignableFrom(typeof(TInterface)))
+                .ToList();
+        }
+
+        public IEnumerable<Assembly> GetApplicationAssemblies()
         {
             List<Assembly> loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .OrderBy(a => a.FullName)
@@ -22,23 +70,9 @@ namespace Core.Plugins.Utilities
                 loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path)));
             }
 
-            return loadedAssemblies.Distinct().ToList();
+            return loadedAssemblies.Distinct();
         }
 
-        public List<Type> GetApplicationTypesWithAttribute<TAttribute>() where TAttribute : Attribute
-        {
-            return GetApplicationAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any())
-                .ToList();
-        }
-
-        public List<Type> GetApplicationTypesWithAttribute<TAttribute>(Func<TAttribute, bool> predicate) where TAttribute : Attribute
-        {
-            return GetApplicationAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any(a => predicate.Invoke((TAttribute)a)))
-                .ToList();
-        }
+        public static AssemblyScanner Instance => new AssemblyScanner();
     }
 }

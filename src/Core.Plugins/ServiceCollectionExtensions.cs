@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Core.Plugins
 {
@@ -39,6 +40,39 @@ namespace Core.Plugins
             return services;
         }
 
+        public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
+        {
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithAttribute(assemblies, predicate);
+
+            return services.AddTypes(types, serviceLifetime);
+        }
+
+        public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithBaseClass<TBaseClass>(assemblies, predicate);
+
+            return services.AddTypes(types, serviceLifetime);
+        }
+
+        public static IServiceCollection AddTypesWithInterface<TInterface>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithInterface<TInterface>(assemblies, predicate);
+
+            return services.AddTypes(types, serviceLifetime);
+        }
+
+        public static IServiceCollection AddTypes(this IServiceCollection services, IEnumerable<Type> types, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+        {
+            foreach (Type type in types)
+            {
+                var serviceDescriptor = new ServiceDescriptor(type, type, serviceLifetime);
+
+                services.Add(serviceDescriptor);
+            }
+
+            return services;
+        }
+
         public static IServiceCollection AddWarmup(this IServiceCollection services, List<Type> warmupTypes)
         {
             if (warmupTypes == null || !warmupTypes.Any())
@@ -46,7 +80,6 @@ namespace Core.Plugins
                 return services;
             }
 
-            // Add Warmup types
             warmupTypes.ForEach(warmupType =>
             {
                 services.AddTransient(warmupType);
