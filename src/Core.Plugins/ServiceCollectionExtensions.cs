@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Core.Plugins.Framework;
 
 namespace Core.Plugins
 {
@@ -33,6 +34,9 @@ namespace Core.Plugins
             services.AddScoped<IResourceProvider, ResourceProvider>();
             services.AddScoped<ISequenceProvider, SequenceProvider>();
             services.AddScoped<IUsernameProvider, UsernameProvider>();
+
+            // Add Framework
+            services.AddScoped<WarmupTaskExecutor>();
 
             // Add Utilities
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
