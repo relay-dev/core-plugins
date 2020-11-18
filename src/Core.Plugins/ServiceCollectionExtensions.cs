@@ -9,6 +9,7 @@ using Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Core.Plugins
@@ -74,6 +75,21 @@ namespace Core.Plugins
 
                 services.Add(serviceDescriptor);
             }
+
+            return services;
+        }
+
+        public static IServiceCollection AddWarmup(this IServiceCollection services, List<Type> warmupTypes)
+        {
+            if (warmupTypes == null || !warmupTypes.Any())
+            {
+                return services;
+            }
+
+            warmupTypes.ForEach(warmupType =>
+            {
+                services.AddTransient(warmupType);
+            });
 
             return services;
         }
