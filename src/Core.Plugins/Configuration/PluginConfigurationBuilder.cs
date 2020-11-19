@@ -1,6 +1,11 @@
 ﻿namespace Core.Plugins.Configuration
 {
-    public class PluginConfigurationBuilder<TBuilder, TResult> : ApplicationConfigurationBuilder<TBuilder, TResult> where TBuilder : class where TResult : class
+    public class PluginConfigurationBuilder : ApplicationConfigurationBuilderGeneric<dynamic, PluginConfiguration>
+    {
+
+    }
+
+    public partial class PluginConfigurationBuilderGeneric<TBuilder, TResult> : ApplicationConfigurationBuilderGeneric<TBuilder, TResult> where TBuilder : class where TResult : class
     {
         public override TResult Build()
         {
