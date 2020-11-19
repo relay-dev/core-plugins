@@ -1,11 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Core.Plugins.Configuration
+﻿namespace Core.Plugins.Configuration
 {
-    public partial class PluginConfiguration
+    public partial class PluginConfiguration : ApplicationConfiguration
     {
-        public ApplicationConfiguration ApplicationConfiguration { get; set; }
 
-        public IConfiguration Configuration => ApplicationConfiguration.Configuration;
     }
 }

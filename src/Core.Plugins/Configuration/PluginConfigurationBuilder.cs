@@ -1,21 +1,10 @@
 ﻿namespace Core.Plugins.Configuration
 {
-    public class PluginConfigurationBuilder
+    public class PluginConfigurationBuilder : ApplicationConfigurationBuilder<PluginConfiguration>
     {
-        private readonly PluginConfiguration _pluginConfiguration;
-        private readonly ApplicationConfigurationBuilder _applicationConfigurationBuilder;
-
-        public PluginConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public override PluginConfiguration Build()
         {
-            _pluginConfiguration = new PluginConfiguration();
-            _applicationConfigurationBuilder = applicationConfigurationBuilder;
-        }
-
-        public PluginConfiguration Build()
-        {
-            _pluginConfiguration.ApplicationConfiguration = _applicationConfigurationBuilder.Build();
-
-            return _pluginConfiguration;
+            return base.Build();
         }
     }
 }

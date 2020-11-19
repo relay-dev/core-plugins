@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Core.Plugins.Configuration
 {
-    public class ApplicationConfigurationBuilder
+    public class ApplicationConfigurationBuilder<TConfiguration> where TConfiguration : class
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
         private readonly ApplicationConfigurationBuilderContainer _container;
@@ -19,47 +19,42 @@ namespace Core.Plugins.Configuration
             _container = new ApplicationConfigurationBuilderContainer();
         }
 
-        public ApplicationConfigurationBuilder UseApplicationName(string applicationName)
+        public ApplicationConfigurationBuilder<TConfiguration> UseApplicationName(string applicationName)
         {
             _applicationConfiguration.ApplicationName = applicationName;
 
             return this;
         }
 
-        public ApplicationConfigurationBuilder UseApplicationContext(ApplicationContext applicationContext)
+        public ApplicationConfigurationBuilder<TConfiguration> UseApplicationContext(ApplicationContext applicationContext)
         {
             _applicationConfiguration.ApplicationContext = applicationContext;
 
             return this;
         }
 
-        public ApplicationConfigurationBuilder UseConfiguration(IConfiguration configuration)
+        public ApplicationConfigurationBuilder<TConfiguration> UseConfiguration(IConfiguration configuration)
         {
             _applicationConfiguration.Configuration = configuration;
 
             return this;
         }
 
-        public ApplicationConfigurationBuilder UseWarmupTypes(List<Type> warmupTypes)
+        public ApplicationConfigurationBuilder<TConfiguration> UseWarmupTypes(List<Type> warmupTypes)
         {
             _applicationConfiguration.WarmupTypes = warmupTypes;
 
             return this;
         }
 
-        public ApplicationConfigurationBuilder UseWarmupTypesFromAssemblyContaining<TWarmup>()
+        public ApplicationConfigurationBuilder<TConfiguration> UseWarmupTypesFromAssemblyContaining<TWarmup>()
         {
             _container.WarmupAssemblies.Add(typeof(TWarmup).Assembly);
 
             return this;
         }
 
-        public PluginConfigurationBuilder AsPluginConfiguration()
-        {
-            return new PluginConfigurationBuilder(this);
-        }
-
-        public ApplicationConfiguration Build()
+        public virtual TConfiguration Build()
         {
             if (_applicationConfiguration.Configuration == null)
             {
@@ -91,7 +86,7 @@ namespace Core.Plugins.Configuration
                 }
             }
 
-            return _applicationConfiguration;
+            return _applicationConfiguration as TConfiguration;
         }
 
         internal class ApplicationConfigurationBuilderContainer
