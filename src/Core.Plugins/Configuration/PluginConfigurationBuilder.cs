@@ -1,8 +1,8 @@
 ﻿namespace Core.Plugins.Configuration
 {
-    public class PluginConfigurationBuilder : ApplicationConfigurationBuilder<PluginConfiguration>
+    public class PluginConfigurationBuilder<TConfiguration> : ApplicationConfigurationBuilder<TConfiguration> where TConfiguration : class
     {
-        public override PluginConfiguration Build()
+        public override TConfiguration Build()
         {
             return base.Build();
         }
