@@ -8,17 +8,17 @@ using System.Reflection;
 
 namespace Core.Plugins.Configuration
 {
-    public class ApplicationConfigurationBuilder : ApplicationConfigurationBuilderGeneric<dynamic, ApplicationConfiguration>
+    public class ApplicationConfigurationBuilder : ApplicationConfigurationBuilder<ApplicationConfigurationBuilder, ApplicationConfiguration>
     {
 
     }
 
-    public class ApplicationConfigurationBuilderGeneric<TBuilder, TResult> where TBuilder : class where TResult : class
+    public class ApplicationConfigurationBuilder<TBuilder, TResult> where TBuilder : class where TResult : class
     {
         private readonly ApplicationConfiguration _applicationConfiguration;
         private readonly ApplicationConfigurationBuilderContainer _container;
 
-        public ApplicationConfigurationBuilderGeneric()
+        public ApplicationConfigurationBuilder()
         {
             _applicationConfiguration = new ApplicationConfiguration();
             _container = new ApplicationConfigurationBuilderContainer();
