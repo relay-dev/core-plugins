@@ -14,9 +14,9 @@
             return BuildUsing(pluginConfiguration);
         }
 
-        public override TResult BuildUsing(ApplicationConfiguration applicationConfiguration)
+        protected override TResult BuildUsing<TConfiguration>(TConfiguration configuration)
         {
-            return applicationConfiguration as TResult;
+            return configuration as TResult;
         }
     }
 }

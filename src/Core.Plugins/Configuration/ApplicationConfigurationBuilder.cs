@@ -64,18 +64,18 @@ namespace Core.Plugins.Configuration
             return BuildUsing(applicationConfiguration);
         }
 
-        public virtual TResult BuildUsing(ApplicationConfiguration applicationConfiguration)
+        protected virtual TResult BuildUsing<TConfiguration>(TConfiguration configuration) where TConfiguration : ApplicationConfiguration
         {
             if (_container.Configuration == null)
             {
                 throw new InvalidOperationException("UseConfiguration() must be called before calling Build()");
             }
 
-            applicationConfiguration.ApplicationName ??= _container.Configuration["ApplicationName"];
+            configuration.ApplicationName = _container.ApplicationName ?? _container.Configuration["ApplicationName"];
 
             if (string.IsNullOrEmpty(_container.ApplicationName) && _container.ApplicationContext != null)
             {
-                applicationConfiguration.ApplicationName = _container.ApplicationContext.ApplicationName;
+                configuration.ApplicationName = _container.ApplicationContext.ApplicationName;
             }
 
             if (string.IsNullOrEmpty(_container.ApplicationName))
@@ -83,12 +83,12 @@ namespace Core.Plugins.Configuration
                 throw new InvalidOperationException("ApplicationName not provided. You can create an appSetting called 'ApplicationName', or call UseApplicationName() before calling Build()");
             }
 
-            applicationConfiguration.ApplicationContext ??= new ApplicationContext(_container.ApplicationName);
-            applicationConfiguration.Configuration = _container.Configuration;
+            configuration.ApplicationContext = _container.ApplicationContext ?? new ApplicationContext(_container.ApplicationName);
+            configuration.Configuration = _container.Configuration;
 
             if (_container.WarmupTypes.Any())
             {
-                applicationConfiguration.WarmupTypes.AddRange(_container.WarmupTypes);
+                configuration.WarmupTypes.AddRange(_container.WarmupTypes);
             }
 
             if (_container.WarmupAssemblies.Any())
@@ -97,12 +97,12 @@ namespace Core.Plugins.Configuration
                 {
                     if (type.GetInterfaces().Contains(typeof(IWarmup)))
                     {
-                        applicationConfiguration.WarmupTypes.Add(type);
+                        configuration.WarmupTypes.Add(type);
                     }
                 }
             }
 
-            return applicationConfiguration as TResult;
+            return configuration as TResult;
         }
 
         internal class ApplicationConfigurationBuilderContainer : ApplicationConfiguration
