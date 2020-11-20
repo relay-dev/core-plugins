@@ -11,13 +11,13 @@
         {
             var pluginConfiguration = new PluginConfiguration();
 
-            base.BuildUsing(pluginConfiguration);
-
             return BuildUsing(pluginConfiguration);
         }
 
         protected override TResult BuildUsing<TConfiguration>(TConfiguration configuration)
         {
+            base.BuildUsing(configuration);
+
             return configuration as TResult;
         }
     }
