@@ -1,6 +1,6 @@
 ﻿namespace Core.Plugins.Configuration
 {
-    public class PluginConfigurationBuilder : ApplicationConfigurationBuilder<PluginConfigurationBuilder, PluginConfiguration>
+    public class PluginConfigurationBuilder: ApplicationConfigurationBuilder<PluginConfigurationBuilder, PluginConfiguration>
     {
 
     }
@@ -9,7 +9,14 @@
     {
         public override TResult Build()
         {
-            return base.Build();
+            var pluginConfiguration = new PluginConfiguration();
+
+            return BuildUsing(pluginConfiguration);
+        }
+
+        public override TResult BuildUsing(ApplicationConfiguration applicationConfiguration)
+        {
+            return applicationConfiguration as TResult;
         }
     }
 }

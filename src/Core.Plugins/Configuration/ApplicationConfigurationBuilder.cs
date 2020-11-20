@@ -15,39 +15,37 @@ namespace Core.Plugins.Configuration
 
     public class ApplicationConfigurationBuilder<TBuilder, TResult> where TBuilder : class where TResult : class
     {
-        private readonly ApplicationConfiguration _applicationConfiguration;
         private readonly ApplicationConfigurationBuilderContainer _container;
 
         public ApplicationConfigurationBuilder()
         {
-            _applicationConfiguration = new ApplicationConfiguration();
             _container = new ApplicationConfigurationBuilderContainer();
         }
 
         public TBuilder UseApplicationName(string applicationName)
         {
-            _applicationConfiguration.ApplicationName = applicationName;
+            _container.ApplicationName = applicationName;
 
             return this as TBuilder;
         }
 
         public TBuilder UseApplicationContext(ApplicationContext applicationContext)
         {
-            _applicationConfiguration.ApplicationContext = applicationContext;
+            _container.ApplicationContext = applicationContext;
 
             return this as TBuilder;
         }
 
         public TBuilder UseConfiguration(IConfiguration configuration)
         {
-            _applicationConfiguration.Configuration = configuration;
+            _container.Configuration = configuration;
 
             return this as TBuilder;
         }
 
         public TBuilder UseWarmupTypes(List<Type> warmupTypes)
         {
-            _applicationConfiguration.WarmupTypes = warmupTypes;
+            _container.WarmupTypes = warmupTypes;
 
             return this as TBuilder;
         }
@@ -61,24 +59,37 @@ namespace Core.Plugins.Configuration
 
         public virtual TResult Build()
         {
-            if (_applicationConfiguration.Configuration == null)
+            var applicationConfiguration = new ApplicationConfiguration();
+
+            return BuildUsing(applicationConfiguration);
+        }
+
+        public virtual TResult BuildUsing(ApplicationConfiguration applicationConfiguration)
+        {
+            if (_container.Configuration == null)
             {
                 throw new InvalidOperationException("UseConfiguration() must be called before calling Build()");
             }
 
-            _applicationConfiguration.ApplicationName ??= _applicationConfiguration.Configuration["ApplicationName"];
+            applicationConfiguration.ApplicationName ??= _container.Configuration["ApplicationName"];
 
-            if (string.IsNullOrEmpty(_applicationConfiguration.ApplicationName) && _applicationConfiguration.ApplicationContext != null)
+            if (string.IsNullOrEmpty(_container.ApplicationName) && _container.ApplicationContext != null)
             {
-                _applicationConfiguration.ApplicationName = _applicationConfiguration.ApplicationContext.ApplicationName;
+                applicationConfiguration.ApplicationName = _container.ApplicationContext.ApplicationName;
             }
 
-            if (string.IsNullOrEmpty(_applicationConfiguration.ApplicationName))
+            if (string.IsNullOrEmpty(_container.ApplicationName))
             {
                 throw new InvalidOperationException("ApplicationName not provided. You can create an appSetting called 'ApplicationName', or call UseApplicationName() before calling Build()");
             }
 
-            _applicationConfiguration.ApplicationContext ??= new ApplicationContext(_applicationConfiguration.ApplicationName);
+            applicationConfiguration.ApplicationContext ??= new ApplicationContext(_container.ApplicationName);
+            applicationConfiguration.Configuration = _container.Configuration;
+
+            if (_container.WarmupTypes.Any())
+            {
+                applicationConfiguration.WarmupTypes.AddRange(_container.WarmupTypes);
+            }
 
             if (_container.WarmupAssemblies.Any())
             {
@@ -86,15 +97,15 @@ namespace Core.Plugins.Configuration
                 {
                     if (type.GetInterfaces().Contains(typeof(IWarmup)))
                     {
-                        _applicationConfiguration.WarmupTypes.Add(type);
+                        applicationConfiguration.WarmupTypes.Add(type);
                     }
                 }
             }
 
-            return _applicationConfiguration as TResult;
+            return applicationConfiguration as TResult;
         }
 
-        internal class ApplicationConfigurationBuilderContainer
+        internal class ApplicationConfigurationBuilderContainer : ApplicationConfiguration
         {
             public ApplicationConfigurationBuilderContainer()
             {
