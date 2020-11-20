@@ -11,6 +11,8 @@
         {
             var pluginConfiguration = new PluginConfiguration();
 
+            base.BuildUsing(pluginConfiguration);
+
             return BuildUsing(pluginConfiguration);
         }
 
