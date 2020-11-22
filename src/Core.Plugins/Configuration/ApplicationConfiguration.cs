@@ -17,6 +17,6 @@ namespace Core.Plugins.Configuration
         public ApplicationContext ApplicationContext { get; set; }
         public List<Type> WarmupTypes { get; set; }
 
-        public bool IsLocal => bool.Parse(Environment.GetEnvironmentVariable("IS_LOCAL") ?? false.ToString());
+        public bool IsLocal() => bool.Parse(Environment.GetEnvironmentVariable("IS_LOCAL") ?? false.ToString());
     }
 }
