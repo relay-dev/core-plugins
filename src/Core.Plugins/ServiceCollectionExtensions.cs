@@ -92,14 +92,14 @@ namespace Core.Plugins
             return services;
         }
 
-        public static IServiceCollection AddWarmup(this IServiceCollection services, List<Type> warmupTypes)
+        public static IServiceCollection AddWarmup(this IServiceCollection services, PluginConfiguration pluginConfiguration)
         {
-            if (warmupTypes == null || !warmupTypes.Any())
+            if (pluginConfiguration.WarmupTypes == null || !pluginConfiguration.WarmupTypes.Any())
             {
                 return services;
             }
 
-            warmupTypes.ForEach(warmupType =>
+            pluginConfiguration.WarmupTypes.ForEach(warmupType =>
             {
                 services.AddTransient(warmupType);
             });
