@@ -53,6 +53,9 @@ namespace Core.Plugins
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
             services.AddScoped<IInlineValidator, InlineValidator>();
 
+            // Add MemoryCache
+            services.AddMemoryCache();
+
             // Add Configuration
             services.AddSingleton(pluginConfiguration);
 
