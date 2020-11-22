@@ -62,6 +62,13 @@ namespace Core.Plugins
             return services;
         }
 
+        public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
+        {
+            var assemblies = new List<Assembly> { assembly };
+
+            return services.AddTypesWithAttribute(assemblies, serviceLifetime, predicate);
+        }
+
         public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
         {
             IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithAttribute(assemblies, predicate);
@@ -69,11 +76,25 @@ namespace Core.Plugins
             return services.AddTypes(types, serviceLifetime);
         }
 
+        public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            var assemblies = new List<Assembly> { assembly };
+
+            return services.AddTypesWithBaseClass<TBaseClass>(assemblies, serviceLifetime, predicate);
+        }
+
         public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
         {
             IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithBaseClass<TBaseClass>(assemblies, predicate);
 
             return services.AddTypes(types, serviceLifetime);
+        }
+
+        public static IServiceCollection AddTypesWithInterface<TInterface>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            var assemblies = new List<Assembly> { assembly };
+
+            return services.AddTypesWithInterface<TInterface>(assemblies, serviceLifetime, predicate);
         }
 
         public static IServiceCollection AddTypesWithInterface<TInterface>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
