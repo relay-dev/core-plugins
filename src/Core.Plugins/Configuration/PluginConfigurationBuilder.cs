@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Core.Plugins.Configuration
 {
@@ -182,14 +181,7 @@ namespace Core.Plugins.Configuration
 
         internal class PluginConfigurationBuilderContainer : PluginConfiguration
         {
-            public PluginConfigurationBuilderContainer()
-            {
-                CommandHandlerAssemblies = new List<Assembly>();
-                WarmupAssemblies = new List<Assembly>();
-            }
 
-            public List<Assembly> CommandHandlerAssemblies { get; set; }
-            public List<Assembly> WarmupAssemblies { get; set; }
         }
     }
 }

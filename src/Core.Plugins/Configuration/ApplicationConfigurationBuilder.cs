@@ -73,10 +73,7 @@ namespace Core.Plugins.Configuration
 
         internal class ApplicationConfigurationBuilderContainer : ApplicationConfiguration
         {
-            public ApplicationConfigurationBuilderContainer()
-            {
-                
-            }
+
         }
     }
 }
