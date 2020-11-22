@@ -19,6 +19,13 @@ namespace Core.Plugins.Configuration
             _container = new PluginConfigurationBuilderContainer();
         }
 
+        public TBuilder UseGlobalUsername(string username)
+        {
+            _container.GlobalUsername = username;
+
+            return this as TBuilder;
+        }
+
         public TBuilder UseCommandHandlers(List<Type> commandHandlerTypes)
         {
             _container.CommandHandlerTypes = commandHandlerTypes;
@@ -119,7 +126,9 @@ namespace Core.Plugins.Configuration
                 throw new InvalidOperationException("pluginConfiguration cannot be null");
             }
 
-            base.BuildUsing(configuration);
+            base.BuildUsing(pluginConfiguration);
+
+            pluginConfiguration.GlobalUsername = _container.GlobalUsername;
 
             if (_container.CommandHandlerTypes.Any())
             {

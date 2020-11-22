@@ -71,7 +71,6 @@ namespace Core.Plugins
             services.AddScoped<IRandomLongProvider, RandomLongProvider>();
             services.AddScoped<IResourceProvider, ResourceProvider>();
             services.AddScoped<ISequenceProvider, SequenceProvider>();
-            services.AddScoped<IUsernameProvider, UsernameProvider>();
 
             // Add Framework
             services.AddScoped<IWarmupTaskExecutor, WarmupTaskExecutor>();
@@ -85,6 +84,9 @@ namespace Core.Plugins
 
             // Add Configuration
             services.AddSingleton(pluginConfiguration);
+
+            // Add UsernameProvider
+            services.AddUsernameProvider(pluginConfiguration);
 
             return services;
         }
@@ -154,9 +156,32 @@ namespace Core.Plugins
             return services;
         }
 
+        public static IServiceCollection AddSingletonUsernameProvider(this IServiceCollection services, string username)
+        {
+            var usernameProvider = new UsernameProvider();
+
+            usernameProvider.Set(username);
+
+            services.AddSingleton<IUsernameProvider>(usernameProvider);
+
+            return services;
+        }
+
         public static IEnumerable<Assembly> AsEnumerable(this Assembly assembly)
         {
             return new List<Assembly> { assembly };
+        }
+
+        private static void AddUsernameProvider(this IServiceCollection services, PluginConfiguration pluginConfiguration)
+        {
+            if (!string.IsNullOrEmpty(pluginConfiguration.GlobalUsername))
+            {
+                services.AddSingletonUsernameProvider(pluginConfiguration.GlobalUsername);
+            }
+            else
+            {
+                services.AddScoped<IUsernameProvider, UsernameProvider>();
+            }
         }
     }
 }

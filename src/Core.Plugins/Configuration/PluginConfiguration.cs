@@ -6,6 +6,7 @@ namespace Core.Plugins.Configuration
 {
     public class PluginConfiguration : ApplicationConfiguration
     {
+        public string GlobalUsername { get; set; }
         public List<Type> CommandHandlerTypes { get; set; }
         public List<Assembly> CommandHandlerAssemblies { get; set; }
         public List<Type> MapperTypes { get; set; }
