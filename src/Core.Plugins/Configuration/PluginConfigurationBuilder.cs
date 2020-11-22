@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Core.Plugins.Configuration
 {
-    public class PluginConfigurationBuilder: PluginConfigurationBuilder<PluginConfigurationBuilder, PluginConfiguration>
+    public class PluginConfigurationBuilder : PluginConfigurationBuilder<PluginConfigurationBuilder, PluginConfiguration>
     {
 
     }
