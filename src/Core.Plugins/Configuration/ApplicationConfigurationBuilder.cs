@@ -1,6 +1,8 @@
 ﻿using Core.Application;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Core.Plugins.Configuration
 {
@@ -39,6 +41,56 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
+        public TBuilder UseTypesWithAttribute<TAttribute>(IEnumerable<Assembly> assembliesToScan) where TAttribute : Attribute
+        {
+            _container.TypesToRegisterFromAttribute.Add(typeof(TAttribute), assembliesToScan);
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseTypesWithAttribute(Type type, IEnumerable<Assembly> assembliesToScan)
+        {
+            _container.TypesToRegisterFromAttribute.Add(type, assembliesToScan);
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseTypesWithBaseClass<TBaseClass>(IEnumerable<Assembly> assembliesToScan = null)
+        {
+            assembliesToScan ??= new List<Assembly> { typeof(TBaseClass).Assembly };
+
+            _container.TypesToRegisterFromBaseType.Add(typeof(TBaseClass), assembliesToScan);
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseTypesWithBaseClass(Type type, IEnumerable<Assembly> assembliesToScan = null)
+        {
+            assembliesToScan ??= new List<Assembly> { type.Assembly };
+
+            _container.TypesToRegisterFromBaseType.Add(type, assembliesToScan);
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseTypesWithInterface<TInterface>(IEnumerable<Assembly> assembliesToScan = null)
+        {
+            assembliesToScan ??= new List<Assembly> { typeof(TInterface).Assembly };
+
+            _container.TypesToRegisterFromInterface.Add(typeof(TInterface), assembliesToScan);
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseTypesWithInterface(Type type, IEnumerable<Assembly> assembliesToScan = null)
+        {
+            assembliesToScan ??= new List<Assembly> { type.Assembly };
+
+            _container.TypesToRegisterFromInterface.Add(type, assembliesToScan);
+
+            return this as TBuilder;
+        }
+
         public virtual TResult Build()
         {
             var applicationConfiguration = new ApplicationConfiguration();
@@ -67,6 +119,9 @@ namespace Core.Plugins.Configuration
 
             configuration.ApplicationContext = _container.ApplicationContext ?? new ApplicationContext(_container.ApplicationName);
             configuration.Configuration = _container.Configuration;
+            configuration.TypesToRegisterFromAttribute = _container.TypesToRegisterFromAttribute;
+            configuration.TypesToRegisterFromBaseType = _container.TypesToRegisterFromBaseType;
+            configuration.TypesToRegisterFromInterface = _container.TypesToRegisterFromInterface;
 
             return configuration as TResult;
         }

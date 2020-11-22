@@ -19,41 +19,64 @@ namespace Core.Plugins.Utilities
                     .ToList();
             }
 
+            return FindTypesWithAttribute(typeof(TAttribute), assemblies);
+        }
+
+        public IEnumerable<Type> FindTypesWithAttribute(Type type, IEnumerable<Assembly> assemblies, Func<object, bool> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return assemblies
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => t.GetCustomAttributes(type, true).Any(predicate.Invoke))
+                    .ToList();
+            }
+
             return assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.GetCustomAttributes(typeof(TAttribute), true).Any())
+                .Where(t => t.GetCustomAttributes(type, true).Any())
                 .ToList();
         }
 
         public IEnumerable<Type> FindTypesWithBaseClass<TBaseClass>(IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
         {
-            if (predicate != null)
-            {
-                return assemblies
-                    .SelectMany(a => a.GetTypes())
-                    .Where(t => (t.IsSubclassOf(typeof(TBaseClass)) || t == typeof(TBaseClass)) && predicate.Invoke(t))
-                    .ToList();
-            }
-
-            return assemblies
-                .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsSubclassOf(typeof(TBaseClass)) || t == typeof(TBaseClass))
-                .ToList();
+            return FindTypesWithBaseClass(typeof(TBaseClass), assemblies, predicate);
         }
 
-        public IEnumerable<Type> FindTypesWithInterface<TInterface>(IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
+        public IEnumerable<Type> FindTypesWithBaseClass(Type type, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
         {
             if (predicate != null)
             {
                 return assemblies
                     .SelectMany(a => a.GetTypes())
-                    .Where(t => (t.GetInterfaces().Contains(typeof(TInterface)) || t.IsAssignableFrom(typeof(TInterface))) && predicate.Invoke(t))
+                    .Where(t => (t.IsSubclassOf(type) || t == type) && predicate.Invoke(t))
                     .ToList();
             }
 
             return assemblies
                 .SelectMany(a => a.GetTypes())
-                .Where(t => t.GetInterfaces().Contains(typeof(TInterface)) || t.IsAssignableFrom(typeof(TInterface)))
+                .Where(t => t.IsSubclassOf(type) || t == type)
+                .ToList();
+        }
+
+        public IEnumerable<Type> FindTypesWithInterface<TInterface>(IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
+        {
+            return FindTypesWithInterface(typeof(TInterface), assemblies, predicate);
+        }
+
+        public IEnumerable<Type> FindTypesWithInterface(Type type, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return assemblies
+                    .SelectMany(a => a.GetTypes())
+                    .Where(t => (t.GetInterfaces().Contains(type) || t.IsAssignableFrom(type)) && predicate.Invoke(t))
+                    .ToList();
+            }
+
+            return assemblies
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.GetInterfaces().Contains(type) || t.IsAssignableFrom(type))
                 .ToList();
         }
 

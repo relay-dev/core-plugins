@@ -18,8 +18,35 @@ namespace Core.Plugins
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services, ApplicationConfiguration applicationConfiguration)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, ApplicationConfiguration applicationConfiguration)
         {
+            // Add Types from Attribute
+            if (applicationConfiguration.TypesToRegisterFromAttribute.Any())
+            {
+                foreach (var kvp in applicationConfiguration.TypesToRegisterFromAttribute)
+                {
+                    services.AddTypesWithAttribute(kvp.Key, kvp.Value);
+                }
+            }
+
+            // Add Types from Base Type
+            if (applicationConfiguration.TypesToRegisterFromBaseType.Any())
+            {
+                foreach (var kvp in applicationConfiguration.TypesToRegisterFromBaseType)
+                {
+                    services.AddTypesWithBaseClass(kvp.Key, kvp.Value);
+                }
+            }
+
+            // Add Types from Interface
+            if (applicationConfiguration.TypesToRegisterFromInterface.Any())
+            {
+                foreach (var kvp in applicationConfiguration.TypesToRegisterFromInterface)
+                {
+                    services.AddTypesWithInterface(kvp.Key, kvp.Value);
+                }
+            }
+
             // Add Configuration
             services.AddSingleton(applicationConfiguration);
             services.AddSingleton(applicationConfiguration.Configuration);
@@ -62,13 +89,6 @@ namespace Core.Plugins
             return services;
         }
 
-        public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
-        {
-            var assemblies = new List<Assembly> { assembly };
-
-            return services.AddTypesWithAttribute(assemblies, serviceLifetime, predicate);
-        }
-
         public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
         {
             IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithAttribute(assemblies, predicate);
@@ -76,30 +96,33 @@ namespace Core.Plugins
             return services.AddTypes(types, serviceLifetime);
         }
 
-        public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        public static IServiceCollection AddTypesWithAttribute(this IServiceCollection services, Type type, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<object, bool> predicate = null)
         {
-            var assemblies = new List<Assembly> { assembly };
-
-            return services.AddTypesWithBaseClass<TBaseClass>(assemblies, serviceLifetime, predicate);
-        }
-
-        public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
-        {
-            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithBaseClass<TBaseClass>(assemblies, predicate);
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithAttribute(type, assemblies, predicate);
 
             return services.AddTypes(types, serviceLifetime);
         }
 
-        public static IServiceCollection AddTypesWithInterface<TInterface>(this IServiceCollection services, Assembly assembly, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        public static IServiceCollection AddTypesWithBaseClass<TBaseClass>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
         {
-            var assemblies = new List<Assembly> { assembly };
+            return services.AddTypesWithBaseClass(typeof(TBaseClass), assemblies, serviceLifetime, predicate);
+        }
 
-            return services.AddTypesWithInterface<TInterface>(assemblies, serviceLifetime, predicate);
+        public static IServiceCollection AddTypesWithBaseClass(this IServiceCollection services, Type type, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithBaseClass(type, assemblies, predicate);
+
+            return services.AddTypes(types, serviceLifetime);
         }
 
         public static IServiceCollection AddTypesWithInterface<TInterface>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
         {
-            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithInterface<TInterface>(assemblies, predicate);
+            return services.AddTypesWithInterface(typeof(TInterface), assemblies, serviceLifetime, predicate);
+        }
+
+        public static IServiceCollection AddTypesWithInterface(this IServiceCollection services, Type type, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<Type, bool> predicate = null)
+        {
+            IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithInterface(type, assemblies, predicate);
 
             return services.AddTypes(types, serviceLifetime);
         }
@@ -129,6 +152,11 @@ namespace Core.Plugins
             });
 
             return services;
+        }
+
+        public static IEnumerable<Assembly> AsEnumerable(this Assembly assembly)
+        {
+            return new List<Assembly> { assembly };
         }
     }
 }
