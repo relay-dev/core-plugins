@@ -1,6 +1,8 @@
 ﻿using Core.Application;
+using Core.Framework;
 using Core.Plugins.Application;
 using Core.Plugins.Configuration;
+using Core.Plugins.Framework;
 using Core.Plugins.Providers;
 using Core.Plugins.Utilities;
 using Core.Plugins.Validation;
@@ -11,13 +13,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Core.Plugins.Framework;
 
 namespace Core.Plugins
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDefaultCorePlugins(this IServiceCollection services, ApplicationConfiguration applicationConfiguration)
+        public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services, ApplicationConfiguration applicationConfiguration)
+        {
+            // Add Configuration
+            services.AddSingleton(applicationConfiguration);
+            services.AddSingleton(applicationConfiguration.Configuration);
+            services.AddSingleton(applicationConfiguration.ApplicationContext);
+
+            return services;
+        }
+
+        public static IServiceCollection AddCorePlugins(this IServiceCollection services, PluginConfiguration pluginConfiguration)
         {
             // Add Application services
             services.AddScoped<IConnectionStringParser, ConnectionStringParser>();
@@ -36,16 +47,14 @@ namespace Core.Plugins
             services.AddScoped<IUsernameProvider, UsernameProvider>();
 
             // Add Framework
-            services.AddScoped<WarmupTaskExecutor>();
+            services.AddScoped<IWarmupTaskExecutor, WarmupTaskExecutor>();
 
             // Add Utilities
             services.AddScoped<IAssemblyScanner, AssemblyScanner>();
             services.AddScoped<IInlineValidator, InlineValidator>();
 
             // Add Configuration
-            services.AddSingleton(applicationConfiguration);
-            services.AddSingleton(applicationConfiguration.Configuration);
-            services.AddSingleton(applicationConfiguration.ApplicationContext);
+            services.AddSingleton(pluginConfiguration);
 
             return services;
         }

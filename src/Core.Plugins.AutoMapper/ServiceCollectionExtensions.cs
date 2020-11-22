@@ -1,20 +1,32 @@
 ﻿using AutoMapper;
 using Core.Plugins.AutoMapper.Extensions;
 using Core.Plugins.AutoMapper.Resolvers.Database;
+using Core.Plugins.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Core.Plugins.AutoMapper
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAutoMapperPlugin(this IServiceCollection services, List<Type> mapperTypes)
+        public static IServiceCollection AddAutoMapperPlugin(this IServiceCollection services, PluginConfiguration pluginConfiguration)
         {
-            if (mapperTypes == null || !mapperTypes.Any())
+            if (!pluginConfiguration.MapperTypes.Any() && !pluginConfiguration.MapperAssemblies.Any())
             {
                 return services;
+            }
+
+            // Discover mappers
+            if (pluginConfiguration.MapperAssemblies.Any())
+            {
+                foreach (Type type in pluginConfiguration.MapperAssemblies.SelectMany(a => a.GetTypes()))
+                {
+                    if (type.IsSubclassOf(typeof(Profile)))
+                    {
+                        pluginConfiguration.MapperTypes.Add(type);
+                    }
+                }
             }
 
             // Add AutoMapper
@@ -29,7 +41,7 @@ namespace Core.Plugins.AutoMapper
                     });
 
                     cfg.AddCoreAutoMappers();
-                }, mapperTypes);
+                }, pluginConfiguration.MapperTypes);
 
             // Add Resolvers
             services.AddScoped(typeof(LookupDataKeyResolver<>));

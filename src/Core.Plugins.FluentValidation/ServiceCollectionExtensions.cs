@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Core.Plugins.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ namespace Core.Plugins.FluentValidation
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFluentValidationPlugin(this IServiceCollection services, dynamic mvcCoreBuilder, Dictionary<Type, Type> validatorTypes)
+        public static IServiceCollection AddFluentValidationPlugin(this IServiceCollection services, dynamic mvcCoreBuilder, PluginConfiguration pluginConfiguration)
         {
-            if (validatorTypes == null || !validatorTypes.Any())
+            if (pluginConfiguration.ValidatorTypes == null || !pluginConfiguration.ValidatorTypes.Any())
             {
                 return services;
             }
@@ -18,7 +19,7 @@ namespace Core.Plugins.FluentValidation
             mvcCoreBuilder.AddFluentValidation();
 
             // Add the validators
-            foreach (KeyValuePair<Type, Type> validatorType in validatorTypes)
+            foreach (KeyValuePair<Type, Type> validatorType in pluginConfiguration.ValidatorTypes)
             {
                 services.AddTransient(validatorType.Key, validatorType.Value);
             }

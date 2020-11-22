@@ -1,9 +1,9 @@
 ﻿using Core.Application;
 using Core.Events;
-using Core.Exceptions;
 using Core.Plugins.Azure.BlobStorage;
 using Core.Plugins.Azure.BlobStorage.Impl;
 using Core.Plugins.Azure.EventGrid;
+using Core.Plugins.Configuration;
 using Core.Providers;
 using Microsoft.Azure.EventGrid;
 using Microsoft.Azure.EventGrid.Models;
@@ -14,9 +14,9 @@ namespace Core.Plugins.Azure
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAzureBlobStoragePlugin(this IServiceCollection services, IConfiguration config, string connectionStringName = "DefaultStorageConnection")
+        public static IServiceCollection AddAzureBlobStoragePlugin(this IServiceCollection services, PluginConfiguration pluginConfiguration, string connectionStringName = "DefaultStorageConnection")
         {
-            if (config.GetConnectionString(connectionStringName) == null)
+            if (pluginConfiguration.Configuration.GetConnectionString(connectionStringName) == null)
             {
                 return services;
             }
@@ -28,9 +28,9 @@ namespace Core.Plugins.Azure
             return services;
         }
 
-        public static IServiceCollection AddAzureEventGridPlugin(this IServiceCollection services, IConfiguration config, string connectionStringName = "DefaultEventGridConnection")
+        public static IServiceCollection AddAzureEventGridPlugin(this IServiceCollection services, PluginConfiguration pluginConfiguration, string connectionStringName = "DefaultEventGridConnection")
         {
-            if (config.GetConnectionString(connectionStringName) == null)
+            if (pluginConfiguration.Configuration.GetConnectionString(connectionStringName) == null)
             {
                 return services;
             }

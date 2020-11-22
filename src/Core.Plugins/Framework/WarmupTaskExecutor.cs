@@ -1,4 +1,5 @@
-﻿using Core.Plugins.Configuration;
+﻿using Core.Framework;
+using Core.Plugins.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -7,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Core.Plugins.Framework
 {
-    public class WarmupTaskExecutor
+    public class WarmupTaskExecutor : IWarmupTaskExecutor
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ApplicationConfiguration _pluginConfiguration;
+        private readonly PluginConfiguration _pluginConfiguration;
 
-        public WarmupTaskExecutor(IServiceProvider serviceProvider, ApplicationConfiguration pluginConfiguration)
+        public WarmupTaskExecutor(IServiceProvider serviceProvider, PluginConfiguration pluginConfiguration)
         {
             _serviceProvider = serviceProvider;
             _pluginConfiguration = pluginConfiguration;
         }
-
+        
         public async Task RunAsync(CancellationToken cancellationToken)
         {
             var tasks = new List<Task>();

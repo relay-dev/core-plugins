@@ -1,10 +1,6 @@
 ﻿using Core.Application;
-using Core.Framework;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Core.Plugins.Configuration
 {
@@ -43,20 +39,6 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseWarmupTypes(List<Type> warmupTypes)
-        {
-            _container.WarmupTypes = warmupTypes;
-
-            return this as TBuilder;
-        }
-
-        public TBuilder UseWarmupTypesFromAssemblyContaining<TWarmup>()
-        {
-            _container.WarmupAssemblies.Add(typeof(TWarmup).Assembly);
-
-            return this as TBuilder;
-        }
-
         public virtual TResult Build()
         {
             var applicationConfiguration = new ApplicationConfiguration();
@@ -86,22 +68,6 @@ namespace Core.Plugins.Configuration
             configuration.ApplicationContext = _container.ApplicationContext ?? new ApplicationContext(_container.ApplicationName);
             configuration.Configuration = _container.Configuration;
 
-            if (_container.WarmupTypes.Any())
-            {
-                configuration.WarmupTypes.AddRange(_container.WarmupTypes);
-            }
-
-            if (_container.WarmupAssemblies.Any())
-            {
-                foreach (Type type in _container.WarmupAssemblies.SelectMany(a => a.GetTypes()))
-                {
-                    if (type.GetInterfaces().Contains(typeof(IWarmup)))
-                    {
-                        configuration.WarmupTypes.Add(type);
-                    }
-                }
-            }
-
             return configuration as TResult;
         }
 
@@ -109,10 +75,8 @@ namespace Core.Plugins.Configuration
         {
             public ApplicationConfigurationBuilderContainer()
             {
-                WarmupAssemblies = new List<Assembly>();
+                
             }
-
-            public List<Assembly> WarmupAssemblies { get; set; }
         }
     }
 }
