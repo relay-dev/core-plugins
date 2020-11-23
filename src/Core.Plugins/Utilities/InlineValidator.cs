@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Core.Plugins.Validation
+namespace Core.Plugins.Utilities
 {
     public class InlineValidator : IInlineValidator
     {
