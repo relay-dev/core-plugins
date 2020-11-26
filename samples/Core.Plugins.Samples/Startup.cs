@@ -4,6 +4,9 @@ using Core.Plugins.Azure;
 using Core.Plugins.Configuration;
 using Core.Plugins.EntityFramework;
 using Core.Plugins.MediatR;
+using Core.Plugins.Samples.Domain.Commands.Create;
+using Core.Plugins.Samples.Domain.Mappers;
+using Core.Plugins.Samples.Domain.Validators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +23,6 @@ namespace Core.Plugins.Samples
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add Core Plugins
             services.AddApplicationServices(_pluginConfiguration);
             services.AddCorePlugins(_pluginConfiguration);
             services.AddAutoMapperPlugin(_pluginConfiguration);
@@ -35,10 +37,12 @@ namespace Core.Plugins.Samples
         {
             return new PluginConfigurationBuilder()
                 .UseConfiguration(configuration)
-                .UseApplicationName(GetType().Assembly.FullName)
+                .UseApplicationName("Samples")
                 .UseServiceLifetime(ServiceLifetime.Transient)
-                //.UseMappersFromAssemblyContaining<AutoMappers>()
                 .UseGlobalUsername(configuration["GlobalUsername"])
+                .UseCommandHandlersFromAssemblyContaining<CreateOrderHandler>()
+                .UseMappersFromAssemblyContaining<AutoMappers>()
+                .UseValidatorsFromAssemblyContaining<OrderValidator>()
                 .Build();
         }
     }

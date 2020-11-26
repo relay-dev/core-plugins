@@ -1,13 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Relay.ConsoleApp" Version="1.0.7" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Core.Plugins.AutoMapper\Core.Plugins.AutoMapper.csproj" />
@@ -17,7 +12,6 @@
     <ProjectReference Include="..\..\src\Core.Plugins.FluentValidation\Core.Plugins.FluentValidation.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins.MediatR\Core.Plugins.MediatR.csproj" />
     <ProjectReference Include="..\..\src\Core.Plugins\Core.Plugins.csproj" />
-    <ProjectReference Include="..\Core.Plugins.Samples.Domain\Core.Plugins.Samples.Domain.csproj" />
   </ItemGroup>
 
 </Project>
