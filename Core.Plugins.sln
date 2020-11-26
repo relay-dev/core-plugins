@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.Azure", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Plugins.UnitTests", "tests\Core.Plugins.UnitTests\Core.Plugins.UnitTests.csproj", "{937BA1FC-8002-41A8-81CC-D4BA40C64C93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{E2C42503-2135-47BB-8193-0A2724524F4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Plugins.Samples", "samples\Core.Plugins.Samples\Core.Plugins.Samples.csproj", "{1FB02090-D005-4608-9057-7E4B15101157}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,12 +75,17 @@ Global
 		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{937BA1FC-8002-41A8-81CC-D4BA40C64C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB02090-D005-4608-9057-7E4B15101157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB02090-D005-4608-9057-7E4B15101157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB02090-D005-4608-9057-7E4B15101157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB02090-D005-4608-9057-7E4B15101157}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{937BA1FC-8002-41A8-81CC-D4BA40C64C93} = {C5548B55-761F-4575-B25E-C0CEB940F40B}
+		{1FB02090-D005-4608-9057-7E4B15101157} = {E2C42503-2135-47BB-8193-0A2724524F4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C6E60D3-FE38-4C97-B823-F5380E1D0B65}
