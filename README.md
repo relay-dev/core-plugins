@@ -1,4 +1,4 @@
-<img src="https://github.com/relay-dev/core-plugins/raw/master/resources/icon.png?raw=true" alt="Core Plugins" height="200" width="200">
+<img src="https://i.imgur.com/ptZKdWs.png" alt="Core Plugins" height="100" width="100">
 
 # Core.Plugins
 
@@ -7,42 +7,61 @@
 [![MyGet Release](https://img.shields.io/myget/relay-dev/v/Relay.Core.Plugins.svg)](https://www.myget.org/feed/relay-dev/package/nuget/Relay.Core.Plugins)
 [![License](https://img.shields.io/github/license/relay-dev/core-plugins.svg)](https://github.com/relay-dev/core-plugins/blob/master/LICENSE)
 
+## Introduction
+
 Plugin implementations available for the Core framework
 
-> <sup>Core.Plugins.* is a set of base class libraries written using .NET Standard. The [Core](https://github.com/relay-dev/core) library can be considered it's base; this NuGet package consists only of implementations of [Core](https://github.com/relay-dev/core) abstractions.</sup>
->
-> <sup>The full list of available Plugins can be found on [NuGet](https://www.nuget.org/profiles/Relay).
->
-> <sup>Core.Plugins is delivered to consuming applications by way of the main NuGet feed (see section [Installation](#installation)).</sup>
+Core.Plugins is a set of base class libraries written using .NET Standard. They serve as implementations to the abstractions from the [Core](https://github.com/relay-dev/core) NuGet package. Core.Plugins is built and designed to be consumed as a plugin model framework.
 
-<br />
+Core.Plugins is published to the main public NuGet feed (see section [Installation](#installation)).
 
-<img src="https://github.com/relay-dev/core-plugins/raw/master/resources/break.jpg?raw=true">
+*Update: .NET Core/.NET 5 has made the original intention of this project obsolete. Implementations of services like ILogger, IConfiguration, IServiceProvider, etc have been making their way out of this codebase. There is other useful functionality here so the package will stay.
 
-<br />
+## Getting Started
 
-### Production Deployment
-
-https://www.nuget.org/packages/Relay.Core.Plugins
-
-<br />
-
-<div id="installation"></div>
+<a name="installation"></a>
 
 ### Installation
 
-Here's how you can install the Relay.Core.Plugins application NuGet Package:
+Follow the instructions below to install this NuGet package into your project:
 
-<br />
+#### .NET Core CLI
 
-> #### *.NET Core CLI*
-> 
-> ```
-> dotnet add package Relay.Core.Plugins
-> ```
->
-> #### *Package Manager Console*
-> 
-> ```
-> Install-Package Relay.Core.Plugins
-> ```
+```sh
+dotnet add package Relay.Core.Plugins
+```
+
+#### Package Manager Console
+
+```sh
+Install-Package Relay.Core.Plugins
+```
+
+### Latest releases
+
+Latest releases and package version history can be found on [NuGet](https://www.nuget.org/packages/Relay.Core.Plugins/).
+
+## Build and Test
+
+Follow the instructions below to build and test this project:
+
+### Build
+
+#### .NET Core CLI
+
+```sh
+dotnet build
+```
+
+### Test
+
+#### .NET Core CLI
+
+```sh
+dotnet test
+```
+
+## Contribute
+
+When contributing to this repository, please first discuss the change you wish to make via issue,
+email, or any other method with the owners of this repository before making a change.
