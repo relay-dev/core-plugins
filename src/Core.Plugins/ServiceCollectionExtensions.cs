@@ -24,7 +24,7 @@ namespace Core.Plugins
             {
                 foreach (var kvp in applicationConfiguration.TypesToRegisterFromAttribute)
                 {
-                    services.AddTypesWithAttribute(kvp.Key, kvp.Value);
+                    services.AddTypesWithAttribute(kvp.Key, kvp.Value, applicationConfiguration.ServiceLifetime);
                 }
             }
 
@@ -33,7 +33,7 @@ namespace Core.Plugins
             {
                 foreach (var kvp in applicationConfiguration.TypesToRegisterFromBaseType)
                 {
-                    services.AddTypesWithBaseClass(kvp.Key, kvp.Value);
+                    services.AddTypesWithBaseClass(kvp.Key, kvp.Value, applicationConfiguration.ServiceLifetime);
                 }
             }
 
@@ -42,7 +42,7 @@ namespace Core.Plugins
             {
                 foreach (var kvp in applicationConfiguration.TypesToRegisterFromInterface)
                 {
-                    services.AddTypesWithInterface(kvp.Key, kvp.Value);
+                    services.AddTypesWithInterface(kvp.Key, kvp.Value, applicationConfiguration.ServiceLifetime);
                 }
             }
 
@@ -57,26 +57,26 @@ namespace Core.Plugins
         public static IServiceCollection AddCorePlugins(this IServiceCollection services, PluginConfiguration pluginConfiguration)
         {
             // Add Application services
-            services.AddScoped<IConnectionStringParser, ConnectionStringParser>();
+            services.Add<IConnectionStringParser, ConnectionStringParser>(pluginConfiguration.ServiceLifetime);
 
             // Add Providers
-            services.AddScoped<IApplicationContextProvider, ApplicationContextProvider>();
-            services.AddScoped<ICommandContextProvider, CommandContextProvider>();
-            services.AddScoped<IConnectionStringProvider, ConnectionStringByConfigurationProvider>();
-            services.AddScoped<IDateTimeProvider, DateTimeUtcProvider>();
-            services.AddScoped<IGuidProvider, GuidProvider>();
-            services.AddScoped<IKeyProvider, EncryptionKeyProvider>();
-            services.AddScoped<IRandomCodeProvider, RandomCodeProvider>();
-            services.AddScoped<IRandomLongProvider, RandomLongProvider>();
-            services.AddScoped<IResourceProvider, ResourceProvider>();
-            services.AddScoped<ISequenceProvider, SequenceProvider>();
+            services.Add<IApplicationContextProvider, ApplicationContextProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<ICommandContextProvider, CommandContextProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IConnectionStringProvider, ConnectionStringByConfigurationProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IDateTimeProvider, DateTimeUtcProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IGuidProvider, GuidProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IKeyProvider, EncryptionKeyProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IRandomCodeProvider, RandomCodeProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IRandomLongProvider, RandomLongProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<IResourceProvider, ResourceProvider>(pluginConfiguration.ServiceLifetime);
+            services.Add<ISequenceProvider, SequenceProvider>(pluginConfiguration.ServiceLifetime);
 
             // Add Framework
-            services.AddScoped<IWarmupTaskExecutor, WarmupTaskExecutor>();
+            services.Add<IWarmupTaskExecutor, WarmupTaskExecutor>(pluginConfiguration.ServiceLifetime);
 
             // Add Utilities
-            services.AddScoped<IAssemblyScanner, AssemblyScanner>();
-            services.AddScoped<IInlineValidator, InlineValidator>();
+            services.Add<IAssemblyScanner, AssemblyScanner>(pluginConfiguration.ServiceLifetime);
+            services.Add<IInlineValidator, InlineValidator>(pluginConfiguration.ServiceLifetime);
 
             // Add MemoryCache
             services.AddMemoryCache();
@@ -86,6 +86,20 @@ namespace Core.Plugins
 
             // Add UsernameProvider
             services.AddUsernameProvider(pluginConfiguration);
+
+            return services;
+        }
+
+        public static IServiceCollection Add<TService, TImplementation>(this IServiceCollection services, ServiceLifetime serviceLifetime) where TService : class where TImplementation : class, TService
+        {
+            var service = new ServiceDescriptor
+            (
+                typeof(TService),
+                typeof(TImplementation),
+                serviceLifetime
+            );
+
+            services.Add(service);
 
             return services;
         }
@@ -179,7 +193,7 @@ namespace Core.Plugins
             }
             else
             {
-                services.AddScoped<IUsernameProvider, UsernameProvider>();
+                services.Add<IUsernameProvider, UsernameProvider>(pluginConfiguration.ServiceLifetime);
             }
         }
     }
