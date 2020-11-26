@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Plugins.Configuration
 {
@@ -37,6 +38,13 @@ namespace Core.Plugins.Configuration
         public TBuilder UseConfiguration(IConfiguration configuration)
         {
             _container.Configuration = configuration;
+
+            return this as TBuilder;
+        }
+
+        public TBuilder UseServiceLifetime(ServiceLifetime serviceLifetime)
+        {
+            _container.ServiceLifetime = serviceLifetime;
 
             return this as TBuilder;
         }
@@ -119,6 +127,7 @@ namespace Core.Plugins.Configuration
 
             configuration.ApplicationContext = _container.ApplicationContext ?? new ApplicationContext(_container.ApplicationName);
             configuration.Configuration = _container.Configuration;
+            configuration.ServiceLifetime = _container.ServiceLifetime;
             configuration.TypesToRegisterFromAttribute = _container.TypesToRegisterFromAttribute;
             configuration.TypesToRegisterFromBaseType = _container.TypesToRegisterFromBaseType;
             configuration.TypesToRegisterFromInterface = _container.TypesToRegisterFromInterface;
