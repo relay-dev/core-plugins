@@ -1,5 +1,5 @@
-﻿using Core.Plugins.Ftp;
-using Core.Plugins.NUnit;
+﻿using Core.Plugins.NUnit;
+using Core.Plugins.Utilities.Ftp;
 using NUnit.Framework;
 using Shouldly;
 

@@ -1,4 +1,4 @@
-﻿namespace Core.Plugins.Smtp
+﻿namespace Core.Plugins.Utilities.Smtp
 {
     public class SmtpClientBase
     {

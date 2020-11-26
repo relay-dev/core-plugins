@@ -1,7 +1,7 @@
 ﻿using Core.Providers;
-using Core.Smtp;
+using Core.Utilities.Smtp;
 
-namespace Core.Plugins.Smtp
+namespace Core.Plugins.Utilities.Smtp
 {
     public class SmtpClientFactory : ISmtpClientFactory
     {

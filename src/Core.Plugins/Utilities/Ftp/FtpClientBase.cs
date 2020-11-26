@@ -1,4 +1,4 @@
-﻿namespace Core.Plugins.Ftp
+﻿namespace Core.Plugins.Utilities.Ftp
 {
     public class FtpClientBase
     {

@@ -61,7 +61,6 @@ namespace Core.Plugins
 
             // Add Providers
             services.Add<IApplicationContextProvider, ApplicationContextProvider>(pluginConfiguration.ServiceLifetime);
-            services.Add<ICommandContextProvider, CommandContextProvider>(pluginConfiguration.ServiceLifetime);
             services.Add<IConnectionStringProvider, ConnectionStringByConfigurationProvider>(pluginConfiguration.ServiceLifetime);
             services.Add<IDateTimeProvider, DateTimeUtcProvider>(pluginConfiguration.ServiceLifetime);
             services.Add<IGuidProvider, GuidProvider>(pluginConfiguration.ServiceLifetime);

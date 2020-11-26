@@ -1,10 +1,10 @@
-﻿using Core.Ftp;
+﻿using Core.Utilities.Ftp;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace Core.Plugins.Ftp
+namespace Core.Plugins.Utilities.Ftp
 {
     public class SystemFtpClient : FtpClientBase, IFtpClient
     {

@@ -1,5 +1,5 @@
 ﻿using Core.Plugins.NUnit;
-using Core.Plugins.Smtp;
+using Core.Plugins.Utilities.Smtp;
 using NUnit.Framework;
 using Shouldly;
 

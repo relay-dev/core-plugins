@@ -1,9 +1,9 @@
 ﻿using Core.Exceptions;
-using Core.Smtp;
+using Core.Utilities.Smtp;
 using System;
 using System.Net.Mail;
 
-namespace Core.Plugins.Smtp
+namespace Core.Plugins.Utilities.Smtp
 {
     public class SystemSmtpClient : SmtpClientBase, ISmtpClient
     {

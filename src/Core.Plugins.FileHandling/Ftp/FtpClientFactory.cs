@@ -1,6 +1,6 @@
-﻿using Core.Ftp;
-using Core.Plugins.Ftp;
+﻿using Core.Plugins.Utilities.Ftp;
 using Core.Providers;
+using Core.Utilities.Ftp;
 
 namespace Core.Plugins.FileHandling.Ftp
 {

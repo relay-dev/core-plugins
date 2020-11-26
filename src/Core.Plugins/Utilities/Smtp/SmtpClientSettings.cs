@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Core.Plugins.Application;
+﻿using Core.Plugins.Application;
+using System.Collections.Generic;
 
-namespace Core.Plugins.Smtp
+namespace Core.Plugins.Utilities.Smtp
 {
     public class SmtpClientSettings : ConnectionStringParser
     {

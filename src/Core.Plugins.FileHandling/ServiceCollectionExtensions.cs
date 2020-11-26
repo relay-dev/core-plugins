@@ -1,13 +1,13 @@
 ﻿using Core.FileHandling;
-using Core.Ftp;
 using Core.Plugins.FileHandling.Delimited;
 using Core.Plugins.FileHandling.Excel;
 using Core.Plugins.FileHandling.Ftp;
-using Core.Plugins.Ftp;
+using Core.Plugins.Utilities.Ftp;
 using Core.Providers;
+using Core.Utilities.Ftp;
 using FluentFTP;
 using Microsoft.Extensions.DependencyInjection;
-using IFtpClient = Core.Ftp.IFtpClient;
+using IFtpClient = Core.Utilities.Ftp.IFtpClient;
 
 namespace Core.Plugins.FileHandling
 {

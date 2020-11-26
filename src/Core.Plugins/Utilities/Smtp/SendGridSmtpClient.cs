@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Core.Exceptions;
+using Core.Utilities.Smtp;
+using System;
 using System.Net;
 using System.Net.Mail;
-using Core.Exceptions;
-using Core.Smtp;
 
-namespace Core.Plugins.Smtp
+namespace Core.Plugins.Utilities.Smtp
 {
     public class SendGridSmtpClient : SmtpClientBase, ISmtpClient
     {
