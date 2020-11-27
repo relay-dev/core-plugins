@@ -29,12 +29,28 @@ Follow the instructions below to install this NuGet package into your project:
 
 ```sh
 dotnet add package Relay.Core.Plugins
+dotnet add package Relay.Core.Plugins.AutoMapper
+dotnet add package Relay.Core.Plugins.Azure
+dotnet add package Relay.Core.Plugins.EntityFramework
+dotnet add package Relay.Core.Plugins.FileHandling
+dotnet add package Relay.Core.Plugins.FluentValidation
+dotnet add package Relay.Core.Plugins.MediatR
+dotnet add package Relay.Core.Plugins.NUnit
+dotnet add package Relay.Core.Plugins.xUnit
 ```
 
 #### Package Manager Console
 
 ```sh
 Install-Package Relay.Core.Plugins
+Install-Package Relay.Core.Plugins.AutoMapper
+Install-Package Relay.Core.Plugins.Azure
+Install-Package Relay.Core.Plugins.EntityFramework
+Install-Package Relay.Core.Plugins.FileHandling
+Install-Package Relay.Core.Plugins.FluentValidation
+Install-Package Relay.Core.Plugins.MediatR
+Install-Package Relay.Core.Plugins.NUnit
+Install-Package Relay.Core.Plugins.xUnit
 ```
 
 ### Latest releases
@@ -104,8 +120,8 @@ public class Startup
     private PluginConfiguration BuildPluginConfiguration(IConfiguration configuration)
     {
         return new PluginConfigurationBuilder()
-            .UseConfiguration(configuration)
             .UseApplicationName("Samples")
+            .UseConfiguration(configuration)
             .UseServiceLifetime(ServiceLifetime.Transient)
             .UseGlobalUsername(configuration["GlobalUsername"])
             .UseCommandHandlersFromAssemblyContaining<CreateOrderHandler>()
@@ -125,57 +141,57 @@ The nature of your Program.cs file will vary. There are only a few things you ne
 
 ```c#
 class Program
+{
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            // Bootstrap the application
-            IServiceProvider serviceProvider = Bootstrap();
+        // Bootstrap the application
+        IServiceProvider serviceProvider = Bootstrap();
 
-            // Generate the type to work with based on the input provided (this assumes the caller passes in a single string that describes the sample type to run)
-            var sample = (ISample)serviceProvider.GetService(Type.GetType(args[0]));
+        // Generate the type to work with based on the input provided (this assumes the caller passes in a single string that describes the sample type to run)
+        var sample = (ISample)serviceProvider.GetService(Type.GetType(args[0]));
 
-            // Run the sample
-            await sample.RunAsync(new CancellationToken());
-        }
-
-        private static IServiceProvider Bootstrap()
-        {
-            // Build configuration
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", true)
-                .Build();
-
-            // Initialize a ServiceCollection
-            var services = new ServiceCollection();
-
-            // Add Configuration
-            services.AddSingleton<IConfiguration>(config);
-
-            // Add Logging
-            services
-                .AddLogging(builder =>
-                {
-                    builder.AddConsole();
-                    builder.AddDebug();
-                });
-
-            // Create an instance of the Startup class
-            Startup startup = (Startup)Activator.CreateInstance(typeof(Startup), new object[] { config });
-
-            if (startup == null)
-            {
-                throw new InvalidOperationException($"Could not create an instance of startup class of type '{typeof(Startup).FullName}'");
-            }
-
-            // Configure services
-            startup.ConfigureServices(services);
-
-            // Build the IServiceProvider
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-
-            return serviceProvider;
-        }
+        // Run the sample
+        await sample.RunAsync(new CancellationToken());
     }
+
+    private static IServiceProvider Bootstrap()
+    {
+        // Build configuration
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", true)
+            .Build();
+
+        // Initialize a ServiceCollection
+        var services = new ServiceCollection();
+
+        // Add Configuration
+        services.AddSingleton<IConfiguration>(config);
+
+        // Add Logging
+        services
+            .AddLogging(builder =>
+            {
+                builder.AddConsole();
+                builder.AddDebug();
+            });
+
+        // Create an instance of the Startup class
+        Startup startup = (Startup)Activator.CreateInstance(typeof(Startup), new object[] { config });
+
+        if (startup == null)
+        {
+            throw new InvalidOperationException($"Could not create an instance of startup class of type '{typeof(Startup).FullName}'");
+        }
+
+        // Configure services
+        startup.ConfigureServices(services);
+
+        // Build the IServiceProvider
+        IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+        return serviceProvider;
+    }
+}
 ```
 
 ### Consuming Plugins

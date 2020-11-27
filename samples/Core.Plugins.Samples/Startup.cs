@@ -5,6 +5,7 @@ using Core.Plugins.Configuration;
 using Core.Plugins.EntityFramework;
 using Core.Plugins.MediatR;
 using Core.Plugins.Samples.Domain.Commands.Create;
+using Core.Plugins.Samples.Domain.Context;
 using Core.Plugins.Samples.Domain.Mappers;
 using Core.Plugins.Samples.Domain.Validators;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,8 @@ namespace Core.Plugins.Samples
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<OrderContext>();
+
             services.AddApplicationServices(_pluginConfiguration);
             services.AddCorePlugins(_pluginConfiguration);
             services.AddAutoMapperPlugin(_pluginConfiguration);
