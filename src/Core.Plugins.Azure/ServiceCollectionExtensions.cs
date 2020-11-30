@@ -22,8 +22,8 @@ namespace Core.Plugins.Azure
             }
 
             // Add StorageAccount
-            services.AddScoped<IStorageAccount>(sp => new AzureStorageAccount(sp.GetService<IConnectionStringProvider>().Get(connectionStringName)));
-            services.AddScoped<IStorageAccountFactory, AzureStorageAccountFactory>();
+            services.Add<IStorageAccount>(sp => new AzureStorageAccount(sp.GetService<IConnectionStringProvider>().Get(connectionStringName)), pluginConfiguration.ServiceLifetime);
+            services.Add<IStorageAccountFactory, AzureStorageAccountFactory>(pluginConfiguration.ServiceLifetime);
 
             return services;
         }
@@ -36,17 +36,17 @@ namespace Core.Plugins.Azure
             }
 
             // Add EventGrid
-            services.AddScoped<IEventGridClient>(sp =>
+            services.Add<IEventGridClient>(sp =>
             {
                 var connectionStringParser = sp.GetRequiredService<IConnectionStringParser>();
                 var connectionStringProvider = sp.GetRequiredService<IConnectionStringProvider>();
                 var connectionStringSegments = connectionStringParser.Parse(connectionStringProvider.Get(connectionStringName));
 
                 return new EventGridClient(new TopicCredentials(connectionStringSegments["Key"]));
-            });
+            }, pluginConfiguration.ServiceLifetime);
 
             // Add EventClient
-            services.AddScoped<IEventClient, EventGridEventClient>();
+            services.Add<IEventClient, EventGridEventClient>(pluginConfiguration.ServiceLifetime);
 
             return services;
         }

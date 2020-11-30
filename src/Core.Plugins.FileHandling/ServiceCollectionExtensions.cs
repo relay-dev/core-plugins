@@ -1,4 +1,5 @@
 ﻿using Core.FileHandling;
+using Core.Plugins.Configuration;
 using Core.Plugins.FileHandling.Delimited;
 using Core.Plugins.FileHandling.Excel;
 using Core.Plugins.FileHandling.Ftp;
@@ -13,34 +14,34 @@ namespace Core.Plugins.FileHandling
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddFileHandlingPlugin(this IServiceCollection services, bool isUseSftp = true)
+        public static IServiceCollection AddFileHandlingPlugin(this IServiceCollection services, PluginConfiguration pluginConfiguration, bool isUseSftp = true)
         {
-            services.AddFluentFtp();
+            services.AddFluentFtp(pluginConfiguration);
 
-            services.AddScoped<IDelimitedFileHandler, GenericParsingDelimitedFileHandler>();
-            services.AddScoped<IExcelFileHandler, ClosedXmlExcelHandler>();
-            services.AddScoped<IFtpClientFactory, FtpClientFactory>();
+            services.Add<IDelimitedFileHandler, GenericParsingDelimitedFileHandler>(pluginConfiguration.ServiceLifetime);
+            services.Add<IExcelFileHandler, ClosedXmlExcelHandler>(pluginConfiguration.ServiceLifetime);
+            services.Add<IFtpClientFactory, FtpClientFactory>(pluginConfiguration.ServiceLifetime);
 
             if (isUseSftp)
             {
-                services.AddScoped<IFtpClient, RensiSftpClient>();
+                services.Add<IFtpClient, RensiSftpClient>(pluginConfiguration.ServiceLifetime);
             }
             else
             {
-                services.AddScoped<IFtpClient, SystemFtpClient>();
+                services.Add<IFtpClient, SystemFtpClient>(pluginConfiguration.ServiceLifetime);
             }
 
             return services;
         }
 
-        public static IServiceCollection AddFluentFtp(this IServiceCollection services, string connectionName = "DefaultFtpConnection")
+        public static IServiceCollection AddFluentFtp(this IServiceCollection services, PluginConfiguration pluginConfiguration, string connectionName = "DefaultFtpConnection")
         {
-            services.AddScoped<FluentFTP.IFtpClient>(sp =>
+            services.Add<FluentFTP.IFtpClient>(sp =>
             {
                 var settings = new FtpClientSettings(sp.GetRequiredService<IConnectionStringProvider>().Get(connectionName));
 
                 return new FtpClient(settings.Host, settings.Username, settings.Password);
-            });
+            }, pluginConfiguration.ServiceLifetime);
 
             return services;
         }

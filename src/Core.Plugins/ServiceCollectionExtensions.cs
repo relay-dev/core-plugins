@@ -103,6 +103,20 @@ namespace Core.Plugins
             return services;
         }
 
+        public static IServiceCollection Add<TService>(this IServiceCollection services, Func<IServiceProvider, TService> implementationFactory, ServiceLifetime serviceLifetime) where TService : class
+        {
+            var service = new ServiceDescriptor
+            (
+                typeof(TService),
+                implementationFactory,
+                serviceLifetime
+            );
+
+            services.Add(service);
+
+            return services;
+        }
+
         public static IServiceCollection Add(this IServiceCollection services, Type type, ServiceLifetime serviceLifetime)
         {
             var service = new ServiceDescriptor
