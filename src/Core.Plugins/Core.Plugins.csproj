@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
-    <PackageReference Include="Relay.Core" Version="1.0.163" />
+    <PackageReference Include="Relay.Core" Version="1.0.165" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
