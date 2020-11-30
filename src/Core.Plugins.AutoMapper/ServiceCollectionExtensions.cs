@@ -44,8 +44,8 @@ namespace Core.Plugins.AutoMapper
                 }, pluginConfiguration.MapperTypes);
 
             // Add Resolvers
-            services.AddScoped(typeof(LookupDataKeyResolver<>));
-            services.AddScoped(typeof(LookupDataValueResolver<>));
+            services.Add(typeof(LookupDataKeyResolver<>), pluginConfiguration.ServiceLifetime);
+            services.Add(typeof(LookupDataValueResolver<>), pluginConfiguration.ServiceLifetime);
 
             return services;
         }

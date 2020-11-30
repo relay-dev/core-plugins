@@ -103,6 +103,20 @@ namespace Core.Plugins
             return services;
         }
 
+        public static IServiceCollection Add(this IServiceCollection services, Type type, ServiceLifetime serviceLifetime)
+        {
+            var service = new ServiceDescriptor
+            (
+                type,
+                type,
+                serviceLifetime
+            );
+
+            services.Add(service);
+
+            return services;
+        }
+
         public static IServiceCollection AddTypesWithAttribute<TAttribute>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped, Func<TAttribute, bool> predicate = null) where TAttribute : Attribute
         {
             IEnumerable<Type> types = AssemblyScanner.Instance.FindTypesWithAttribute(assemblies, predicate);

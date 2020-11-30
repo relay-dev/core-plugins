@@ -31,7 +31,7 @@ namespace Core.Plugins.Samples
             services.AddAutoMapperPlugin(_pluginConfiguration);
             services.AddAzureBlobStoragePlugin(_pluginConfiguration);
             services.AddAzureEventGridPlugin(_pluginConfiguration);
-            services.AddEntityFrameworkPlugin();
+            services.AddEntityFrameworkPlugin(_pluginConfiguration);
             services.AddMediatRPlugin(_pluginConfiguration);
             services.AddWarmup(_pluginConfiguration);
         }
