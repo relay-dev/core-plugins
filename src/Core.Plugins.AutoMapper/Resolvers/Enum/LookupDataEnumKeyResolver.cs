@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Core.Plugins.AutoMapper.Resolvers.Enum
 {
-    public class LookupDataEnumKeyResolver<T> : LookupDataResolverBase, IMemberValueResolver<object, object, System.Enum, T>
+    public class LookupDataEnumKeyResolver<TValue> : LookupDataResolverBase, IMemberValueResolver<object, object, System.Enum, TValue>
     {
         private readonly IMemoryCache _cache;
 
@@ -21,7 +21,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
             _cache = cache;
         }
 
-        public T Resolve(object source, object destination, System.Enum sourceMember, T destMember, ResolutionContext context)
+        public TValue Resolve(object source, object destination, System.Enum sourceMember, TValue destMember, ResolutionContext context)
         {
             if (sourceMember.ToString().ToLower() == "undefined")
             {
@@ -41,10 +41,10 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
             string tableName = lookupDataEnumAttribute.TableName ?? sourceMember.GetType().Name;
             string cacheKey = string.Join("::", CacheKeyPrefix, tableName);
 
-            T result = GetPrimaryKeyForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, tableName, cacheKey);
+            TValue result = GetPrimaryKeyForLookupValueFromCache(sourceMember, lookupDataEnumAttribute, tableName, cacheKey);
 
             // SF: This is a type of self-healing mechanism whereby if we can't find the value the first time, we'll clear the cache for that table only and make a fresh trip in case we are out of sync. If we miss twice, we won't try again
-            if (EqualityComparer<T>.Default.Equals(result, default))
+            if (EqualityComparer<TValue>.Default.Equals(result, default))
             {
                 _cache.Remove(cacheKey);
 
@@ -54,7 +54,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
             return result;
         }
 
-        private T GetPrimaryKeyForLookupValueFromCache(System.Enum source, LookupDataEnumAttribute lookupDataEnumAttribute, string tableName, string cacheKey)
+        private TValue GetPrimaryKeyForLookupValueFromCache(System.Enum source, LookupDataEnumAttribute lookupDataEnumAttribute, string tableName, string cacheKey)
         {
             DataTable dataTable =
                 _cache.GetOrSet(cacheKey, () =>
@@ -70,24 +70,24 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
                         if (!e.Message.StartsWith("Invalid object name"))
                             throw;
 
-                        throw new CoreException(e, $"Attempted to map an Enum to a {typeof(T).Name} using ResolveUsing<LookupDataProvider<T>>().FromMember() but the defaults did not work. This is usually because the name of your Enum does not follow the convention of tblEnumName (you tried to query the lookup table {tableName}, which likly doesn't exist). If so, you must add an Attribute to your Enum Type like so: [LookupDataEnumAttribute(TableName = <<Name of lookup data table your enum corresponds with>>)]. You can also specify the column name for which to match the name with, if the column is not in the second position");
+                        throw new CoreException(e, $"Attempted to map an Enum to a {typeof(TValue).Name} using ResolveUsing<LookupDataProvider<T>>().FromMember() but the defaults did not work. This is usually because the name of your Enum does not follow the convention of tblEnumName (you tried to query the lookup table {tableName}, which likly doesn't exist). If so, you must add an Attribute to your Enum Type like so: [LookupDataEnumAttribute(TableName = <<Name of lookup data table your enum corresponds with>>)]. You can also specify the column name for which to match the name with, if the column is not in the second position");
                     }
 
                 }, DefaultCacheTimeoutInHours);
 
             string columnNameOfPrimaryKey = lookupDataEnumAttribute.ColumnNameOfPrimaryKey ?? dataTable.Columns[0].ColumnName;
-            string columnNameOfFieldName = lookupDataEnumAttribute.ColumnNameOfFieldName ?? dataTable.Columns[1].ColumnName;
+            string columnNameOfField = lookupDataEnumAttribute.ColumnNameOfFieldName ?? dataTable.Columns[1].ColumnName;
 
             DataRow dataRow = dataTable
                 .AsEnumerable()
-                .FirstOrDefault(dr => dr[columnNameOfFieldName] != DBNull.Value && dr[columnNameOfFieldName].ToString().Replace(" ", string.Empty).ToLower() == source.ToString().ToLower());
+                .FirstOrDefault(dr => dr[columnNameOfField] != DBNull.Value && dr[columnNameOfField].ToString().Replace(" ", string.Empty).ToLower() == source.ToString().ToLower());
 
             if (dataRow == null)
             {
                 return default;
             }
 
-            return (T)dataRow[columnNameOfPrimaryKey];
+            return (TValue)dataRow[columnNameOfPrimaryKey];
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
                 }, DefaultCacheTimeoutInHours);
 
             string columnNameOfPrimaryKey = lookupDataEnumAttribute.ColumnNameOfPrimaryKey ?? dataTable.Columns[0].ColumnName;
-            string columnNameOfFieldName = lookupDataEnumAttribute.ColumnNameOfFieldName ?? dataTable.Columns[1].ColumnName;
+            string columnNameOfField = lookupDataEnumAttribute.ColumnNameOfFieldName ?? dataTable.Columns[1].ColumnName;
 
             DataRow dataRow = dataTable
                 .AsEnumerable()
@@ -87,7 +87,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Enum
                 return default;
             }
 
-            return GlobalHelper.ParseEnum<TOutput>(dataRow[columnNameOfFieldName] as string);
+            return GlobalHelper.ParseEnum<TOutput>(dataRow[columnNameOfField] as string);
         }
     }
 }

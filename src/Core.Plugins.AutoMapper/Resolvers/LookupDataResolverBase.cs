@@ -11,16 +11,6 @@ namespace Core.Plugins.AutoMapper.Resolvers
         protected LookupDataResolverBase(IConnectionStringProvider connectionStringProvider)
             : base(connectionStringProvider) { }
 
-        protected int GetCacheTimeoutInHours(LookupDataBase lookupData)
-        {
-            return lookupData.CacheTimeoutInHours > 0 ? lookupData.CacheTimeoutInHours : DefaultCacheTimeoutInHours;
-        }
-
-        protected string GetCacheKey(string tableName)
-        {
-            return $"{CacheKeyPrefix}{tableName}";
-        }
-
         public abstract TDestination Resolve(object source, object destination, TSource sourceMember, TDestination destMember, ResolutionContext context);
     }
 
@@ -35,13 +25,23 @@ namespace Core.Plugins.AutoMapper.Resolvers
             _connectionStringProvider = connectionStringProvider;
         }
 
+        protected int GetCacheTimeoutInHours(LookupDataBase lookupData)
+        {
+            return lookupData.CacheTimeoutInHours > 0 ? lookupData.CacheTimeoutInHours : DefaultCacheTimeoutInHours;
+        }
+
+        protected string GetCacheKey(string tableName)
+        {
+            return $"{CacheKeyPrefix}{tableName}";
+        }
+
         protected DataTable ExecuteSql(string sql, string connectionName = "DefaultConnection")
         {
             using var connection = new SqlConnection(_connectionStringProvider.Get(connectionName));
 
             using var command = new SqlCommand(sql, connection);
 
-            DataTable dataTable = new DataTable();
+            var dataTable = new DataTable();
 
             new SqlDataAdapter(command).Fill(dataTable);
 

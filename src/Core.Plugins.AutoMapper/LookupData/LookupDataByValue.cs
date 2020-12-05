@@ -31,14 +31,14 @@ namespace Core.Plugins.AutoMapper.LookupData
             Value = value;
         }
 
-        public LookupDataByValue(string value, string dataSource, string tableName, string columnNameOfPrimaryKey = null, string columnNameOfFieldName = null)
-            : base(dataSource, tableName, columnNameOfPrimaryKey, columnNameOfFieldName)
+        public LookupDataByValue(string value, string dataSource, string tableName, string columnNameOfPrimaryKey = null, string columnNameOfField = null)
+            : base(dataSource, tableName, columnNameOfPrimaryKey, columnNameOfField)
         {
             Value = value;
         }
 
-        public LookupDataByValue(string value, string dataSource, string tableName, string columnNameOfPrimaryKey = null, string columnNameOfFieldName = null, int cacheTimeoutInHours = 24)
-            : base(dataSource, tableName, columnNameOfPrimaryKey, columnNameOfFieldName, cacheTimeoutInHours)
+        public LookupDataByValue(string value, string dataSource, string tableName, string columnNameOfPrimaryKey = null, string columnNameOfField = null, int cacheTimeoutInHours = 24)
+            : base(dataSource, tableName, columnNameOfPrimaryKey, columnNameOfField, cacheTimeoutInHours)
         {
             Value = value;
         }

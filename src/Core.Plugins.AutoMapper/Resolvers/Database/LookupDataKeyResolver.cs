@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace Core.Plugins.AutoMapper.Resolvers.Database
 {
-    public class LookupDataKeyResolver<T> : LookupDataKeyResolverBase<T>
+    public class LookupDataKeyResolver<TValue> : LookupDataKeyResolverBase<TValue>
     {
         public LookupDataKeyResolver(IConnectionStringProvider connectionStringProvider, IMemoryCache cache)
             : base(connectionStringProvider, cache) { }
 
-        protected override Dictionary<T, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)
+        protected override Dictionary<TValue, string> GetDictionaryToCache(LookupDataByValue lookupDataByValue)
         {
             string sql = $"SELECT * FROM {lookupDataByValue.TableName} (NOLOCK)";
 
@@ -23,7 +23,7 @@ namespace Core.Plugins.AutoMapper.Resolvers.Database
             string columnNameOfField = lookupDataByValue.ColumnNameOfField ?? dataTable.Columns[1].ColumnName;
 
             return dataTable.AsEnumerable()
-                .ToDictionary(dr => (T)dr[columnNameOfPrimaryKey], dr => dr[columnNameOfField] == DBNull.Value ? null : dr[columnNameOfField].ToString());
+                .ToDictionary(dr => (TValue)dr[columnNameOfPrimaryKey], dr => dr[columnNameOfField] == DBNull.Value ? null : dr[columnNameOfField].ToString());
         }
     }
 }

@@ -5,17 +5,7 @@ namespace Core.Plugins.Utilities
 {
     public static class GlobalHelper
     {
-        public static bool IsAnyStringEmpty(params string[] strings)
-        {
-            return strings.Any(string.IsNullOrEmpty);
-        }
-
-        public static bool IsAnyStringPopulated(params string[] strings)
-        {
-            return !strings.All(string.IsNullOrEmpty);
-        }
-
-        public static bool GetBoolean(object o)
+        public static bool ParseBoolean(object o)
         {
             if (o == null || o == DBNull.Value || string.IsNullOrEmpty(o.ToString().Trim()))
             {
@@ -50,6 +40,16 @@ namespace Core.Plugins.Utilities
             {
                 return default;
             }
+        }
+
+        public static bool IsAnyStringEmpty(params string[] strings)
+        {
+            return strings.Any(string.IsNullOrEmpty);
+        }
+
+        public static bool IsAnyStringPopulated(params string[] strings)
+        {
+            return !strings.All(string.IsNullOrEmpty);
         }
     }
 }
