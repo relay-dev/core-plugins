@@ -10,7 +10,7 @@
         }
 
         private SmtpClientSettings _smtpClientSettings;
-        protected SmtpClientSettings SmtpClientSettings
+        protected SmtpClientSettings Settings
         {
             get
             {

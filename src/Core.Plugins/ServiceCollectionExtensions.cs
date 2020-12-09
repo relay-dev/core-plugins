@@ -196,6 +196,18 @@ namespace Core.Plugins
             return services;
         }
 
+        private static IServiceCollection AddUsernameProvider(this IServiceCollection services, PluginConfiguration pluginConfiguration)
+        {
+            if (!string.IsNullOrEmpty(pluginConfiguration.GlobalUsername))
+            {
+                return services.AddSingletonUsernameProvider(pluginConfiguration.GlobalUsername);
+            }
+            else
+            {
+                return services.Add<IUsernameProvider, UsernameProvider>(pluginConfiguration.ServiceLifetime);
+            }            
+        }
+
         public static IServiceCollection AddSingletonUsernameProvider(this IServiceCollection services, string username)
         {
             var usernameProvider = new UsernameProvider();
@@ -210,18 +222,6 @@ namespace Core.Plugins
         public static IEnumerable<Assembly> AsEnumerable(this Assembly assembly)
         {
             return new List<Assembly> { assembly };
-        }
-
-        private static void AddUsernameProvider(this IServiceCollection services, PluginConfiguration pluginConfiguration)
-        {
-            if (!string.IsNullOrEmpty(pluginConfiguration.GlobalUsername))
-            {
-                services.AddSingletonUsernameProvider(pluginConfiguration.GlobalUsername);
-            }
-            else
-            {
-                services.Add<IUsernameProvider, UsernameProvider>(pluginConfiguration.ServiceLifetime);
-            }
         }
     }
 }

@@ -13,17 +13,17 @@ namespace Core.Plugins.Utilities.Smtp
 
         public void Send(MailMessage mailMessage)
         {
-            if (string.IsNullOrEmpty(SmtpClientSettings.Host) || string.IsNullOrEmpty(SmtpClientSettings.Port) || string.IsNullOrEmpty(SmtpClientSettings.Username) || String.IsNullOrEmpty(SmtpClientSettings.Password))
+            if (string.IsNullOrEmpty(Settings.Host) || string.IsNullOrEmpty(Settings.Port) || string.IsNullOrEmpty(Settings.Username) || String.IsNullOrEmpty(Settings.Password))
             {
                 throw new CoreException(ErrorCode.INVA, "Host, Port, Username and Password must be set to use SendGridSmtpClient");
             }
 
-            var smtpClient = new SmtpClient(SmtpClientSettings.Host, Convert.ToInt32(SmtpClientSettings.Port))
+            var smtpClient = new SmtpClient(Settings.Host, Convert.ToInt32(Settings.Port))
             {
                 Credentials = new NetworkCredential
                 {
-                    UserName = SmtpClientSettings.Username,
-                    Password = SmtpClientSettings.Password
+                    UserName = Settings.Username,
+                    Password = Settings.Password
                 }
             };
 
