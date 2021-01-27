@@ -13,6 +13,12 @@ namespace Core.Plugins.AutoMapper.LookupData
             Value = valueFactory.Compile()();
         }
 
+        public LookupDataByValue(Expression<Func<string>> valueFactory, string schemaName)
+            : base($"{schemaName}.{GetMemberName(valueFactory)}")
+        {
+            Value = valueFactory.Compile()();
+        }
+
         public LookupDataByValue(string value, string tableName)
             : base(tableName)
         {
