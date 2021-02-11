@@ -113,19 +113,30 @@ namespace Core.Plugins.Configuration
                 throw new InvalidOperationException("UseConfiguration() must be called before calling Build()");
             }
 
-            configuration.ApplicationName = _container.ApplicationName ?? _container.Configuration["ApplicationName"];
+            string applicationName = _container.ApplicationName ?? _container.Configuration["ApplicationName"];
 
-            if (string.IsNullOrEmpty(_container.ApplicationName) && _container.ApplicationContext != null)
+            if (string.IsNullOrEmpty(applicationName) && _container.ApplicationContext != null)
             {
-                configuration.ApplicationName = _container.ApplicationContext.ApplicationName;
+                applicationName = _container.ApplicationContext.ApplicationName;
             }
 
-            if (string.IsNullOrEmpty(_container.ApplicationName))
+            if (string.IsNullOrEmpty(applicationName))
             {
                 throw new InvalidOperationException("ApplicationName not provided. You can create an appSetting called 'ApplicationName', or call UseApplicationName() before calling Build()");
             }
 
-            configuration.ApplicationContext = _container.ApplicationContext ?? new ApplicationContext(_container.ApplicationName);
+            ApplicationContext applicationContext = _container.ApplicationContext;
+
+            if (applicationContext == null)
+            {
+                long applicationId = ResolveApplicationId();
+                string applicationVersion = _container.Configuration["ApplicationVersion"];
+
+                applicationContext = new ApplicationContext(applicationName, applicationId, applicationVersion);
+            }
+
+            configuration.ApplicationName = applicationName;
+            configuration.ApplicationContext = applicationContext;
             configuration.Configuration = _container.Configuration;
             configuration.ServiceLifetime = _container.ServiceLifetime;
             configuration.TypesToRegisterFromAttribute = _container.TypesToRegisterFromAttribute;
@@ -133,6 +144,18 @@ namespace Core.Plugins.Configuration
             configuration.TypesToRegisterFromInterface = _container.TypesToRegisterFromInterface;
 
             return configuration as TResult;
+        }
+
+        private long ResolveApplicationId()
+        {
+            string applicationIdConfigured = _container.Configuration["ApplicationId"];
+
+            if (string.IsNullOrEmpty(applicationIdConfigured) || !long.TryParse(applicationIdConfigured, out long applicationId))
+            {
+                return 0;
+            }
+
+            return applicationId;
         }
 
         internal class ApplicationConfigurationBuilderContainer : ApplicationConfiguration
