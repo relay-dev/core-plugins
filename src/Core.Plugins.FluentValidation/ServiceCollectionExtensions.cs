@@ -1,8 +1,9 @@
 ﻿using Core.Plugins.Configuration;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Core.Plugins.FluentValidation
 {
@@ -10,34 +11,30 @@ namespace Core.Plugins.FluentValidation
     {
         public static IServiceCollection AddFluentValidationPlugin(this IServiceCollection services, PluginConfiguration pluginConfiguration)
         {
-            if (pluginConfiguration.ValidatorTypes == null || !pluginConfiguration.ValidatorTypes.Any())
+            if (pluginConfiguration.ValidatorAssemblies != null && pluginConfiguration.ValidatorAssemblies.Any())
             {
-                return services;
+                foreach (Assembly assembly in pluginConfiguration.ValidatorAssemblies)
+                {
+                    assembly.GetTypes()
+                        .Where(t => t.GetInterfaces().Contains(typeof(IValidator))).ToList()
+                        .ForEach(t =>
+                        {
+                            if (t.BaseType != null && t.BaseType.GetGenericArguments().Length == 1)
+                            {
+                                Type validatorOf = t.BaseType.GetGenericArguments()[0];
+                                Type serviceType = typeof(IValidator<>).MakeGenericType(validatorOf);
+                                services.AddTransient(serviceType, t);
+                            }
+                        });
+                }
             }
 
-            // Add the validators
-            foreach (KeyValuePair<Type, Type> validatorType in pluginConfiguration.ValidatorTypes)
+            if (pluginConfiguration.ValidatorTypes != null && pluginConfiguration.ValidatorTypes.Any())
             {
-                services.AddTransient(validatorType.Key, validatorType.Value);
-            }
-
-            return services;
-        }
-
-        public static IServiceCollection AddFluentValidationPlugin(this IServiceCollection services, dynamic mvcCoreBuilder, PluginConfiguration pluginConfiguration)
-        {
-            if (pluginConfiguration.ValidatorTypes == null || !pluginConfiguration.ValidatorTypes.Any())
-            {
-                return services;
-            }
-
-            // Add FluentValidation
-            mvcCoreBuilder.AddFluentValidation();
-
-            // Add the validators
-            foreach (KeyValuePair<Type, Type> validatorType in pluginConfiguration.ValidatorTypes)
-            {
-                services.AddTransient(validatorType.Key, validatorType.Value);
+                foreach (var validatorType in pluginConfiguration.ValidatorTypes)
+                {
+                    services.AddTransient(validatorType.Key, validatorType.Value);
+                }
             }
 
             return services;
