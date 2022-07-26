@@ -1,8 +1,8 @@
 ﻿using Core.Framework;
+using Core.Plugins.Configuration.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Plugins.Configuration.Options;
 
 namespace Core.Plugins.Configuration
 {
@@ -82,16 +82,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseWarmupTypesFromAssemblyContaining<TWarmup>()
+        public TBuilder UseWarmupTypes(Action<WarmupTypeOptions> options)
         {
-            _pluginConfiguration.WarmupAssemblies.Add(typeof(TWarmup).Assembly);
+            var warmupTypeOptions = new WarmupTypeOptions(_pluginConfiguration);
 
-            return this as TBuilder;
-        }
-
-        public TBuilder UseWarmupTypesFromAssemblyContaining(Type type)
-        {
-            _pluginConfiguration.WarmupAssemblies.Add(type.Assembly);
+            options.Invoke(warmupTypeOptions);
 
             return this as TBuilder;
         }
