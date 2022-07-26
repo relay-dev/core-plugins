@@ -1,9 +1,9 @@
 ﻿using Core.Application;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Plugins.Configuration
 {
@@ -14,51 +14,51 @@ namespace Core.Plugins.Configuration
 
     public class ApplicationConfigurationBuilder<TBuilder, TResult> where TBuilder : class where TResult : class
     {
-        private readonly ApplicationConfigurationBuilderContainer _container;
+        private readonly ApplicationConfiguration _applicationConfiguration;
 
         public ApplicationConfigurationBuilder()
         {
-            _container = new ApplicationConfigurationBuilderContainer();
+            _applicationConfiguration = new ApplicationConfiguration();
         }
 
         public TBuilder UseApplicationName(string applicationName)
         {
-            _container.ApplicationName = applicationName;
+            _applicationConfiguration.ApplicationName = applicationName;
 
             return this as TBuilder;
         }
 
         public TBuilder UseApplicationContext(ApplicationContext applicationContext)
         {
-            _container.ApplicationContext = applicationContext;
+            _applicationConfiguration.ApplicationContext = applicationContext;
 
             return this as TBuilder;
         }
 
         public TBuilder UseConfiguration(IConfiguration configuration)
         {
-            _container.Configuration = configuration;
+            _applicationConfiguration.Configuration = configuration;
 
             return this as TBuilder;
         }
 
         public TBuilder UseServiceLifetime(ServiceLifetime serviceLifetime)
         {
-            _container.ServiceLifetime = serviceLifetime;
+            _applicationConfiguration.ServiceLifetime = serviceLifetime;
 
             return this as TBuilder;
         }
 
         public TBuilder UseTypesWithAttribute<TAttribute>(IEnumerable<Assembly> assembliesToScan) where TAttribute : Attribute
         {
-            _container.TypesToRegisterFromAttribute.Add(typeof(TAttribute), assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromAttribute.Add(typeof(TAttribute), assembliesToScan);
 
             return this as TBuilder;
         }
 
         public TBuilder UseTypesWithAttribute(Type type, IEnumerable<Assembly> assembliesToScan)
         {
-            _container.TypesToRegisterFromAttribute.Add(type, assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromAttribute.Add(type, assembliesToScan);
 
             return this as TBuilder;
         }
@@ -67,7 +67,7 @@ namespace Core.Plugins.Configuration
         {
             assembliesToScan ??= new List<Assembly> { typeof(TBaseClass).Assembly };
 
-            _container.TypesToRegisterFromBaseType.Add(typeof(TBaseClass), assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromBaseType.Add(typeof(TBaseClass), assembliesToScan);
 
             return this as TBuilder;
         }
@@ -76,7 +76,7 @@ namespace Core.Plugins.Configuration
         {
             assembliesToScan ??= new List<Assembly> { type.Assembly };
 
-            _container.TypesToRegisterFromBaseType.Add(type, assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromBaseType.Add(type, assembliesToScan);
 
             return this as TBuilder;
         }
@@ -85,7 +85,7 @@ namespace Core.Plugins.Configuration
         {
             assembliesToScan ??= new List<Assembly> { typeof(TInterface).Assembly };
 
-            _container.TypesToRegisterFromInterface.Add(typeof(TInterface), assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromInterface.Add(typeof(TInterface), assembliesToScan);
 
             return this as TBuilder;
         }
@@ -94,7 +94,7 @@ namespace Core.Plugins.Configuration
         {
             assembliesToScan ??= new List<Assembly> { type.Assembly };
 
-            _container.TypesToRegisterFromInterface.Add(type, assembliesToScan);
+            _applicationConfiguration.TypesToRegisterFromInterface.Add(type, assembliesToScan);
 
             return this as TBuilder;
         }
@@ -108,16 +108,16 @@ namespace Core.Plugins.Configuration
 
         protected virtual TResult BuildUsing<TConfiguration>(TConfiguration configuration) where TConfiguration : ApplicationConfiguration
         {
-            if (_container.Configuration == null)
+            if (_applicationConfiguration.Configuration == null)
             {
                 throw new InvalidOperationException("UseConfiguration() must be called before calling Build()");
             }
 
-            string applicationName = _container.ApplicationName ?? _container.Configuration["ApplicationName"];
+            string applicationName = _applicationConfiguration.ApplicationName ?? _applicationConfiguration.Configuration["ApplicationName"];
 
-            if (string.IsNullOrEmpty(applicationName) && _container.ApplicationContext != null)
+            if (string.IsNullOrEmpty(applicationName) && _applicationConfiguration.ApplicationContext != null)
             {
-                applicationName = _container.ApplicationContext.ApplicationName;
+                applicationName = _applicationConfiguration.ApplicationContext.ApplicationName;
             }
 
             if (string.IsNullOrEmpty(applicationName))
@@ -125,30 +125,30 @@ namespace Core.Plugins.Configuration
                 throw new InvalidOperationException("ApplicationName not provided. You can create an appSetting called 'ApplicationName', or call UseApplicationName() before calling Build()");
             }
 
-            ApplicationContext applicationContext = _container.ApplicationContext;
+            ApplicationContext applicationContext = _applicationConfiguration.ApplicationContext;
 
             if (applicationContext == null)
             {
                 long applicationId = ResolveApplicationId();
-                string applicationVersion = _container.Configuration["ApplicationVersion"];
+                string applicationVersion = _applicationConfiguration.Configuration["ApplicationVersion"];
 
                 applicationContext = new ApplicationContext(applicationName, applicationId, applicationVersion);
             }
 
             configuration.ApplicationName = applicationName;
             configuration.ApplicationContext = applicationContext;
-            configuration.Configuration = _container.Configuration;
-            configuration.ServiceLifetime = _container.ServiceLifetime;
-            configuration.TypesToRegisterFromAttribute = _container.TypesToRegisterFromAttribute;
-            configuration.TypesToRegisterFromBaseType = _container.TypesToRegisterFromBaseType;
-            configuration.TypesToRegisterFromInterface = _container.TypesToRegisterFromInterface;
+            configuration.Configuration = _applicationConfiguration.Configuration;
+            configuration.ServiceLifetime = _applicationConfiguration.ServiceLifetime;
+            configuration.TypesToRegisterFromAttribute = _applicationConfiguration.TypesToRegisterFromAttribute;
+            configuration.TypesToRegisterFromBaseType = _applicationConfiguration.TypesToRegisterFromBaseType;
+            configuration.TypesToRegisterFromInterface = _applicationConfiguration.TypesToRegisterFromInterface;
 
             return configuration as TResult;
         }
 
         private long ResolveApplicationId()
         {
-            string applicationIdConfigured = _container.Configuration["ApplicationId"];
+            string applicationIdConfigured = _applicationConfiguration.Configuration["ApplicationId"];
 
             if (string.IsNullOrEmpty(applicationIdConfigured) || !long.TryParse(applicationIdConfigured, out long applicationId))
             {
@@ -156,11 +156,6 @@ namespace Core.Plugins.Configuration
             }
 
             return applicationId;
-        }
-
-        internal class ApplicationConfigurationBuilderContainer : ApplicationConfiguration
-        {
-
         }
     }
 }

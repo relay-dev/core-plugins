@@ -35,7 +35,7 @@ namespace Core.Plugins.Samples
             services.AddMediatRPlugin(_pluginConfiguration);
             services.AddWarmup(_pluginConfiguration);
         }
-
+        
         private PluginConfiguration BuildPluginConfiguration(IConfiguration configuration)
         {
             return new PluginConfigurationBuilder()
