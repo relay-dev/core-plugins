@@ -50,16 +50,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseMappersFromAssemblyContaining<TMapper>()
+        public TBuilder UseMappers(Action<MapperOptions> options)
         {
-            _pluginConfiguration.MapperAssemblies.Add(typeof(TMapper).Assembly);
+            var mapperOptions = new MapperOptions(_pluginConfiguration);
 
-            return this as TBuilder;
-        }
-
-        public TBuilder UseMappersFromAssemblyContaining(Type type)
-        {
-            _pluginConfiguration.MapperAssemblies.Add(type.Assembly);
+            options.Invoke(mapperOptions);
 
             return this as TBuilder;
         }
