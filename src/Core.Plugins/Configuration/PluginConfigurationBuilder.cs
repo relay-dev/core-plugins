@@ -1,8 +1,8 @@
 ﻿using Core.Framework;
-using Core.Plugins.Configuration.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Plugins.Configuration.Options;
 
 namespace Core.Plugins.Configuration
 {
@@ -13,30 +13,30 @@ namespace Core.Plugins.Configuration
 
     public class PluginConfigurationBuilder<TBuilder, TResult> : ApplicationConfigurationBuilder<TBuilder, TResult> where TBuilder : class where TResult : class
     {
-        private readonly PluginConfigurationBuilderContainer _container;
+        private readonly PluginConfiguration _pluginConfiguration;
 
         public PluginConfigurationBuilder()
         {
-            _container = new PluginConfigurationBuilderContainer();
+            _pluginConfiguration = new PluginConfiguration();
         }
 
         public TBuilder UseGlobalUsername(string username)
         {
-            _container.GlobalUsername = username;
+            _pluginConfiguration.GlobalUsername = username;
 
             return this as TBuilder;
         }
 
         public TBuilder UseCommandHandlers(List<Type> commandHandlerTypes)
         {
-            _container.CommandHandlerTypes = commandHandlerTypes;
+            _pluginConfiguration.CommandHandlerTypes = commandHandlerTypes;
 
             return this as TBuilder;
         }
 
         public TBuilder UseCommandHandlers(Action<CommandHandlerOptions> options)
         {
-            var commandHandlerOptions = new CommandHandlerOptions(_container);
+            var commandHandlerOptions = new CommandHandlerOptions(_pluginConfiguration);
 
             options.Invoke(commandHandlerOptions);
 
@@ -45,72 +45,70 @@ namespace Core.Plugins.Configuration
 
         public TBuilder UseMappers(List<Type> mapperTypes)
         {
-            _container.MapperTypes = mapperTypes;
+            _pluginConfiguration.MapperTypes = mapperTypes;
 
             return this as TBuilder;
         }
 
         public TBuilder UseMappersFromAssemblyContaining<TMapper>()
         {
-            _container.MapperAssemblies.Add(typeof(TMapper).Assembly);
+            _pluginConfiguration.MapperAssemblies.Add(typeof(TMapper).Assembly);
 
             return this as TBuilder;
         }
 
         public TBuilder UseMappersFromAssemblyContaining(Type type)
         {
-            _container.MapperAssemblies.Add(type.Assembly);
+            _pluginConfiguration.MapperAssemblies.Add(type.Assembly);
 
             return this as TBuilder;
         }
 
         public TBuilder UseValidators(Dictionary<Type, Type> validatorTypes)
         {
-            _container.ValidatorTypes = validatorTypes;
+            _pluginConfiguration.ValidatorTypes = validatorTypes;
 
             return this as TBuilder;
         }
 
         public TBuilder UseValidatorsFromAssemblyContaining<TValidator>()
         {
-            _container.ValidatorAssemblies.Add(typeof(TValidator).Assembly);
+            _pluginConfiguration.ValidatorAssemblies.Add(typeof(TValidator).Assembly);
 
             return this as TBuilder;
         }
 
         public TBuilder UseValidatorsFromAssemblyContaining(Type type)
         {
-            _container.ValidatorAssemblies.Add(type.Assembly);
+            _pluginConfiguration.ValidatorAssemblies.Add(type.Assembly);
 
             return this as TBuilder;
         }
 
         public TBuilder UseWarmupTypes(List<Type> warmupTypes)
         {
-            _container.WarmupTypes = warmupTypes;
+            _pluginConfiguration.WarmupTypes = warmupTypes;
 
             return this as TBuilder;
         }
 
         public TBuilder UseWarmupTypesFromAssemblyContaining<TWarmup>()
         {
-            _container.WarmupAssemblies.Add(typeof(TWarmup).Assembly);
+            _pluginConfiguration.WarmupAssemblies.Add(typeof(TWarmup).Assembly);
 
             return this as TBuilder;
         }
 
         public TBuilder UseWarmupTypesFromAssemblyContaining(Type type)
         {
-            _container.WarmupAssemblies.Add(type.Assembly);
+            _pluginConfiguration.WarmupAssemblies.Add(type.Assembly);
 
             return this as TBuilder;
         }
 
         public override TResult Build()
         {
-            var pluginConfiguration = new PluginConfiguration();
-
-            return BuildUsing(pluginConfiguration);
+            return BuildUsing(new PluginConfiguration());
         }
 
         protected override TResult BuildUsing<TConfiguration>(TConfiguration configuration)
@@ -124,16 +122,16 @@ namespace Core.Plugins.Configuration
 
             base.BuildUsing(pluginConfiguration);
 
-            pluginConfiguration.GlobalUsername = _container.GlobalUsername;
+            pluginConfiguration.GlobalUsername = _pluginConfiguration.GlobalUsername;
 
-            if (_container.CommandHandlerTypes.Any())
+            if (_pluginConfiguration.CommandHandlerTypes.Any())
             {
-                pluginConfiguration.CommandHandlerTypes.AddRange(_container.CommandHandlerTypes);
+                pluginConfiguration.CommandHandlerTypes.AddRange(_pluginConfiguration.CommandHandlerTypes);
             }
 
-            if (_container.CommandHandlerAssemblies.Any())
+            if (_pluginConfiguration.CommandHandlerAssemblies.Any())
             {
-                foreach (Type type in _container.CommandHandlerAssemblies.SelectMany(a => a.GetTypes()))
+                foreach (Type type in _pluginConfiguration.CommandHandlerAssemblies.SelectMany(a => a.GetTypes()))
                 {
                     if (type.GetInterfaces().Any(i => i.FullName != null && i.FullName.StartsWith("MediatR.IRequestHandler")))
                     {
@@ -142,37 +140,37 @@ namespace Core.Plugins.Configuration
                 }
             }
 
-            if (_container.MapperTypes.Any())
+            if (_pluginConfiguration.MapperTypes.Any())
             {
-                pluginConfiguration.MapperTypes.AddRange(_container.MapperTypes);
+                pluginConfiguration.MapperTypes.AddRange(_pluginConfiguration.MapperTypes);
             }
 
-            if (_container.MapperAssemblies.Any())
+            if (_pluginConfiguration.MapperAssemblies.Any())
             {
-                pluginConfiguration.MapperAssemblies.AddRange(_container.MapperAssemblies);
+                pluginConfiguration.MapperAssemblies.AddRange(_pluginConfiguration.MapperAssemblies);
             }
 
-            if (_container.ValidatorTypes.Any())
+            if (_pluginConfiguration.ValidatorTypes.Any())
             {
-                foreach (var kvp in _container.ValidatorTypes)
+                foreach (var kvp in _pluginConfiguration.ValidatorTypes)
                 {
                     pluginConfiguration.ValidatorTypes.Add(kvp.Key, kvp.Value);
                 }
             }
 
-            if (_container.ValidatorAssemblies.Any())
+            if (_pluginConfiguration.ValidatorAssemblies.Any())
             {
-                pluginConfiguration.ValidatorAssemblies.AddRange(_container.ValidatorAssemblies);
+                pluginConfiguration.ValidatorAssemblies.AddRange(_pluginConfiguration.ValidatorAssemblies);
             }
 
-            if (_container.WarmupTypes.Any())
+            if (_pluginConfiguration.WarmupTypes.Any())
             {
-                pluginConfiguration.WarmupTypes.AddRange(_container.WarmupTypes);
+                pluginConfiguration.WarmupTypes.AddRange(_pluginConfiguration.WarmupTypes);
             }
 
-            if (_container.WarmupAssemblies.Any())
+            if (_pluginConfiguration.WarmupAssemblies.Any())
             {
-                foreach (Type type in _container.WarmupAssemblies.SelectMany(a => a.GetTypes()))
+                foreach (Type type in _pluginConfiguration.WarmupAssemblies.SelectMany(a => a.GetTypes()))
                 {
                     if (type.GetInterfaces().Contains(typeof(IWarmup)))
                     {
@@ -182,11 +180,6 @@ namespace Core.Plugins.Configuration
             }
 
             return configuration as TResult;
-        }
-
-        internal class PluginConfigurationBuilderContainer : PluginConfiguration
-        {
-
         }
     }
 }
