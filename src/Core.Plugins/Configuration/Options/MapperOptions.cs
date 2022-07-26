@@ -4,23 +4,23 @@ namespace Core.Plugins.Configuration.Options
 {
     public class MapperOptions
     {
-        private readonly PluginConfiguration _configurationBuilder;
+        private readonly PluginConfiguration _pluginConfiguration;
 
-        public MapperOptions(PluginConfiguration configurationBuilder)
+        public MapperOptions(PluginConfiguration pluginConfiguration)
         {
-            _configurationBuilder = configurationBuilder;
+            _pluginConfiguration = pluginConfiguration;
         }
 
-        public MapperOptions FromAssemblyContaining<TCommandHandler>()
+        public MapperOptions FromAssemblyContaining<TMapper>()
         {
-            _configurationBuilder.MapperAssemblies.Add(typeof(TCommandHandler).Assembly);
+            _pluginConfiguration.MapperAssemblies.Add(typeof(TMapper).Assembly);
 
             return this;
         }
 
         public MapperOptions FromAssemblyContaining(Type type)
         {
-            _configurationBuilder.MapperAssemblies.Add(type.Assembly);
+            _pluginConfiguration.MapperAssemblies.Add(type.Assembly);
 
             return this;
         }

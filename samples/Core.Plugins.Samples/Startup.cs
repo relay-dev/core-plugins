@@ -45,7 +45,7 @@ namespace Core.Plugins.Samples
                 .UseGlobalUsername(configuration["GlobalUsername"])
                 .UseCommandHandlers(options => options.FromAssemblyContaining<CreateOrderHandler>())
                 .UseMappers(options => options.FromAssemblyContaining<AutoMappers>())
-                .UseValidatorsFromAssemblyContaining<OrderValidator>()
+                .UseValidators(options => options.FromAssemblyContaining<OrderValidator>())
                 .Build();
         }
     }

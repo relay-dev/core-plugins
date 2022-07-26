@@ -66,16 +66,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseValidatorsFromAssemblyContaining<TValidator>()
+        public TBuilder UseValidators(Action<ValidatorOptions> options)
         {
-            _pluginConfiguration.ValidatorAssemblies.Add(typeof(TValidator).Assembly);
+            var validatorOptions = new ValidatorOptions(_pluginConfiguration);
 
-            return this as TBuilder;
-        }
-
-        public TBuilder UseValidatorsFromAssemblyContaining(Type type)
-        {
-            _pluginConfiguration.ValidatorAssemblies.Add(type.Assembly);
+            options.Invoke(validatorOptions);
 
             return this as TBuilder;
         }
