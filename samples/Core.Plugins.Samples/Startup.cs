@@ -43,7 +43,7 @@ namespace Core.Plugins.Samples
                 .UseApplicationName("Samples")
                 .UseServiceLifetime(ServiceLifetime.Transient)
                 .UseGlobalUsername(configuration["GlobalUsername"])
-                .UseCommandHandlersFromAssemblyContaining<CreateOrderHandler>()
+                .UseCommandHandlers(options => options.FromAssemblyContaining<CreateOrderHandler>())
                 .UseMappersFromAssemblyContaining<AutoMappers>()
                 .UseValidatorsFromAssemblyContaining<OrderValidator>()
                 .Build();

@@ -24,5 +24,13 @@ namespace Core.Plugins.EntityFramework
 
             return services.AddEntityFrameworkPlugin(pluginConfiguration);
         }
+
+        public static IServiceCollection AddCorePlugins<TDbContext>(this IServiceCollection services, PluginConfiguration pluginConfiguration) where TDbContext : DbContext
+        {
+            services.AddCorePlugins(pluginConfiguration);
+            services.AddEntityFrameworkPlugin<TDbContext>(pluginConfiguration);
+
+            return services;
+        }
     }
 }

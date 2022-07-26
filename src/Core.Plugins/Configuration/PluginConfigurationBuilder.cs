@@ -1,4 +1,5 @@
 ﻿using Core.Framework;
+using Core.Plugins.Configuration.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,16 +34,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseCommandHandlersFromAssemblyContaining<TCommandHandler>()
+        public TBuilder UseCommandHandlers(Action<CommandHandlerOptions> options)
         {
-            _container.CommandHandlerAssemblies.Add(typeof(TCommandHandler).Assembly);
+            var commandHandlerOptions = new CommandHandlerOptions(_container);
 
-            return this as TBuilder;
-        }
-
-        public TBuilder UseCommandHandlersFromAssemblyContaining(Type type)
-        {
-            _container.CommandHandlerAssemblies.Add(type.Assembly);
+            options.Invoke(commandHandlerOptions);
 
             return this as TBuilder;
         }
@@ -139,7 +135,7 @@ namespace Core.Plugins.Configuration
             {
                 foreach (Type type in _container.CommandHandlerAssemblies.SelectMany(a => a.GetTypes()))
                 {
-                    if (type.GetInterfaces().Any(i => i.Name.Contains("IRequestHandler")))
+                    if (type.GetInterfaces().Any(i => i.FullName != null && i.FullName.StartsWith("MediatR.IRequestHandler")))
                     {
                         pluginConfiguration.CommandHandlerTypes.Add(type);
                     }
