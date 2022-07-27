@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Plugins.Configuration.Options
 {
@@ -21,6 +22,13 @@ namespace Core.Plugins.Configuration.Options
         public MapperOptions FromAssemblyContaining(Type type)
         {
             _pluginConfiguration.MapperAssemblies.Add(type.Assembly);
+
+            return this;
+        }
+
+        public MapperOptions FromCollection(List<Type> mapperTypes)
+        {
+            _pluginConfiguration.MapperTypes = mapperTypes;
 
             return this;
         }

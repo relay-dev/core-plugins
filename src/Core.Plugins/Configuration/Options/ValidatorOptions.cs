@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Plugins.Configuration.Options
 {
@@ -21,6 +22,13 @@ namespace Core.Plugins.Configuration.Options
         public ValidatorOptions FromAssemblyContaining(Type type)
         {
             _pluginConfiguration.ValidatorAssemblies.Add(type.Assembly);
+
+            return this;
+        }
+
+        public ValidatorOptions FromCollection(Dictionary<Type, Type> validatorTypes)
+        {
+            _pluginConfiguration.ValidatorTypes = validatorTypes;
 
             return this;
         }

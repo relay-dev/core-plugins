@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Plugins.Configuration.Options
 {
@@ -21,6 +22,13 @@ namespace Core.Plugins.Configuration.Options
         public CommandHandlerOptions FromAssemblyContaining(Type type)
         {
             _pluginConfiguration.CommandHandlerAssemblies.Add(type.Assembly);
+
+            return this;
+        }
+
+        public CommandHandlerOptions FromCollection(List<Type> commandHandlerTypes)
+        {
+            _pluginConfiguration.CommandHandlerTypes = commandHandlerTypes;
 
             return this;
         }

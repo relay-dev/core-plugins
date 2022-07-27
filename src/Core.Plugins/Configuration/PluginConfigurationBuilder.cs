@@ -27,25 +27,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseCommandHandlers(List<Type> commandHandlerTypes)
-        {
-            _pluginConfiguration.CommandHandlerTypes = commandHandlerTypes;
-
-            return this as TBuilder;
-        }
-
         public TBuilder UseCommandHandlers(Action<CommandHandlerOptions> options)
         {
             var commandHandlerOptions = new CommandHandlerOptions(_pluginConfiguration);
 
             options.Invoke(commandHandlerOptions);
-
-            return this as TBuilder;
-        }
-
-        public TBuilder UseMappers(List<Type> mapperTypes)
-        {
-            _pluginConfiguration.MapperTypes = mapperTypes;
 
             return this as TBuilder;
         }
@@ -59,25 +45,11 @@ namespace Core.Plugins.Configuration
             return this as TBuilder;
         }
 
-        public TBuilder UseValidators(Dictionary<Type, Type> validatorTypes)
-        {
-            _pluginConfiguration.ValidatorTypes = validatorTypes;
-
-            return this as TBuilder;
-        }
-
         public TBuilder UseValidators(Action<ValidatorOptions> options)
         {
             var validatorOptions = new ValidatorOptions(_pluginConfiguration);
 
             options.Invoke(validatorOptions);
-
-            return this as TBuilder;
-        }
-
-        public TBuilder UseWarmupTypes(List<Type> warmupTypes)
-        {
-            _pluginConfiguration.WarmupTypes = warmupTypes;
 
             return this as TBuilder;
         }
