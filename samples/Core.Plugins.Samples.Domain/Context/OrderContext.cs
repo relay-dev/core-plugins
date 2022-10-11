@@ -1,5 +1,6 @@
 ﻿using Core.Plugins.Samples.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 
@@ -54,5 +55,7 @@ namespace Core.Plugins.Samples.Domain.Context
                 OrderDate = DateTime.UtcNow
             }
         };
+
+        public override IEntityType EntityType => throw new NotImplementedException();
     }
 }

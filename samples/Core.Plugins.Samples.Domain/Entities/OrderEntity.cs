@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 
 namespace Core.Plugins.Samples.Domain.Entities
 {
