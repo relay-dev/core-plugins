@@ -22,7 +22,7 @@
     <PackageReference Include="FluentFTP" Version="33.0.2" />
     <PackageReference Include="GenericParsing" Version="1.2.2" />
     <PackageReference Include="Relay.Core" Version="1.0.165" />
-    <PackageReference Include="SSH.NET" Version="2016.1.0" />
+    <PackageReference Include="SSH.NET" Version="2020.0.2" />
   </ItemGroup>
 
   <ItemGroup>
