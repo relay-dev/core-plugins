@@ -1,6 +1,8 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
 using Moq.AutoMock;
 using NUnit.Framework;
+using System;
 
 namespace Core.Plugins.NUnit.Unit
 {
@@ -34,6 +36,19 @@ namespace Core.Plugins.NUnit.Unit
 
             CurrentTestProperties.Set(CutKey, cut);
             CurrentTestProperties.Set(ContainerKey, autoMocker);
+        }
+
+        protected void VerifyLoggerWasCalled(Mock<ILogger> logger, LogLevel logLevel, string expectedMessage, Times times)
+        {
+            Func<object, Type, bool> state = (v, t) => v.ToString().Contains(expectedMessage);
+
+            logger.Verify(
+                x => x.Log(
+                    It.Is<LogLevel>(l => l == logLevel),
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => state(v, t)),
+                    It.IsAny<Exception>(),
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), times);
         }
 
         private const string CutKey = "_cut";

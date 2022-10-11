@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Plugins.NUnit
@@ -16,6 +17,7 @@ namespace Core.Plugins.NUnit
     {
         protected string TestUsername;
         protected DateTime Timestamp;
+        protected CancellationToken CancellationToken => new CancellationTokenSource().Token;
         protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
 
         public TestBase()
