@@ -40,27 +40,33 @@ namespace Core.Plugins.NUnit
 
         protected virtual void WriteLine(DataTable d)
         {
-            WriteLine(ToPrintFriendly(d));
+            string s = ToPrintFriendly(d);
+
+            WriteLine(s);
         }
 
         protected virtual void WriteLine(object o)
         {
-            WriteLine(JsonSerializer.Serialize(o));
+            string s = JsonSerializer.Serialize(o);
+
+            WriteLine(s);
         }
 
-        protected virtual void WriteLineWithOptions(object o, JsonSerializerOptions options)
+        protected virtual void WriteLine(object o, JsonSerializerOptions options)
         {
-            WriteLine(JsonSerializer.Serialize(o, options));
+            string s = JsonSerializer.Serialize(o, options);
+
+            WriteLine(s);
         }
 
-        protected JObject ToJObject(object o)
+        protected virtual JObject ToJObject(object o)
         {
             if (o == null)
             {
-                throw new ArgumentException("o cannot be null", "o");
+                throw new ArgumentException("o cannot be null", nameof(o));
             }
 
-            return JsonConvert.DeserializeObject<JObject>(o.ToString());
+            return JsonConvert.DeserializeObject<JObject>(o.ToString() ?? string.Empty);
         }
 
         private static string ToPrintFriendly(DataTable dataTable, string startEachLineWith = "")
