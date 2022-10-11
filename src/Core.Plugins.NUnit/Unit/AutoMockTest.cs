@@ -21,7 +21,7 @@ namespace Core.Plugins.NUnit.Unit
             BootstrapTest();
         }
 
-        protected Mock<TMock> ResolveMock<TMock>() where TMock : class
+        protected virtual Mock<TMock> ResolveMock<TMock>() where TMock : class
         {
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
 
@@ -38,7 +38,7 @@ namespace Core.Plugins.NUnit.Unit
             CurrentTestProperties.Set(ContainerKey, autoMocker);
         }
 
-        protected void VerifyLoggerWasCalled(Mock<ILogger> logger, LogLevel logLevel, string expectedMessage, Times times)
+        protected virtual void VerifyLoggerWasCalled(Mock<ILogger> logger, LogLevel logLevel, string expectedMessage, Times times)
         {
             Func<object, Type, bool> state = (v, t) => v.ToString().Contains(expectedMessage);
 

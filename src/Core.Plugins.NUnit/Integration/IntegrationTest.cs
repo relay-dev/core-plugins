@@ -44,7 +44,7 @@ namespace Core.Plugins.NUnit.Integration
             CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
-        protected TService ResolveService<TService>()
+        protected virtual TService ResolveService<TService>()
         {
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
@@ -112,7 +112,7 @@ namespace Core.Plugins.NUnit.Integration
             CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
-        protected TService ResolveService<TService>()
+        protected virtual TService ResolveService<TService>()
         {
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
