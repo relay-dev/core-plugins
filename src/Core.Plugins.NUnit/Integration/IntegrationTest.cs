@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,20 +23,17 @@ namespace Core.Plugins.NUnit.Integration
             Environment.SetEnvironmentVariable("IS_LOCAL", "true");
         }
 
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        protected override void Bootstrap()
         {
-            Host = Bootstrap();
+            base.Bootstrap();
+
+            Host = BootstrapHost();
         }
 
-        [SetUp]
-        public void Setup()
+        protected override void BootstrapTest()
         {
-            BootstrapTest();
-        }
+            base.BootstrapTest();
 
-        protected virtual void BootstrapTest()
-        {
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
             CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
@@ -91,7 +87,7 @@ namespace Core.Plugins.NUnit.Integration
             return target;
         }
 
-        protected abstract IHost Bootstrap();
+        protected abstract IHost BootstrapHost();
         protected virtual void ConfigureApplicationServices(IServiceCollection services) { }
         protected const string ServiceProviderKey = "_serviceProvider";
     }
@@ -103,6 +99,8 @@ namespace Core.Plugins.NUnit.Integration
 
         protected override void BootstrapTest()
         {
+            base.BootstrapTest();
+
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
             TSUT sut = serviceProvider.GetRequiredService<TSUT>();

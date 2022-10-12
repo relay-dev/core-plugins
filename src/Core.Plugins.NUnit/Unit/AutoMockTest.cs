@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
-using NUnit.Framework;
 using System;
 
 namespace Core.Plugins.NUnit.Unit
@@ -15,12 +14,6 @@ namespace Core.Plugins.NUnit.Unit
             TestUsername = "AutoMockTest";
         }
 
-        [SetUp]
-        public void Setup()
-        {
-            BootstrapTest();
-        }
-
         protected virtual Mock<TMock> ResolveMock<TMock>() where TMock : class
         {
             AutoMocker autoMocker = (AutoMocker)CurrentTestProperties.Get(ContainerKey);
@@ -28,8 +21,10 @@ namespace Core.Plugins.NUnit.Unit
             return autoMocker.GetMock<TMock>();
         }
 
-        protected virtual void BootstrapTest()
+        protected override void BootstrapTest()
         {
+            base.BootstrapTest();
+
             var autoMocker = new AutoMocker();
 
             TCUT cut = autoMocker.CreateInstance<TCUT>();

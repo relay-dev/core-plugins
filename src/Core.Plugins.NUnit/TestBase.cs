@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System;
@@ -22,6 +23,18 @@ namespace Core.Plugins.NUnit
         {
             TestUsername = "UnitTest";
             Timestamp = DateTime.UtcNow;
+        }
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Bootstrap();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            BootstrapTest();
         }
 
         protected virtual void WriteLine(string s)
@@ -143,6 +156,9 @@ namespace Core.Plugins.NUnit
 
             return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
         }
+
+        protected virtual void Bootstrap() { }
+        protected virtual void BootstrapTest() { }
 
         protected virtual CancellationToken CancellationToken => new CancellationTokenSource().Token;
         protected virtual IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
