@@ -17,8 +17,6 @@ namespace Core.Plugins.NUnit
     {
         protected string TestUsername;
         protected DateTime Timestamp;
-        protected CancellationToken CancellationToken => new CancellationTokenSource().Token;
-        protected IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
 
         public TestBase()
         {
@@ -145,5 +143,8 @@ namespace Core.Plugins.NUnit
 
             return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
         }
+
+        protected virtual CancellationToken CancellationToken => new CancellationTokenSource().Token;
+        protected virtual IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
     }
 }

@@ -8,7 +8,7 @@ namespace Core.Plugins.NUnit.Unit
 {
     public class AutoMockTest<TCUT> : TestBase where TCUT : class
     {
-        protected TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
+        protected virtual TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
 
         public AutoMockTest()
         {
