@@ -25,17 +25,61 @@ namespace Core.Plugins.NUnit
             Timestamp = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Identifies methods to be called once prior to any child tests
+        /// </summary>
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
             Bootstrap();
         }
 
+        /// <summary>
+        /// Indicates a method of a TestFixture called just before each test method
+        /// </summary>
         [SetUp]
         public void Setup()
         {
             BootstrapTest();
         }
+
+        /// <summary>
+        /// Identifies methods to be called once after all child tests
+        /// </summary>
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            Cleanup();
+        }
+
+        /// <summary>
+        /// Indicates a method of a TestFixture called just after each test method
+        /// </summary>
+        [TearDown]
+        public void TearDown()
+        {
+            CleanupTest();
+        }
+
+        /// <summary>
+        /// Identifies methods to be called once prior to any child tests
+        /// </summary>
+        protected virtual void Bootstrap() { }
+
+        /// <summary>
+        /// Indicates a method of a TestFixture called just before each test method
+        /// </summary>
+        protected virtual void BootstrapTest() { }
+
+        /// <summary>
+        /// Identifies methods to be called once after all child tests
+        /// </summary>
+        protected virtual void Cleanup() { }
+
+        /// <summary>
+        /// Indicates a method of a TestFixture called just after each test method
+        /// </summary>
+        protected virtual void CleanupTest() { }
 
         protected virtual void WriteLine(string s)
         {
@@ -156,9 +200,6 @@ namespace Core.Plugins.NUnit
 
             return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
         }
-
-        protected virtual void Bootstrap() { }
-        protected virtual void BootstrapTest() { }
 
         protected virtual CancellationToken CancellationToken => new CancellationTokenSource().Token;
         protected virtual IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
