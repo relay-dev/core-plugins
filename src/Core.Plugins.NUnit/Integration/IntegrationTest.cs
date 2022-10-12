@@ -109,15 +109,7 @@ namespace Core.Plugins.NUnit.Integration
             CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
-        protected virtual TService ResolveService<TService>()
-        {
-            var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
-
-            return (TService)serviceProvider.GetRequiredService(typeof(TService));
-        }
-
         protected const string SutKey = "_sut";
-        protected const string ServiceProviderKey = "_serviceProvider";
     }
 
     public class LocalSettings
