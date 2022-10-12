@@ -3,176 +3,125 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace Core.Plugins.NUnit.Integration
 {
+    /// <summary>
+    /// A test fixture that contains tests which should run against real dependenies in a local or development environment.
+    /// This will run tests in a way that replicates the way the application will be when it's deployed by setting up an IHost to run the tests against.
+    /// </summary>
     public abstract class IntegrationTest : TestBase
     {
+        /// <summary>
+        /// The global IHost that was created by GlobalBootstrap()
+        /// </summary>
         protected IHost Host;
-        protected virtual ILogger Logger => ResolveService<ILogger>();
 
         protected IntegrationTest()
         {
-            TestUsername = "IntegrationTest";
-
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
-            Environment.SetEnvironmentVariable("IS_LOCAL", "true");
+            Host = IntegrationTestGlobalContext.Host;
+            TestUsername = GetType().Name;
         }
 
-        protected override void Bootstrap()
-        {
-            base.Bootstrap();
-
-            Host = BootstrapHost();
-        }
-
-        protected override void BootstrapTest()
+        public override void BootstrapTest()
         {
             base.BootstrapTest();
 
+            // Each test should be given its own service provider to keep the tests isolated. Create a new scope on the IHost and get the service provider
             IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
 
+            // Set it on this test's context so we can reference it later to resolve services
             CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
+        /// <summary>
+        /// Resolves a service from this test's service provider
+        /// </summary>
         protected virtual TService ResolveService<TService>()
         {
+            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method.
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
+            // Use this test's service provider to resolve the service
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
 
-        protected virtual LocalSettings GetLocalSettings<TStartup>()
+        /// <summary>
+        /// Reads settings from local.settings.json
+        /// </summary>
+        protected virtual LocalSettings GetLocalSettings<TStartup>(string pathToSettingsFile = null)
         {
-            string basePath = GetBasePath<TStartup>();
-            return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(basePath + "\\local.settings.json"));
-        }
-
-        protected virtual string GetResourcesPath()
-        {
-            string assemblyName = Assembly.GetExecutingAssembly().ManifestModule.Name.Without(".dll");
-            string remove = AppDomain.CurrentDomain.BaseDirectory.SubstringAfter(assemblyName).Without(assemblyName);
-            string dir = AppDomain.CurrentDomain.BaseDirectory.Without(remove);
-
-            return Path.Combine(dir, "Resources");
-        }
-
-        protected virtual string GetBasePath<TStartup>()
-        {
-            string assemblyName = Assembly.GetExecutingAssembly().ManifestModule.Name.Without(".dll");
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), typeof(TStartup).Namespace ?? string.Empty);
-        }
-
-        protected T FromDictionary<T>(Dictionary<string, string> values, string prefix) where T : new()
-        {
-            var target = new T();
-
-            foreach (var kvp in values.Where(x => x.Key.StartsWith(prefix)))
+            if (string.IsNullOrWhiteSpace(pathToSettingsFile))
             {
-                PropertyInfo p = typeof(T).GetProperty(kvp.Key.Without(prefix));
-                if (p != null)
-                {
-                    object val = Convert.ChangeType(kvp.Value, p.PropertyType);
-                    if (val != null)
-                    {
-                        p.SetValue(target, val);
-                    }
-                }
+                pathToSettingsFile = GetBasePath<TStartup>() + "\\local.settings.json";
             }
 
-            return target;
+            if (!File.Exists(pathToSettingsFile))
+            {
+                WriteLine($"Could not find settings file at path '{pathToSettingsFile}'");
+                return new LocalSettings();
+            }
+
+            return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(pathToSettingsFile));
         }
 
         /// <summary>
-        /// Identifies methods to be called once prior to any child tests and creates an IHost
+        /// Finds the path to the Resources directory
         /// </summary>
-        protected abstract IHost BootstrapHost();
-        protected virtual void ConfigureApplicationServices(IServiceCollection services) { }
+        protected virtual string GetResourcesPath<TStartup>()
+        {
+            string basePath = GetBasePath<TStartup>();
+
+            return Path.Combine(basePath, "Resources");
+        }
+
+        /// <summary>
+        /// Finds the path to the directory of Startup.cs
+        /// </summary>
+        protected virtual string GetBasePath<TStartup>()
+        {
+            string assemblyName = typeof(TStartup).Namespace;
+
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
+        }
+
+        /// <summary>
+        /// Returns a new ILogger everytime it is called
+        /// </summary>
+        protected virtual ILogger Logger => ResolveService<ILogger>();
         protected const string ServiceProviderKey = "_serviceProvider";
     }
 
+    /// <summary>
+    /// A test fixture that contains tests which should run against real dependenies in a local or development environment where you want to speficy the type to test.
+    /// This will run tests in a way that replicates the way the application will be when it's deployed by setting up an IHost to run the tests against.
+    /// </summary>
     public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
-        protected virtual TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
-        protected override ILogger Logger => ResolveService<ILogger<TSUT>>();
-
-        protected override void BootstrapTest()
+        public override void BootstrapTest()
         {
             base.BootstrapTest();
 
-            IServiceProvider serviceProvider = Host.Services.CreateScope().ServiceProvider;
+            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method.
+            var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
+            // Use this test's service provider to resolve the service of the type we are testing
             TSUT sut = serviceProvider.GetRequiredService<TSUT>();
 
+            // Set the instance on this test's context so we can reference it in SUT
             CurrentTestProperties.Set(SutKey, sut);
-            CurrentTestProperties.Set(ServiceProviderKey, serviceProvider);
         }
 
+        /// <summary>
+        /// Returns a new SUT everytime it is called
+        /// </summary>
+        protected virtual TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
+
+        /// <summary>
+        /// Returns a new Logger everytime it is called
+        /// </summary>
+        protected override ILogger Logger => ResolveService<ILogger<TSUT>>();
         protected const string SutKey = "_sut";
-    }
-
-    public class LocalSettings
-    {
-        public Dictionary<string, string> Values { get; set; }
-    }
-
-    public static class StringExtensions
-    {
-        /// <summary>
-        /// Removes a substring from a string
-        /// </summary>
-        public static string Without(this string str, string valueToRemove)
-        {
-            return str.Replace(valueToRemove, string.Empty);
-        }
-
-        /// <summary>
-        /// Returns a substring starting the first index of the removeAfter parameter, ending at the end of the string
-        /// </summary>
-        public static string SubstringBefore(this string str, string removeAfter, bool includeRemoveAfterString = false)
-        {
-            if (str == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                return str.Substring(0, str.IndexOf(removeAfter, StringComparison.Ordinal) + (includeRemoveAfterString ? 1 : 0));
-            }
-            catch
-            {
-                return str;
-            }
-        }
-
-        /// <summary>
-        /// Returns a substring starting the 0th position, ending at the removeAfter parameter
-        /// </summary>
-        public static string SubstringAfter(this string str, string removeAfter)
-        {
-            if (str == null)
-            {
-                return null;
-            }
-
-            if (removeAfter == null || !str.Contains(removeAfter))
-            {
-                return str;
-            }
-
-            try
-            {
-                return str.Substring(str.LastIndexOf(removeAfter, StringComparison.Ordinal));
-            }
-            catch
-            {
-                return str;
-            }
-        }
     }
 }

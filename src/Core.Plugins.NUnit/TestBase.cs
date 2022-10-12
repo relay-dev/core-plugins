@@ -1,207 +1,66 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
 using System.Threading;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Plugins.NUnit
 {
-    public class TestBase
+    /// <summary>
+    /// Generic test infrastructure for running unit tests
+    /// </summary>
+    public abstract class TestBase : TestFrameworkBase
     {
         protected string TestUsername;
         protected DateTime Timestamp;
+        protected IPropertyBag CurrentTestProperties;
 
-        public TestBase()
+        protected TestBase()
         {
             TestUsername = "UnitTest";
             Timestamp = DateTime.UtcNow;
+            CurrentTestProperties = TestExecutionContext.CurrentContext.CurrentTest.Properties;
         }
 
         /// <summary>
-        /// Identifies methods to be called once prior to any child tests
+        /// Called once per TestFixture prior to any child tests
         /// </summary>
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public virtual void Bootstrap()
         {
-            Bootstrap();
+
         }
 
         /// <summary>
-        /// Indicates a method of a TestFixture called just before each test method
+        /// Called before a Test is run
         /// </summary>
         [SetUp]
-        public void Setup()
+        public virtual void BootstrapTest()
         {
-            BootstrapTest();
+
         }
 
         /// <summary>
-        /// Identifies methods to be called once after all child tests
+        /// Called once per TestFixture after all child tests
         /// </summary>
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public virtual void Cleanup()
         {
-            Cleanup();
+
         }
 
         /// <summary>
-        /// Indicates a method of a TestFixture called just after each test method
+        /// Called after each time a Test is run
         /// </summary>
         [TearDown]
-        public void TearDown()
+        public virtual void CleanupTest()
         {
-            CleanupTest();
+
         }
 
         /// <summary>
-        /// Identifies methods to be called once prior to any child tests
+        /// Returns a new CancellationToken everytime it is called
         /// </summary>
-        protected virtual void Bootstrap() { }
-
-        /// <summary>
-        /// Indicates a method of a TestFixture called just before each test method
-        /// </summary>
-        protected virtual void BootstrapTest() { }
-
-        /// <summary>
-        /// Identifies methods to be called once after all child tests
-        /// </summary>
-        protected virtual void Cleanup() { }
-
-        /// <summary>
-        /// Indicates a method of a TestFixture called just after each test method
-        /// </summary>
-        protected virtual void CleanupTest() { }
-
-        protected virtual void WriteLine(string s)
-        {
-            Debug.WriteLine(s);
-            Console.WriteLine(s);
-        }
-
-        protected virtual void WriteLine(string s, params object[] args)
-        {
-            Debug.WriteLine(s, args);
-            Console.WriteLine(s, args);
-        }
-
-        protected virtual void WriteLine(DataTable d)
-        {
-            string s = ToPrintFriendly(d);
-
-            WriteLine(s);
-        }
-
-        protected virtual void WriteLine(object o)
-        {
-            string s = JsonSerializer.Serialize(o);
-
-            WriteLine(s);
-        }
-
-        protected virtual void WriteLine(object o, JsonSerializerOptions options)
-        {
-            string s = JsonSerializer.Serialize(o, options);
-
-            WriteLine(s);
-        }
-
-        protected virtual JObject ToJObject(object o)
-        {
-            if (o == null)
-            {
-                throw new ArgumentException("o cannot be null", nameof(o));
-            }
-
-            return JsonConvert.DeserializeObject<JObject>(o.ToString() ?? string.Empty);
-        }
-
-        private static string ToPrintFriendly(DataTable dataTable, string startEachLineWith = "")
-        {
-            var printFriendly = new StringBuilder();
-            var underline = new StringBuilder();
-
-            if (dataTable == null || dataTable.Rows.Count == 0)
-            {
-                return startEachLineWith + "<No rows found>\n";
-            }
-
-            Dictionary<int, int> maxStringLengthPerColumn = GetMaxStringLengths(dataTable);
-
-            printFriendly.Append(startEachLineWith);
-            underline.Append(startEachLineWith);
-
-            for (int i = 0; i < dataTable.Columns.Count; i++)
-            {
-                printFriendly.Append(GetPrintFriendlyString(dataTable.Columns[i].ColumnName, maxStringLengthPerColumn[i]));
-                underline.Append(GetPrintFriendlyString(string.Empty, maxStringLengthPerColumn[i] - 1).Replace(" ", "-") + " ");
-            }
-
-            printFriendly.Append("\n" + underline + "\n");
-
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-            {
-                printFriendly.Append(startEachLineWith);
-                printFriendly.Append(GetPrintFriendlyRow(dataTable.Rows[i], maxStringLengthPerColumn));
-            }
-
-            return printFriendly.ToString();
-        }
-
-        private static Dictionary<int, int> GetMaxStringLengths(DataTable dataTable)
-        {
-            var maxStringLengthPerColumn = new Dictionary<int, int>();
-
-            for (int i = 0; i < dataTable.Columns.Count; i++)
-            {
-                int maxLength = dataTable.Columns[i].ColumnName.Length;
-
-                for (int j = 0; j < dataTable.Rows.Count; j++)
-                {
-                    if (dataTable.Rows[j][i] != DBNull.Value && (dataTable.Rows[j][i].ToString() ?? string.Empty).Length > maxLength)
-                    {
-                        maxLength = (dataTable.Rows[j][i].ToString() ?? string.Empty).Length;
-                    }
-                }
-
-                maxStringLengthPerColumn.Add(i, maxLength);
-            }
-
-            return maxStringLengthPerColumn;
-        }
-
-        private static string GetPrintFriendlyRow(DataRow row, Dictionary<int, int> maxStringLengthPerColumn)
-        {
-            var printFriendly = new StringBuilder();
-
-            for (int i = 0; i < row.Table.Columns.Count; i++)
-            {
-                string value = row[i] == DBNull.Value
-                    ? "{null}"
-                    : row[i].ToString();
-
-                printFriendly.Append(GetPrintFriendlyString(value, maxStringLengthPerColumn[i]));
-            }
-
-            return printFriendly + "\n";
-        }
-
-        private static string GetPrintFriendlyString(string value, int lengthNeeded)
-        {
-            int spacesNeeded = lengthNeeded - value.Length;
-
-            return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
-        }
-
         protected virtual CancellationToken CancellationToken => new CancellationTokenSource().Token;
-        protected virtual IPropertyBag CurrentTestProperties => TestExecutionContext.CurrentContext.CurrentTest.Properties;
     }
 }

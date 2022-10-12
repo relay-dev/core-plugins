@@ -1,0 +1,110 @@
+﻿using Core.Plugins.NUnit.Integration;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+namespace Core.Plugins.NUnit
+{
+    /// <summary>
+    /// Functionality to support anything needed to setup a test run session
+    /// </summary>
+    [SetUpFixture]
+    public abstract class TestSetupBase : TestFrameworkBase
+    {
+        /// <summary>
+        /// Called once per test session prior to any child tests to setup infrastructure needed for the tests in this namespace
+        /// </summary>
+        [OneTimeSetUp]
+        public virtual void GlobalBootstrap()
+        {
+
+        }
+
+        /// <summary>
+        /// Called once per test session after all child tests to cleanup infrastructure needed for the tests in this namespace
+        /// </summary>
+        [OneTimeTearDown]
+        public virtual void GlobalCleanup()
+        {
+
+        }
+
+        /// <summary>
+        /// Reads settings from local.settings.json
+        /// </summary>
+        protected virtual LocalSettings GetLocalSettings<TStartup>(string pathToSettingsFile = null)
+        {
+            if (string.IsNullOrWhiteSpace(pathToSettingsFile))
+            {
+                pathToSettingsFile = GetBasePath<TStartup>() + "\\local.settings.json";
+            }
+
+            if (!File.Exists(pathToSettingsFile))
+            {
+                WriteLine($"Could not find settings file at path '{pathToSettingsFile}'");
+                return new LocalSettings();
+            }
+
+            return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(pathToSettingsFile));
+        }
+
+        /// <summary>
+        /// Finds the path to the Resources directory
+        /// </summary>
+        protected virtual string GetResourcesPath<TStartup>()
+        {
+            string basePath = GetBasePath<TStartup>();
+
+            return Path.Combine(basePath, "Resources");
+        }
+
+        /// <summary>
+        /// Finds the path to the directory of Startup.cs
+        /// </summary>
+        protected virtual string GetBasePath<TStartup>()
+        {
+            string assemblyName = typeof(TStartup).Namespace;
+
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
+        }
+
+        /// <summary>
+        /// Converts a dictionary into a type
+        /// </summary>
+        protected T FromDictionary<T>(Dictionary<string, string> values, string prefix = null) where T : new()
+        {
+            var target = new T();
+
+            foreach (var kvp in values.Where(x => x.Key.StartsWith(prefix ?? string.Empty)))
+            {
+                string propertyName = prefix == null ? kvp.Key : kvp.Key.Without(prefix);
+                PropertyInfo p = typeof(T).GetProperty(propertyName);
+                if (p != null)
+                {
+                    object val = Convert.ChangeType(kvp.Value, p.PropertyType);
+                    if (val != null)
+                    {
+                        p.SetValue(target, val);
+                    }
+                }
+            }
+
+            return target;
+        }
+
+        /// <summary>
+        /// Add service configurations that are not part of your normal setup, but needed for the tests
+        /// </summary>
+        protected virtual void ConfigureApplicationServices(IServiceCollection services) { }
+    }
+
+    public class LocalSettings
+    {
+        public Dictionary<string, string> Values { get; set; }
+    }
+}
