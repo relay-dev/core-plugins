@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Core.Plugins.NUnit.Integration
 {
@@ -99,7 +98,7 @@ namespace Core.Plugins.NUnit.Integration
 
     public abstract class IntegrationTest<TSUT> : IntegrationTest
     {
-        protected TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
+        protected virtual TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
         protected override ILogger Logger => ResolveService<ILogger<TSUT>>();
 
         protected override void BootstrapTest()
