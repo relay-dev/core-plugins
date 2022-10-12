@@ -17,7 +17,7 @@ namespace Core.Plugins.NUnit
 
         protected TestBase()
         {
-            TestUsername = "UnitTest";
+            TestUsername = GetType().Name;
             Timestamp = DateTime.UtcNow;
             CurrentTestProperties = TestExecutionContext.CurrentContext.CurrentTest.Properties;
         }

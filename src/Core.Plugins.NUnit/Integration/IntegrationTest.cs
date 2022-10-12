@@ -21,7 +21,6 @@ namespace Core.Plugins.NUnit.Integration
         protected IntegrationTest()
         {
             Host = IntegrationTestGlobalContext.Host;
-            TestUsername = GetType().Name;
         }
 
         public override void BootstrapTest()

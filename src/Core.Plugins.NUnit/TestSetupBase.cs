@@ -1,5 +1,4 @@
-﻿using Core.Plugins.NUnit.Integration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;

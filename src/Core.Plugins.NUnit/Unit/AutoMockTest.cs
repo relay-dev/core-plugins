@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Moq;
+﻿using Moq;
 using Moq.AutoMock;
 using System;
 
@@ -11,13 +10,6 @@ namespace Core.Plugins.NUnit.Unit
     /// <remarks>Auto-mocking is what gives us the freedom to change constructor parameters without breaking existing tests</remarks>
     public abstract class AutoMockTest<TCUT> : TestBase where TCUT : class
     {
-        protected virtual TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
-
-        protected AutoMockTest()
-        {
-            TestUsername = "AutoMockTest";
-        }
-
         public override void BootstrapTest()
         {
             base.BootstrapTest();
@@ -52,22 +44,9 @@ namespace Core.Plugins.NUnit.Unit
         }
 
         /// <summary>
-        /// Verifies that the mock of the ILogger was called
+        /// Returns a new CUT everytime it is called
         /// </summary>
-        /// <remarks>The way you have to do this is kind of painful because there is really only method being called on the ILogger, and it has a signature to support all use-cases. The extension methods we usually use in code can't be used to verify, so this method simplifies the process</remarks>
-        protected virtual void VerifyLoggerWasCalled(Mock<ILogger> logger, LogLevel logLevel, string expectedMessage, Times times)
-        {
-            Func<object, Type, bool> state = (v, t) => v.ToString().Contains(expectedMessage);
-
-            logger.Verify(
-                x => x.Log(
-                    It.Is<LogLevel>(l => l == logLevel),
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => state(v, t)),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), times);
-        }
-
+        protected virtual TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
         private const string CutKey = "_cut";
         private const string ContainerKey = "_container";
     }
