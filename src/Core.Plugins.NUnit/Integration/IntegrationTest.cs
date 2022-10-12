@@ -87,6 +87,9 @@ namespace Core.Plugins.NUnit.Integration
             return target;
         }
 
+        /// <summary>
+        /// Identifies methods to be called once prior to any child tests and creates an IHost
+        /// </summary>
         protected abstract IHost BootstrapHost();
         protected virtual void ConfigureApplicationServices(IServiceCollection services) { }
         protected const string ServiceProviderKey = "_serviceProvider";
