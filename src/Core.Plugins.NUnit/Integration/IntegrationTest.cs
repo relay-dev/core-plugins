@@ -47,45 +47,6 @@ namespace Core.Plugins.NUnit.Integration
         }
 
         /// <summary>
-        /// Reads settings from local.settings.json
-        /// </summary>
-        protected virtual LocalSettings GetLocalSettings<TStartup>(string pathToSettingsFile = null)
-        {
-            if (string.IsNullOrWhiteSpace(pathToSettingsFile))
-            {
-                pathToSettingsFile = GetBasePath<TStartup>() + "\\local.settings.json";
-            }
-
-            if (!File.Exists(pathToSettingsFile))
-            {
-                WriteLine($"Could not find settings file at path '{pathToSettingsFile}'");
-                return new LocalSettings();
-            }
-
-            return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(pathToSettingsFile));
-        }
-
-        /// <summary>
-        /// Finds the path to the Resources directory
-        /// </summary>
-        protected virtual string GetResourcesPath<TStartup>()
-        {
-            string basePath = GetBasePath<TStartup>();
-
-            return Path.Combine(basePath, "Resources");
-        }
-
-        /// <summary>
-        /// Finds the path to the directory of Startup.cs
-        /// </summary>
-        protected virtual string GetBasePath<TStartup>()
-        {
-            string assemblyName = typeof(TStartup).Namespace;
-
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
-        }
-
-        /// <summary>
         /// Returns a new ILogger everytime it is called
         /// </summary>
         protected virtual ILogger Logger => ResolveService<ILogger>();

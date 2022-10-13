@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Core.Plugins.NUnit.Integration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -15,6 +18,16 @@ namespace Core.Plugins.NUnit
     /// </summary>
     public class TestFrameworkBase
     {
+        /// <summary>
+        /// The global PropertyBag
+        /// </summary>
+        public IPropertyBag GlobalTestProperties { get; set; }
+
+        public TestFrameworkBase()
+        {
+            GlobalTestProperties = IntegrationTestGlobalContext.Properties;
+        }
+
         protected virtual void WriteLine(string s)
         {
             Debug.WriteLine(s);
@@ -134,7 +147,19 @@ namespace Core.Plugins.NUnit
 
             return value + string.Empty.PadRight(spacesNeeded + 2, ' ');
         }
+
+        /// <summary>
+        /// Finds the path to the directory of Startup.cs
+        /// </summary>
+        protected virtual string GetBasePath<TStartup>()
+        {
+            string assemblyName = typeof(TStartup).Namespace;
+
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
+        }
     }
+
+
 
     public static class StringExtensions
     {

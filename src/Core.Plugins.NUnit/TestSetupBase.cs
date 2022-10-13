@@ -40,7 +40,8 @@ namespace Core.Plugins.NUnit
         {
             if (string.IsNullOrWhiteSpace(pathToSettingsFile))
             {
-                pathToSettingsFile = GetBasePath<TStartup>() + "\\local.settings.json";
+                string basePath = GetBasePath<TStartup>();
+                pathToSettingsFile = Path.Combine(basePath, "local.settings.json");
             }
 
             if (!File.Exists(pathToSettingsFile))
@@ -50,26 +51,6 @@ namespace Core.Plugins.NUnit
             }
 
             return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(pathToSettingsFile));
-        }
-
-        /// <summary>
-        /// Finds the path to the Resources directory
-        /// </summary>
-        protected virtual string GetResourcesPath<TStartup>()
-        {
-            string basePath = GetBasePath<TStartup>();
-
-            return Path.Combine(basePath, "Resources");
-        }
-
-        /// <summary>
-        /// Finds the path to the directory of Startup.cs
-        /// </summary>
-        protected virtual string GetBasePath<TStartup>()
-        {
-            string assemblyName = typeof(TStartup).Namespace;
-
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
         }
 
         /// <summary>
