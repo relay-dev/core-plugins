@@ -46,6 +46,7 @@ namespace Core.Plugins.NUnit.Unit
         /// <summary>
         /// Returns a new CUT everytime it is called
         /// </summary>
+        /// <remarks>CUT stands for Class Under Test</remarks>
         protected virtual TCUT CUT => (TCUT)CurrentTestProperties.Get(CutKey);
         private const string CutKey = "_cut";
         private const string ContainerKey = "_container";

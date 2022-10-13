@@ -7,7 +7,7 @@ using System.Threading;
 namespace Core.Plugins.NUnit
 {
     /// <summary>
-    /// Generic test infrastructure for running unit tests
+    /// Generic test infrastructure for running tests
     /// </summary>
     public abstract class TestBase : TestFrameworkBase
     {

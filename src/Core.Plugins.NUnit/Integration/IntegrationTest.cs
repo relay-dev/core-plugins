@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 
 namespace Core.Plugins.NUnit.Integration
 {
@@ -39,10 +37,10 @@ namespace Core.Plugins.NUnit.Integration
         /// </summary>
         protected virtual TService ResolveService<TService>()
         {
-            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method.
+            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
-            // Use this test's service provider to resolve the service
+            // Use the service provider to resolve the service
             return (TService)serviceProvider.GetRequiredService(typeof(TService));
         }
 
@@ -63,10 +61,10 @@ namespace Core.Plugins.NUnit.Integration
         {
             base.BootstrapTest();
 
-            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method.
+            // Get this test's service provider. It was set on the test's current context by the BootstrapTest() method
             var serviceProvider = (IServiceProvider)CurrentTestProperties.Get(ServiceProviderKey);
 
-            // Use this test's service provider to resolve the service of the type we are testing
+            // Use the service provider to resolve an instance of the type under test
             TSUT sut = serviceProvider.GetRequiredService<TSUT>();
 
             // Set the instance on this test's context so we can reference it in SUT
@@ -76,6 +74,7 @@ namespace Core.Plugins.NUnit.Integration
         /// <summary>
         /// Returns a new SUT everytime it is called
         /// </summary>
+        /// <remarks>SUT stands for System Under Test. It's meant to convey that we are testing more than just a class. We're testing the system by executing end-to-end tests meant to mimic what happens in a deployed environment.</remarks>
         protected virtual TSUT SUT => (TSUT)CurrentTestProperties.Get(SutKey);
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace Core.Plugins.NUnit
         /// <summary>
         /// The global PropertyBag
         /// </summary>
-        public IPropertyBag GlobalTestProperties { get; set; }
+        protected IPropertyBag GlobalTestProperties;
 
         public TestFrameworkBase()
         {
@@ -158,8 +158,6 @@ namespace Core.Plugins.NUnit
             return Path.Combine(AppDomain.CurrentDomain.BaseDirectory.SubstringBefore(assemblyName), assemblyName);
         }
     }
-
-
 
     public static class StringExtensions
     {
