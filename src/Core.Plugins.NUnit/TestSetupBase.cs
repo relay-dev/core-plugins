@@ -50,7 +50,15 @@ namespace Core.Plugins.NUnit
                 return new LocalSettings();
             }
 
-            return JsonConvert.DeserializeObject<LocalSettings>(File.ReadAllText(pathToSettingsFile));
+            var json = File.ReadAllText(pathToSettingsFile);
+
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                WriteLine($"Could not find json in file at path '{pathToSettingsFile}'");
+                return new LocalSettings();
+            }
+
+            return JsonConvert.DeserializeObject<LocalSettings>(json);
         }
 
         /// <summary>
